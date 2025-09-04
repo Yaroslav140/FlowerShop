@@ -5,5 +5,10 @@ namespace FlowerShop.Pages
 {
     public class IndexModel : PageModel
     {
+        public string Message { get; private set; } = "";
+        public void OnGet()
+        {
+            Message = "Hello";
+        }
     }
 }

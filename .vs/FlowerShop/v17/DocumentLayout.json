@@ -1,18 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\",
+  "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|c:\\users\\param\\source\\repos\\flowershop\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D03EE985-EBD3-40D8-821F-0199C735EB29}|..\\FlowerShop.WpfClient\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\flowershop.wpfclient\\apiclient\\baseapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|c:\\users\\param\\source\\repos\\flowershop\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|c:\\users\\param\\source\\repos\\flowershop\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.csproj|solutionrelative:pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D03EE985-EBD3-40D8-821F-0199C735EB29}|..\\FlowerShop.WpfClient\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\flowershop.wpfclient\\apiclient\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,41 +24,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "Pages\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Index.cshtml.cs",
-              "RelativeToolTip": "Pages\\Index.cshtml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "UserApi.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
+              "RelativeDocumentMoniker": "..\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
+              "RelativeToolTip": "..\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-27T15:27:29.788Z",
+              "WhenOpened": "2025-09-04T18:10:15.079Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Index.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Index.cshtml",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Index.cshtml",
-              "RelativeToolTip": "Pages\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-27T15:26:37.849Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Title": "BaseApiClient.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
+              "RelativeDocumentMoniker": "..\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
+              "RelativeToolTip": "..\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-27T15:20:34.473Z",
+              "WhenOpened": "2025-09-04T18:06:23.142Z",
               "EditorCaption": ""
             }
           ]
