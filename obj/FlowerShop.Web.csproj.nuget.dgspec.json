@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\FlowerShop.Web.csproj": {}
+    "C:\\Users\\param\\source\\repos\\FlowerShop\\FlowerShop.Web.csproj": {}
   },
   "projects": {
     "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\FlowerShop.Data.csproj": {
@@ -154,14 +154,14 @@
         }
       }
     },
-    "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\FlowerShop.Web.csproj": {
+    "C:\\Users\\param\\source\\repos\\FlowerShop\\FlowerShop.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\FlowerShop.Web.csproj",
+        "projectUniqueName": "C:\\Users\\param\\source\\repos\\FlowerShop\\FlowerShop.Web.csproj",
         "projectName": "FlowerShop.Web",
-        "projectPath": "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\FlowerShop.Web.csproj",
+        "projectPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\FlowerShop.Web.csproj",
         "packagesPath": "C:\\Users\\param\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\obj\\",
+        "outputPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

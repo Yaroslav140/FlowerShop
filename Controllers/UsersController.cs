@@ -1,6 +1,7 @@
 ﻿using FlowerShop.Data;
 using FlowerShop.Data.Models;
-using FlowerShop.Dto;
+using FlowerShop.Dto.DTOCreate;
+using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,29 +15,29 @@ namespace FlowerShop.Web.Controllers
         public UsersController(FlowerDbContext context) => _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetUsers()
+        public async Task<ActionResult<List<GetUserDto>>> GetUsers()
         {
             var list = await _context.Users
-                .Select(u => new UserDto(
+                .Select(u => new GetUserDto(
                     u.Name,
                     u.Email
                 )).ToListAsync();
             return Ok(list);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetUsersById()
+        [HttpGet("{name}")]
+        public async Task<ActionResult<List<UserDomain>>> GetUsersByName(string name)
         {
             var list = await _context.Users
-                .Select(u => new UserDto(
-                    u.Name,
-                    u.Email
-                )).ToListAsync();
+                .Where(u => u.Name == name)
+                .ToListAsync();
+
             return Ok(list);
         }
+
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto userDto)
+        public async Task<ActionResult<GetUserDto>> CreateUser([FromBody] CreateUserDto userDto)
         {
             if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
             {
@@ -45,7 +46,7 @@ namespace FlowerShop.Web.Controllers
             var user = new UserDomain
             {
                 Id = Guid.NewGuid(),
-                Name = userDto.Username,
+                Name = userDto.UserName,
                 Email = userDto.Email,
             };
             _context.Users.Add(user);
