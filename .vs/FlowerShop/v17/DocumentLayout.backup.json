@@ -3,13 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop.Web\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D03EE985-EBD3-40D8-821F-0199C735EB29}|..\\FlowerShop.WpfClient\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\flowershop.wpfclient\\main.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7F024275-F57C-4E5C-A238-2B1B06066D81}|..\\FlowerShop.Data\\FlowerShop.Data.csproj|c:\\users\\param\\source\\repos\\flowershop.data\\configurations\\bouquetflowerconfiguraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D03EE985-EBD3-40D8-821F-0199C735EB29}|..\\FlowerShop.WpfClient\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\flowershop.wpfclient\\apiclient\\baseapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D03EE985-EBD3-40D8-821F-0199C735EB29}|..\\FlowerShop.WpfClient\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\flowershop.wpfclient\\apiclient\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7F024275-F57C-4E5C-A238-2B1B06066D81}|..\\FlowerShop.Data\\FlowerShop.Data.csproj|c:\\users\\param\\source\\repos\\flowershop.data\\models\\bouquetflower.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,41 +24,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Main.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\Main.xaml.cs",
-              "RelativeDocumentMoniker": "..\\FlowerShop.WpfClient\\Main.xaml.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\Main.xaml.cs",
-              "RelativeToolTip": "..\\FlowerShop.WpfClient\\Main.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-04T18:13:35.335Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserApi.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
-              "RelativeDocumentMoniker": "..\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
-              "RelativeToolTip": "..\\FlowerShop.WpfClient\\ApiClient\\UserApi.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-04T18:10:15.079Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BaseApiClient.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
-              "RelativeDocumentMoniker": "..\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
-              "RelativeToolTip": "..\\FlowerShop.WpfClient\\ApiClient\\BaseApiClient.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAvAAAAAAAAAA==",
+              "Title": "BouquetFlower.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\Models\\BouquetFlower.cs",
+              "RelativeDocumentMoniker": "..\\FlowerShop.Data\\Models\\BouquetFlower.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\Models\\BouquetFlower.cs",
+              "RelativeToolTip": "..\\FlowerShop.Data\\Models\\BouquetFlower.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-04T18:06:23.142Z",
+              "WhenOpened": "2025-09-06T10:19:55.567Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BouquetFlowerConfiguraction.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\Configurations\\BouquetFlowerConfiguraction.cs",
+              "RelativeDocumentMoniker": "..\\FlowerShop.Data\\Configurations\\BouquetFlowerConfiguraction.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\Configurations\\BouquetFlowerConfiguraction.cs",
+              "RelativeToolTip": "..\\FlowerShop.Data\\Configurations\\BouquetFlowerConfiguraction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-06T10:19:50.005Z",
               "EditorCaption": ""
             }
           ]

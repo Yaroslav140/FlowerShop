@@ -5,24 +5,26 @@ namespace FlowerShop.GeneratedCode
 {
     public static class Generated
     {
-        private static readonly string _key = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        private readonly static char[] _numbers = "0123456789".ToCharArray();
 
-        public static string GenerateKey(int length = 7)
+        public static string GenerateRandomCode()
         {
             var result = new StringBuilder();
-            using (var rng = RandomNumberGenerator.Create())
+
+            using (var crypto = RandomNumberGenerator.Create())
             {
-                byte[] buffer = new byte[4];
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < 6; i++)
                 {
-                    rng.GetBytes(buffer);
-                    int index = BitConverter.ToInt32(buffer, 0) & int.MaxValue;
-                    result.Append(_key[index % _key.Length]);
+                    var data = new byte[1];
+                    crypto.GetBytes(data);
+
+                    int rnd = data[0] % _numbers.Length;
+                    result.Append(_numbers[rnd]);
+
+                    if (i == 2)
+                        result.Append('-');
                 }
             }
-
-            if (result.Length > 3)
-                result.Insert(3, '-');
 
             return result.ToString();
         }

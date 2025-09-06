@@ -19,9 +19,18 @@ namespace FlowerShop.Web.Controllers
             var list = await _context.Users
                 .Select(u => new UserDto(
                     u.Name,
-                    u.Email,
-                    u.OrderCount,
-                    u.OrderId
+                    u.Email
+                )).ToListAsync();
+            return Ok(list);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<UserDto>>> GetUsersById()
+        {
+            var list = await _context.Users
+                .Select(u => new UserDto(
+                    u.Name,
+                    u.Email
                 )).ToListAsync();
             return Ok(list);
         }
@@ -38,8 +47,6 @@ namespace FlowerShop.Web.Controllers
                 Id = Guid.NewGuid(),
                 Name = userDto.Username,
                 Email = userDto.Email,
-                OrderCount = userDto.OrderCount,
-                OrderId = userDto.OrderId
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -47,7 +54,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromQuery] string email)
+        public async Task<IActionResult> DeleteUser([FromBody] string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
