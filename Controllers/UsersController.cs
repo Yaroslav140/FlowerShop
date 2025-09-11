@@ -26,7 +26,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<List<UserDomain>>> GetUsersByName(string name)
+        public async Task<ActionResult<List<GetUserDto>>> GetUsersByName(string name)
         {
             var list = await _context.Users
                 .Where(u => u.Name == name)

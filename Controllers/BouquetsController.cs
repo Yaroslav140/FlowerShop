@@ -1,6 +1,7 @@
 ﻿using FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
+using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,14 @@ namespace FlowerShop.Web.Controllers
         public BouquetsController(FlowerDbContext context) => _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<BouquetEntity>>> GetBouquets()
+        public async Task<ActionResult<List<GetBouquetDto>>> GetBouquets()
         {
             var bouquets = await _context.Bouquets.ToListAsync();
             return Ok(bouquets);
         }
 
         [HttpPost]
-        public async Task<ActionResult<BouquetEntity>> Create([FromBody] CreateBouquetDto bouquet)
+        public async Task<ActionResult<GetBouquetDto>> Create([FromBody] CreateBouquetDto bouquet)
         {
             if (string.IsNullOrWhiteSpace(bouquet.NameBouquet))
                 return BadRequest("Name is required.");
@@ -39,7 +40,7 @@ namespace FlowerShop.Web.Controllers
             _context.Bouquets.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(BouquetEntity), new { id = entity.Id }, entity);
+            return CreatedAtAction(nameof(GetBouquetDto), new { id = entity.Id }, entity);
         }
     }
 }

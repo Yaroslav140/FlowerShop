@@ -1,5 +1,6 @@
 ﻿using FlowerShop.Data;
 using FlowerShop.Data.Models;
+using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ namespace FlowerShop.Web.Controllers
         public OrdersController(FlowerDbContext context) => _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<OrderEntity>>> GetOrders()
+        public async Task<ActionResult<List<GetOrderDto>>> GetOrders()
         {
             var orders = await _context.Orders
                 .Include(o => o.User)
@@ -23,7 +24,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<OrderEntity>>> CreateOrders([FromBody] OrderEntity order)
+        public async Task<ActionResult<List<GetOrderDto>>> CreateOrders([FromBody] OrderEntity order)
         {
             try
             {
@@ -40,16 +41,16 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<List<OrderEntity>>> DeleateOrder(Guid id)
+        public async Task<IActionResult> DeleateOrder(Guid id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
+            {
                 return NotFound("Order not found.");
-
-            _context.OrderItems.RemoveRange(_context.OrderItems.Where(oi => oi.OrderId == id));
+            }
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
-            return Ok(await _context.Orders.ToListAsync());
+            return NoContent();
         }
     }
 }
