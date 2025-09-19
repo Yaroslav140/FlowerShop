@@ -17,10 +17,13 @@ namespace FlowerShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetUserDto>>> GetUsers()
         {
-            var list = await _context.Users
+            var list = await _context.UsersDomain
                 .Select(u => new GetUserDto(
                     u.Name,
-                    u.Email
+                    u.Email,
+                    u.Orders
+                    .Select(o => new GetOrderDto(o.OrderDate, o.TotalAmount))
+                    .ToList()
                 )).ToListAsync();
             return Ok(list);
         }
@@ -28,7 +31,7 @@ namespace FlowerShop.Web.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<List<GetUserDto>>> GetUsersByName(string name)
         {
-            var list = await _context.Users
+            var list = await _context.UsersDomain
                 .Where(u => u.Name == name)
                 .ToListAsync();
 
@@ -39,7 +42,7 @@ namespace FlowerShop.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<GetUserDto>> CreateUser([FromBody] CreateUserDto userDto)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
+            if (await _context.UsersDomain.AnyAsync(u => u.Email == userDto.Email))
             {
                 return Conflict("Email already exists.");
             }
@@ -49,7 +52,7 @@ namespace FlowerShop.Web.Controllers
                 Name = userDto.UserName,
                 Email = userDto.Email,
             };
-            _context.Users.Add(user);
+            _context.UsersDomain.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, userDto);
         }
@@ -57,12 +60,12 @@ namespace FlowerShop.Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUser([FromBody] string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.UsersDomain.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
-            _context.Users.Remove(user);
+            _context.UsersDomain.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
         }

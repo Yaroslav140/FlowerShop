@@ -9,7 +9,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.BouquetEntity, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetBouquetDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -29,13 +29,13 @@
     "Parameters": [
       {
         "Name": "bouquet",
-        "Type": "FlowerShop.Dto.BouquetCreateDto",
+        "Type": "FlowerShop.Dto.DTOCreate.CreateBouquetDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "FlowerShop.Data.Models.BouquetEntity",
+        "Type": "FlowerShop.Dto.DTOGet.GetBouquetDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -55,7 +55,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.OrderEntity, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetOrderDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -81,7 +81,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.OrderEntity, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetOrderDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -105,17 +105,7 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.OrderEntity, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
@@ -127,7 +117,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.UserDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetUserDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -147,13 +137,13 @@
     "Parameters": [
       {
         "Name": "userDto",
-        "Type": "FlowerShop.Dto.UserDto",
+        "Type": "FlowerShop.Dto.DTOCreate.CreateUserDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "FlowerShop.Dto.UserDto",
+        "Type": "FlowerShop.Dto.DTOGet.GetUserDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -195,7 +185,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.UserDomain, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetUserDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

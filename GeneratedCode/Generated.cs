@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace FlowerShop.GeneratedCode
+namespace FlowerShop.Web.GeneratedCode
 {
     public static class Generated
     {
