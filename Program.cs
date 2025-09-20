@@ -15,6 +15,12 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/Home");  
+    return Task.CompletedTask;
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

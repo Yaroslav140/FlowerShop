@@ -2,21 +2,23 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <meta charset="utf-8" />
+    <title>Flower — минималистичный магазин</title>
 </head>
 <body>
-    <header>
-        <div>
-            <h2>Bloom & Blossom</h2>
-            <nav>
-                <a>Домой</a>
-                <a>О нас</a>
-                <a>Букеты</a>
-                <a>Контакты</a>
-            </nav>
-        </div>
-    </header>
+    <header class="container-header">
+        <nav>
+            <ul>
+                <li><a asp-page="/Home">Главная</a></li>
+                <li><a asp-page="/About">О нас</a></li>
+                <li><a asp-page="/Bouquets">Букеты</a></li>
+                <li><a asp-page="/Contacts">Контакты</a></li>
+                <li><a asp-page="/Profile">Профиль</a></li>
+            </ul>
+        </nav>
+     </header>
     <div>
         @RenderBody()
     </div>

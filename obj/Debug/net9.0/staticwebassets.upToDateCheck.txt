@@ -1,0 +1,4 @@
+C:\Users\param\source\repos\FlowerShop\wwwroot\js\site.js
+C:\Users\param\source\repos\FlowerShop\wwwroot\css\site.css
+wwwroot\css\site.css
+wwwroot\js\site.js

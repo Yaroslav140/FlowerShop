@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FlowerShop.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class AboutModel : PageModel
     {
+        public void OnGet()
+        {
+        }
     }
 }
