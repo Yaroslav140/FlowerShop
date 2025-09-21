@@ -3,24 +3,26 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <meta charset="utf-8" />
     <title>Flower — минималистичный магазин</title>
+    <link rel="icon" href="~/img/icon.svg" type="image/x-icon" />
 </head>
 <body>
     <header class="container-header">
-        <nav>
+        <h1 class="container-header__text-logo">Flower & Shop</h1>
+        <nav class="container-header__nav">
             <ul>
                 <li><a asp-page="/Home">Главная</a></li>
-                <li><a asp-page="/About">О нас</a></li>
+                <li><a asp-page="/About">О Нас</a></li>
                 <li><a asp-page="/Bouquets">Букеты</a></li>
-                <li><a asp-page="/Contacts">Контакты</a></li>
+                <li><a asp-page="/Contactsc">Контакты</a></li>
                 <li><a asp-page="/Profile">Профиль</a></li>
             </ul>
         </nav>
      </header>
-    <div>
+    <main class="container-main">
         @RenderBody()
-    </div>
+    </main>
 </body>
 </html>

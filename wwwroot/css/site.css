@@ -1,15 +1,40 @@
 ﻿* {
     margin: 0;
     padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
+.container-header {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
-img{
-    max-width: 100%;
+.container-header__text-logo {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.container-header__nav ul {
+    display: flex;
+    list-style: none;
+    gap: 16px;
+}
+
+.container-header__nav a {
+    display: block;
+    padding: 6px 8px;
+}
+
+.container-main {
+    min-height: 80dvh;
+    background: linear-gradient(to bottom, #E5FFEC, #FFFFFF 100%);
+    background-repeat: no-repeat;
 }
