@@ -1,4 +1,7 @@
 ﻿<!DOCTYPE html>
+@{
+    var currentPage = ViewContext.RouteData.Values["page"] as string;
+}
 
 <html>
 <head>
@@ -13,11 +16,11 @@
         <h1 class="container-header__text-logo">Flower & Shop</h1>
         <nav class="container-header__nav">
             <ul>
-                <li><a asp-page="/Home">Главная</a></li>
-                <li><a asp-page="/About">О Нас</a></li>
-                <li><a asp-page="/Bouquets">Букеты</a></li>
-                <li><a asp-page="/Contactsc">Контакты</a></li>
-                <li><a asp-page="/Profile">Профиль</a></li>
+                <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
+                <li><a asp-page="/About" class="@(currentPage == "/About" ? "active" : "")">О Нас</a></li>
+                <li><a asp-page="/Bouquets" class="@(currentPage == "/Bouquets" ? "active" : "")">Букеты</a></li>
+                <li><a asp-page="/Contacts" class="@(currentPage == "/Contacts" ? "active" : "")">Контакты</a></li>
+                <li><a asp-page="/Profile" class="@(currentPage == "/Profile" ? "active" : "")">Профиль</a></li>
             </ul>
         </nav>
      </header>
