@@ -3,5 +3,22 @@
 @{
 }
 <div class="bouquet-container">
-    <h1>Букеты</h1>
+    @if (Model.GetBouquets?.Count > 0)
+    {
+        var culture = new System.Globalization.CultureInfo("ru-RU");
+        foreach (var (bouquet, idx) in Model.GetBouquets.Select((b, i) => (b, i)))
+        {
+            <div class="bouquet-card bouquet-card__@idx">
+                <h2>@bouquet.Name</h2>
+                <p>@bouquet.Description</p>
+                <p>@bouquet.Price.ToString("C", culture)</p>
+
+                <button class="btn btn-primary" type="button" data-bouquet="@bouquet.Name">Добавить букет</button>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Букеты не найдены.</p>
+    }
 </div>
