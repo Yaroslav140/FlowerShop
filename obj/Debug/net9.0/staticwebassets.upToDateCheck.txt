@@ -7,3 +7,12 @@ wwwroot\img\Flower.jpg
 wwwroot\img\icon.ico
 wwwroot\img\icon.svg
 wwwroot\js\site.js
+wwwroot\uploads\1.png
+wwwroot\uploads\2.png
+wwwroot\uploads\3.png
+wwwroot\uploads\4.png
+wwwroot\uploads\5.png
+wwwroot\uploads\6.png
+wwwroot\uploads\7.png
+wwwroot\uploads\8.png
+wwwroot\uploads\9.png

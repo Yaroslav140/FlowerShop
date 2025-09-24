@@ -2,6 +2,7 @@
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,12 +25,12 @@ namespace FlowerShop.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<GetBouquetDto>> Create([FromBody] CreateBouquetDto bouquet)
         {
-            if (string.IsNullOrWhiteSpace(bouquet.NameBouquet))
-                return BadRequest("Name is required.");
+            if (string.IsNullOrWhiteSpace(bouquet.NameBouquet) && _context.Bouquets.Any(n => n.Name == bouquet.NameBouquet))
+                return BadRequest("Ошибка в имени.");
 
             var entity = new BouquetEntity
             {
-                Id = Guid.NewGuid(), 
+                Id = Guid.NewGuid(),
                 Name = bouquet.NameBouquet,
                 Description = bouquet.DescriptionBouquet,
                 Price = bouquet.PriceBouquet,
@@ -40,7 +41,20 @@ namespace FlowerShop.Web.Controllers
             _context.Bouquets.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBouquetDto), new { id = entity.Id }, entity);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Deleate(string Name)
+        {
+            var bouquet = await _context.Bouquets.FirstOrDefaultAsync(b => b.Name == Name);
+            if (bouquet == null)
+            {
+                return NotFound("Букет не найден.");
+            }
+            _context.Bouquets.Remove(bouquet);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

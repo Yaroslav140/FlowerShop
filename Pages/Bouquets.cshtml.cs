@@ -19,6 +19,7 @@ namespace FlowerShop.Web.Pages
                     b.Description,
                     b.Price,
                     b.Stock,
+                    b.ImageUrl,
                     b.FlowerLinks
                     .Select(fl => new GetBouquetFlowerDto(
                         fl.BouquetId,

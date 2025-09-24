@@ -2,18 +2,28 @@
 @model FlowerShop.Web.Pages.BouquetsModel
 @{
 }
+<div class="content">
+    <p class="content__main">Наши прекрасные букеты</p>
+    <p class="content__description">Каждый букет, созданный вручную с любовью, рассказывает уникальную историю</p>
+</div>
 <div class="bouquet-container">
     @if (Model.GetBouquets?.Count > 0)
     {
         var culture = new System.Globalization.CultureInfo("ru-RU");
         foreach (var (bouquet, idx) in Model.GetBouquets.Select((b, i) => (b, i)))
         {
-            <div class="bouquet-card bouquet-card__@idx">
-                <h2>@bouquet.Name</h2>
-                <p>@bouquet.Description</p>
-                <p>@bouquet.Price.ToString("C", culture)</p>
-
-                <button class="btn btn-primary" type="button" data-bouquet="@bouquet.Name">Добавить букет</button>
+            <div class="bouquet-container">
+                <div class="bouquet-card bouquet-card__@idx">
+                    <img src="@Url.Content(bouquet.ImagePath)" alt="@bouquet.Name" loading="lazy" />
+                    <div class="bouquet-card__description">
+                        <h2 class="bouquet-card__title">@bouquet.Name</h2>
+                        <p class="bouquet-card__text">@bouquet.Description</p>
+                        <p class="bouquet-card__price">@bouquet.Price.ToString("C", culture)</p>
+                    </div>
+                    <button class="btn" type="button" data-bouquet="@bouquet.Name" aria-label="Добавить букет «@bouquet.Name»">
+                        Добавить букет
+                    </button>
+                </div>
             </div>
         }
     }

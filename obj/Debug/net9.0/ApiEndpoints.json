@@ -46,6 +46,22 @@
     ]
   },
   {
+    "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
+    "Method": "Deleate",
+    "RelativePath": "api/Bouquets",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
     "Method": "GetOrders",
     "RelativePath": "api/Orders",
