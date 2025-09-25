@@ -17,7 +17,7 @@ namespace FlowerShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetUserDto>>> GetUsers()
         {
-            var list = await _context.UsersDomain
+            var list = await _context.Users
                 .Select(u => new GetUserDto(
                     u.Name,
                     u.Email,
@@ -28,21 +28,10 @@ namespace FlowerShop.Web.Controllers
             return Ok(list);
         }
 
-        [HttpGet("{name}")]
-        public async Task<ActionResult<List<GetUserDto>>> GetUsersByName(string name)
-        {
-            var list = await _context.UsersDomain
-                .Where(u => u.Name == name)
-                .ToListAsync();
-
-            return Ok(list);
-        }
-
-
         [HttpPost]
         public async Task<ActionResult<GetUserDto>> CreateUser([FromBody] CreateUserDto userDto)
         {
-            if (await _context.UsersDomain.AnyAsync(u => u.Email == userDto.Email))
+            if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
             {
                 return Conflict("Email already exists.");
             }
@@ -52,7 +41,7 @@ namespace FlowerShop.Web.Controllers
                 Name = userDto.UserName,
                 Email = userDto.Email,
             };
-            _context.UsersDomain.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, userDto);
         }
@@ -60,12 +49,12 @@ namespace FlowerShop.Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUser([FromBody] string email)
         {
-            var user = await _context.UsersDomain.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
-            _context.UsersDomain.Remove(user);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
         }
