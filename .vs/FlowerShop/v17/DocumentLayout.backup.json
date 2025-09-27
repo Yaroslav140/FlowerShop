@@ -3,8 +3,13 @@
   "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\api\\orderapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\api\\iapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\api\\userapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +19,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IApiService.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\IApiService.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\Api\\IApiService.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\IApiService.cs",
+              "RelativeToolTip": "..\\FloraConnect\\Api\\IApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-27T11:49:46.178Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
@@ -23,14 +41,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAOAAAAAAAAAA==",
+              "Title": "OrderApiService.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\OrderApiService.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\Api\\OrderApiService.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\OrderApiService.cs",
+              "RelativeToolTip": "..\\FloraConnect\\Api\\OrderApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T16:56:13.612Z",
+              "WhenOpened": "2025-09-27T11:48:00.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserApiService.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\UserApiService.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\Api\\UserApiService.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\Api\\UserApiService.cs",
+              "RelativeToolTip": "..\\FloraConnect\\Api\\UserApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-27T11:45:58.906Z",
               "EditorCaption": ""
             }
           ]
