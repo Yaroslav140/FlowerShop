@@ -62,6 +62,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
+    "Method": "CreateMany",
+    "RelativePath": "api/Bouquets/many",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bouquetDtos",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOCreate.CreateBouquetDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetBouquetDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
+    "Method": "DeleateMany",
+    "RelativePath": "api/Bouquets/many",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "names",
+        "Type": "System.String[]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
     "Method": "GetOrders",
     "RelativePath": "api/Orders",

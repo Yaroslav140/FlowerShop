@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FlowerShop.Web.Pages
+namespace FlowerShop.Web.Pages.PageHeader
 {
-    public class RegisterModel : PageModel
+    public class ContactsModel : PageModel
     {
         public void OnGet()
         {

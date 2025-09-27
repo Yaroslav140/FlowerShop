@@ -44,6 +44,34 @@ namespace FlowerShop.Web.Controllers
             return Ok();
         }
 
+        [HttpPost("many")]
+        public async Task<ActionResult<List<GetBouquetDto>>> CreateMany([FromBody] List<CreateBouquetDto> bouquetDtos)
+        {
+            if (bouquetDtos.Any(n => string.IsNullOrWhiteSpace(n.NameBouquet)))
+                return BadRequest("Некоторые имена букетов пустые.");
+
+            var dtoNames = bouquetDtos.Select(x => x.NameBouquet).ToList();
+
+            if (_context.Bouquets.Any(db => dtoNames.Contains(db.Name)))
+                return BadRequest("Некоторые имена уже существуют в базе.");
+
+            var lisEntity = new List<CreateBouquetDto>();
+            var entities = bouquetDtos.Select(dto => new BouquetEntity
+            {
+                Name = dto.NameBouquet,
+                Price = dto.PriceBouquet,
+                Description = dto.DescriptionBouquet,
+                Stock = dto.Stock,
+                ImageUrl = dto.ImageUrl
+                
+            }).ToList();
+
+            _context.Bouquets.AddRange(entities);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
+        }
         [HttpDelete]
         public async Task<IActionResult> Deleate(string Name)
         {
@@ -53,6 +81,21 @@ namespace FlowerShop.Web.Controllers
                 return NotFound("Букет не найден.");
             }
             _context.Bouquets.Remove(bouquet);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("many")]
+        public async Task<IActionResult> DeleateMany([FromBody]string[] names)
+        {
+            var bouquets = await _context.Bouquets
+                .Where(n => names.Contains(n.Name))
+                .ToListAsync();
+            if (bouquets.Count == 0)
+            {
+                return NotFound("Букет не найден.");
+            }
+            _context.Bouquets.RemoveRange(bouquets);
             await _context.SaveChangesAsync();
             return NoContent();
         }

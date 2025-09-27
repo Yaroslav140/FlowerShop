@@ -17,10 +17,10 @@
         <nav class="container-header__nav">
             <ul>
                 <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
-                <li><a asp-page="/About" class="@(currentPage == "/About" ? "active" : "")">О Нас</a></li>
-                <li><a asp-page="/Bouquets" class="@(currentPage == "/Bouquets" ? "active" : "")">Букеты</a></li>
-                <li><a asp-page="/Contacts" class="@(currentPage == "/Contacts" ? "active" : "")">Контакты</a></li>
-                <li><a asp-page="/Profile" class="@(currentPage == "/Profile" ? "active" : "")">Профиль</a></li>
+                <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
+                <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
+                <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
+                <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
             </ul>
         </nav>
      </header>

@@ -1,9 +1,9 @@
 using FlowerShop.Data;
 using FlowerShop.Dto.DTOGet;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-namespace FlowerShop.Web.Pages
+
+namespace FlowerShop.Web.Pages.PageHeader
 {
     public class BouquetsModel : PageModel
     {

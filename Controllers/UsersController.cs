@@ -17,7 +17,7 @@ namespace FlowerShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetUserDto>>> GetUsers()
         {
-            var list = await _context.Users
+            var list = await _context.UserDomains
                 .Select(u => new GetUserDto(
                     u.Name,
                     u.Email,
@@ -41,7 +41,7 @@ namespace FlowerShop.Web.Controllers
                 Name = userDto.UserName,
                 Email = userDto.Email,
             };
-            _context.Users.Add(user);
+            _context.UserDomains.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, userDto);
         }

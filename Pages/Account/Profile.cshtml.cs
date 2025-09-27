@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FlowerShop.Web.Pages
+namespace FlowerShop.Web.Pages.Account
 {
     [Authorize]
     public class ProfileModel : PageModel

@@ -10,7 +10,12 @@ builder.Services.AddDbContext<FlowerDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(o =>
     o.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<FlowerDbContext>();
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(o =>
+{
+    o.Conventions.AuthorizeFolder("/Account/Profile");
+    o.Conventions.AllowAnonymousToPage("/Account/Login");
+    o.Conventions.AllowAnonymousToPage("/Account/Register");
+});
 builder.Services.AddControllers();
 
 var app = builder.Build();
