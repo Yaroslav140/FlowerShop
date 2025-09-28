@@ -20,7 +20,14 @@
                 <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
                 <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
                 <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
-                <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
+                }
+                else
+                {
+                    <li><a asp-page="/Account/Register" class="@(currentPage == "/Account/Register" ? "active" : "")">Регистрация/Вход</a></li>
+                }
             </ul>
         </nav>
      </header>

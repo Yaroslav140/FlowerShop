@@ -20,7 +20,7 @@ namespace FlowerShop.Web.Controllers
             var list = await _context.UserDomains
                 .Select(u => new GetUserDto(
                     u.Name,
-                    u.Email,
+                    u.Login,
                     u.Orders
                     .Select(o => new GetOrderDto(o.OrderDate, o.TotalAmount))
                     .ToList()
@@ -31,15 +31,15 @@ namespace FlowerShop.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<GetUserDto>> CreateUser([FromBody] CreateUserDto userDto)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
+            if (await _context.UserDomains.AnyAsync(u => u.Login == userDto.Login))
             {
-                return Conflict("Email already exists.");
+                return Conflict("Login already exists.");
             }
             var user = new UserDomain
             {
                 Id = Guid.NewGuid(),
                 Name = userDto.UserName,
-                Email = userDto.Email,
+                Login = userDto.Login,
             };
             _context.UserDomains.Add(user);
             await _context.SaveChangesAsync();
@@ -47,14 +47,14 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromBody] string email)
+        public async Task<IActionResult> DeleteUser(string login)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
-            _context.Users.Remove(user);
+            _context.UserDomains.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
         }

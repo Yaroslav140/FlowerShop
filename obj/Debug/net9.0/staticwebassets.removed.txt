@@ -1,9 +1,0 @@
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\1.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\2.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\3.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\4.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\5.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\6.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\7.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\8.png
-C:\Users\param\source\repos\FlowerShop\wwwroot\uploads\9.png

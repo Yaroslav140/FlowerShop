@@ -1,4 +1,34 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.LoginModel
 @{
+    ViewData["Title"] = "Вход";
 }
+
+<div class="auth-center">
+    <div class="form-card">
+        <h2>Вход</h2>
+        <p class="subtitle">Введите данные своей учетной записи, чтобы продолжить</p>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Login"></label>
+                <input asp-for="Login" type="text" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit">Вход</button>
+        </form>
+
+        <div class="signin">
+            У вас нет учетной записи? <a href="/Account/Register">Регистрация</a>
+        </div>
+    </div>
+</div>

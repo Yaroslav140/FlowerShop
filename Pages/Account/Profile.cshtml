@@ -1,4 +1,53 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.ProfileModel
-@{
-}
+
+<div class="profile-page">
+    <h1 class="profile-title">Мой профиль</h1>
+    <p class="profile-subtitle">Управляйте своей учетной записью и просматривайте историю заказов</p>
+
+    <div class="profile-inner">
+        <section class="profile-card info">
+            <div class="card-header">
+                <div class="icon-circle">
+                    <img src="@Url.Content("~/img/user.png")" alt="icon">
+                </div>
+                <span>Информация аккаунта</span>
+            </div>
+
+            <div class="info-list">
+                <div class="row">
+                    <div class="label">Имя</div>
+                    <div class="value">@Model.Username</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Логин</div>
+                    <div class="value login">
+                        @Model.Login
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Вы с нами</div>
+                    <div class="value">@Model.DateRegister</div>
+                </div>
+            </div>
+            <form method="post" asp-page-handler="Exit">
+                <button type="submit" class="btn">Выйти</button>
+            </form>
+        </section>
+
+        <section class="profile-card overview">
+            <div class="card-header">
+                <span>Обзор аккаунта</span>
+            </div>
+            <div class="overview-body">
+                <div class="orders-count">@Model.Orders.Count</div>
+                <div class="orders-caption">Количество заказов</div>
+
+                <button class="btn btn-green">Посмотреть заказы</button>
+                <button class="btn btn-outline-pink">Редактировать/Удалить профиль</button>
+            </div>
+        </section>
+    </div>
+</div>

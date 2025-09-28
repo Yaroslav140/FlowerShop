@@ -1,11 +1,10 @@
 C:\Users\param\source\repos\FlowerShop\wwwroot\img\icon.svg
-C:\Users\param\source\repos\FlowerShop\wwwroot\img\icon.ico
 C:\Users\param\source\repos\FlowerShop\wwwroot\js\site.js
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\site.css
 wwwroot\css\site.css
 wwwroot\img\Flower.jpg
-wwwroot\img\icon.ico
 wwwroot\img\icon.svg
+wwwroot\img\user.png
 wwwroot\js\site.js
 wwwroot\uploads\bouquets\1.png
 wwwroot\uploads\bouquets\2.png
