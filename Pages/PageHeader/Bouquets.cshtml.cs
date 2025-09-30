@@ -24,7 +24,6 @@ namespace FlowerShop.Web.Pages.PageHeader
             if (qty <= 0)
                 return BadRequest("Количество должно быть положительным числом.");
 
-            // 1) Пользователь по имени (без клеймов)
             var userName = User.Identity?.Name;
             if (string.IsNullOrWhiteSpace(userName))
                 return NotFound("Не удалось определить пользователя.");
@@ -37,7 +36,6 @@ namespace FlowerShop.Web.Pages.PageHeader
             if (userId is null)
                 return NotFound("Пользователь не найден.");
 
-            // 2) Гарантируем cartId без трекинга Items и без апдейта CartEntity
             var cartId = await _context.Carts
                 .Where(c => c.UserId == userId.Value)
                 .Select(c => (Guid?)c.Id)
@@ -49,14 +47,12 @@ namespace FlowerShop.Web.Pages.PageHeader
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId.Value
-                    // НЕ задаем Items и не трогаем версии
                 };
                 _context.Carts.Add(newCart);
                 await _context.SaveChangesAsync();
                 cartId = newCart.Id;
             }
 
-            // 3) Проверяем букет и остаток
             var bouquet = await _context.Bouquets
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Id == bouquetId);
@@ -67,14 +63,14 @@ namespace FlowerShop.Web.Pages.PageHeader
             if (bouquet.Quantity <= 0)
                 return BadRequest("Букет закончился.");
 
-            // 4) Работаем ТОЛЬКО с CartItems по ключам (CartId+BouquetId)
             var item = await _context.CartItems
                 .FirstOrDefaultAsync(i => i.CartId == cartId.Value && i.BouquetId == bouquetId);
 
-            // Считаем новую сумму и проверяем склад
             var newQty = (item?.Quantity ?? 0) + qty;
             if (newQty > bouquet.Quantity)
-                return BadRequest("Недостаточно на складе для указанного количества.");
+            {
+                return RedirectToPage("/Account/Purchases");
+            }
 
             if (item is null)
             {
@@ -95,21 +91,17 @@ namespace FlowerShop.Web.Pages.PageHeader
                 _context.CartItems.Update(item);
             }
 
-            // 5) Мини-«страховка» от гонок: ловим конкуренцию и даем дружелюбный ответ
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                // перезагружаем только нужные сущности и повторяем одну попытку
                 _context.ChangeTracker.Clear();
 
-                // Перечитать остаток и текущий item
                 bouquet = await _context.Bouquets.AsNoTracking().FirstOrDefaultAsync(b => b.Id == bouquetId);
                 if (bouquet is null || bouquet.Quantity <= 0)
                     return BadRequest("Букет закончился.");
-
                 item = await _context.CartItems.FirstOrDefaultAsync(i => i.CartId == cartId.Value && i.BouquetId == bouquetId);
                 var qtyAfterReload = (item?.Quantity ?? 0) + qty;
                 if (qtyAfterReload > bouquet.Quantity)

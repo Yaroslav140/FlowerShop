@@ -15,7 +15,7 @@ namespace FlowerShop.Web.Pages.Account
         {
             CartEntities = await _context.CartItems
                 .AsNoTracking()
-                .Include(ci => ci.Bouquet)
+                .Include(c => c.Bouquet)
                 .ToListAsync();
         }
 
@@ -28,5 +28,51 @@ namespace FlowerShop.Web.Pages.Account
             await _context.SaveChangesAsync();
             return RedirectToPage();
         }
+
+        public async Task<ActionResult> OnPostUpdateQuantityAsync(Guid cartId, string direction)
+        {
+            var cartItem = await _context.CartItems
+                .Include(ci => ci.Bouquet)
+                .FirstOrDefaultAsync(ci => ci.Id == cartId);
+
+            if (cartItem is null) return NotFound();
+
+            var stock = cartItem.Bouquet.Quantity;
+
+            var totalInCart = await _context.CartItems
+                .Where(ci => ci.BouquetId == cartItem.BouquetId && ci.CartId == cartItem.CartId)
+                .SumAsync(ci => (int?)ci.Quantity) ?? 0;
+
+            if (direction == "increase")
+            {
+                if (stock <= 0)
+                    return BadRequest("Нет на складе.");
+
+                if (totalInCart + 1 > stock)
+                    return BadRequest("Недостаточно на складе для увеличения количества.");
+
+                cartItem.Quantity += 1;
+            }
+            else if (direction == "decrease" && cartItem.Quantity > 1)
+            {
+                cartItem.Quantity -= 1;
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
+        }
+
+        public async Task<ActionResult> OnPostRemoveFromCartAsync(Guid cartId)
+        {
+            var cart = await _context.CartItems
+                .Include(ci => ci.Cart)
+                .FirstOrDefaultAsync(ci => ci.Id == cartId);
+            if (cart is null) return NotFound();
+
+            _context.CartItems.Remove(cart);
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
+        }
+
     }
 }

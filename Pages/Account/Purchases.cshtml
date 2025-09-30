@@ -31,33 +31,38 @@
                             <div class="cart-item__price">
                                 @item.Bouquet.Price.ToString("C", ru)
                             </div>
-
-                            <form method="post" asp-page-handler="UpdateQuantity" class="cart-item__qty">
+                            <form method="post" class="cart-item__qty">
+                                @Html.AntiForgeryToken()
                                 <input type="hidden" name="cartId" value="@item.Id" />
-                                <button type="submit" name="action" value="decrease" class="qty__btn" aria-label="Уменьшить">−</button>
+                            
+                                <button type="submit" asp-page-handler="UpdateQuantity"
+                                        name="direction" value="decrease" class="qty__btn">−</button>
+                            
                                 <span class="qty__value">@item.Quantity</span>
-                                <button type="submit" name="action" value="increase" class="qty__btn" aria-label="Увеличить">+</button>
+                            
+                                <button type="submit" asp-page-handler="UpdateQuantity"
+                                        name="direction" value="increase" class="qty__btn">+</button>
                             </form>
+
                         </div>
 
                         <div class="cart-item__total">
                             @((item.Bouquet.Price * item.Quantity).ToString("C", ru))
                         </div>
 
-                        <form method="post" asp-page-handler="RemoveFromCart" class="cart-item__remove">
+                        <form method="post" class="cart-item__remove">
                             <input type="hidden" name="cartId" value="@item.Id" />
-                            <button type="submit" title="Удалить" class="remove__btn">×</button>
+                            <button type="submit" asp-page-handler="RemoveFromCart" title="Удалить" class="remove__btn">×</button>
                         </form>
                     </article>
                 }
             </section>
 
-            <!-- Сводка -->
             <aside class="cart-summary">
                 <h3 class="cart-summary__title">Итоги заказа</h3>
 
                 <div class="cart-summary__row">
-                    <span>Подитог (@Model.CartEntities.Count шт.)</span>
+                    <span>Итого (@Model.CartEntities.Count шт.)</span>
                     <strong>@subtotal.ToString("C", ru)</strong>
                 </div>
                 <hr class="cart-summary__divider" />
