@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Pages\\PageHeader\\Bouquets.cshtml.cs",
               "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\PageHeader\\Bouquets.cshtml.cs",
               "RelativeToolTip": "Pages\\PageHeader\\Bouquets.cshtml.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAwwCgAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACgAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-30T10:59:43.481Z",
               "EditorCaption": ""
@@ -51,8 +51,7 @@
               "RelativeToolTip": "Controllers\\BouquetsController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T10:59:31.984Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T10:59:31.984Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "Pages\\PageHeader\\Bouquets.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-30T10:59:31.346Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T10:59:31.346Z"
             }
           ]
         }
