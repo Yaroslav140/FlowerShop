@@ -9,15 +9,14 @@ namespace FlowerShop.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController(FlowerDbContext context) : ControllerBase
     {
-        private readonly FlowerDbContext _context;
-        public UsersController(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<List<GetUserDto>>> GetUsers()
         {
-            var list = await _context.UserDomains
+            var users = await _context.UserDomains
                 .Select(u => new GetUserDto(
                     u.Name,
                     u.Login,
@@ -25,11 +24,11 @@ namespace FlowerShop.Web.Controllers
                     .Select(o => new GetOrderDto(o.OrderDate, o.TotalAmount))
                     .ToList()
                 )).ToListAsync();
-            return Ok(list);
+            return Ok(users);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetUserDto>> CreateUser([FromBody] CreateUserDto userDto)
+        public async Task<ActionResult<GetUserDto>> CreateUsers([FromBody] CreateUserDto userDto)
         {
             if (await _context.UserDomains.AnyAsync(u => u.Login == userDto.Login))
             {
@@ -58,7 +57,7 @@ namespace FlowerShop.Web.Controllers
                 .Select(u => u.Login)
                 .ToListAsync();
 
-            if (existUser.Any()) return Conflict($"Логины уже существуют: {string.Join(", ", existUser)}");
+            if (existUser.Count != 0) return Conflict($"Логины уже существуют: {string.Join(", ", existUser)}");
 
             var newUsers = users.Select(userDto => new UserDomain
             {
@@ -75,7 +74,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteUser(string login)
+        public async Task<ActionResult> DeleteUsers(string login)
         {
             var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
             if (user == null)
@@ -86,17 +85,15 @@ namespace FlowerShop.Web.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpDelete("many")]
-        public async Task<ActionResult> DeleateUserMany()
+        public async Task<ActionResult> DeleateUsersMany()
         {
-            var user = await _context.UserDomains.ToListAsync();
-            if (user == null || user.Count < 1)
-            {
-                return NoContent();
-            }
-            _context.UserDomains.RemoveRange(user);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var userDeleated = await _context.UserDomains.ExecuteDeleteAsync();
+            if (userDeleated == 0)
+                return NotFound("Список пользователей пуст.");
+
+            return Ok($"{userDeleated} пользователей удалено.");
         }
     }
 }

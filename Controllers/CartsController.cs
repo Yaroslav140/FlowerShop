@@ -16,7 +16,7 @@ namespace FlowerShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> GetCartsAsync()
         {
-            var cart =_context.Carts.Select(c => new CartEntity()
+            var cart = await _context.Carts.Select(c => new CartEntity()
             {
                 Id = c.Id,
                 CreatedAt = c.CreatedAt,
@@ -25,6 +25,15 @@ namespace FlowerShop.Web.Controllers
                 UserId = c.UserId
             }).ToListAsync();
             return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleateCarts()
+        {
+            var carts = await _context.Carts.ExecuteDeleteAsync();
+            if (carts == 0)
+                return NotFound("Нету такой корзины");
+            return Ok(carts);
         }
     }
 }

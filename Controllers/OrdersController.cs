@@ -8,10 +8,9 @@ namespace FlowerShop.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OrdersController : ControllerBase
+    public class OrdersController(FlowerDbContext context) : ControllerBase
     {
-        private readonly FlowerDbContext _context;
-        public OrdersController(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<List<GetOrderDto>>> GetOrders()
@@ -29,7 +28,6 @@ namespace FlowerShop.Web.Controllers
             try
             {
                 order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity);
-
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
             }

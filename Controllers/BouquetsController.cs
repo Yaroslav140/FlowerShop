@@ -10,20 +10,28 @@ namespace FlowerShop.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BouquetsController : ControllerBase
+    public class BouquetsController(FlowerDbContext context) : ControllerBase
     {
-        private readonly FlowerDbContext _context;
-        public BouquetsController(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<List<GetBouquetDto>>> GetBouquets()
         {
-            var bouquets = await _context.Bouquets.ToListAsync();
+            var bouquets = await _context.Bouquets
+                .Select(b => new GetBouquetDto(
+                    b.Id,
+                    b.Name,
+                    b.Description,
+                    b.Price,
+                    b.Stock,
+                    b.ImageUrl,
+                    b.FlowerLinks.Select(fl => new GetBouquetFlowerDto(fl.BouquetId, fl.FlowerId, fl.Quantity)).ToList()
+                    )).ToListAsync();
             return Ok(bouquets);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetBouquetDto>> Create([FromBody] CreateBouquetDto bouquet)
+        public async Task<ActionResult<GetBouquetDto>> CreateBouquet([FromBody] CreateBouquetDto bouquet)
         {
             if (string.IsNullOrWhiteSpace(bouquet.NameBouquet) && _context.Bouquets.Any(n => n.Name == bouquet.NameBouquet))
                 return BadRequest("Ошибка в имени.");
@@ -45,7 +53,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpPost("many")]
-        public async Task<ActionResult<List<GetBouquetDto>>> CreateMany([FromBody] List<CreateBouquetDto> bouquetDtos)
+        public async Task<ActionResult<List<GetBouquetDto>>> CreateBouquetsMany([FromBody] List<CreateBouquetDto> bouquetDtos)
         {
             if (bouquetDtos.Any(n => string.IsNullOrWhiteSpace(n.NameBouquet)))
                 return BadRequest("Некоторые имена букетов пустые.");
@@ -73,7 +81,7 @@ namespace FlowerShop.Web.Controllers
 
         }
         [HttpDelete]
-        public async Task<ActionResult> Deleate(string Name)
+        public async Task<ActionResult> DeleateBouquet(string Name)
         {
             var bouquet = await _context.Bouquets.FirstOrDefaultAsync(b => b.Name == Name);
             if (bouquet == null)
@@ -86,7 +94,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete("many")]
-        public async Task<ActionResult> DeleateMany([FromBody]string[] names)
+        public async Task<ActionResult> DeleateBouquetsMany([FromBody]string[] names)
         {
             var bouquets = await _context.Bouquets
                 .Where(n => names.Contains(n.Name))
@@ -99,5 +107,19 @@ namespace FlowerShop.Web.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpDelete("all")]
+        public async Task<ActionResult> DeleteAllBouquets()
+        {
+            await _context.CartItems.ExecuteDeleteAsync();
+
+            var deleted = await _context.Bouquets.ExecuteDeleteAsync();
+
+            if (deleted == 0)
+                return NotFound("Букеты не найдены.");
+
+            return Ok($"{deleted} букетов удалено вместе с позициями в корзине.");
+        }
+
     }
 }

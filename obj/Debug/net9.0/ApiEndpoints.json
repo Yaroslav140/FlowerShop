@@ -21,7 +21,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "Create",
+    "Method": "CreateBouquet",
     "RelativePath": "api/Bouquets",
     "HttpMethod": "POST",
     "IsController": true,
@@ -47,7 +47,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "Deleate",
+    "Method": "DeleateBouquet",
     "RelativePath": "api/Bouquets",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -63,7 +63,17 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "CreateMany",
+    "Method": "DeleteAllBouquets",
+    "RelativePath": "api/Bouquets/all",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
+    "Method": "CreateBouquetsMany",
     "RelativePath": "api/Bouquets/many",
     "HttpMethod": "POST",
     "IsController": true,
@@ -89,7 +99,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "DeleateMany",
+    "Method": "DeleateBouquetsMany",
     "RelativePath": "api/Bouquets/many",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -108,6 +118,16 @@
     "Method": "GetCartsAsync",
     "RelativePath": "api/Carts",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.CartsController",
+    "Method": "DeleateCarts",
+    "RelativePath": "api/Carts",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
@@ -197,7 +217,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "CreateUser",
+    "Method": "CreateUsers",
     "RelativePath": "api/Users",
     "HttpMethod": "POST",
     "IsController": true,
@@ -223,7 +243,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "DeleteUser",
+    "Method": "DeleteUsers",
     "RelativePath": "api/Users",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -255,7 +275,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "DeleateUserMany",
+    "Method": "DeleateUsersMany",
     "RelativePath": "api/Users/many",
     "HttpMethod": "DELETE",
     "IsController": true,
