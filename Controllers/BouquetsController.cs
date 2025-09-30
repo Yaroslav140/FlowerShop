@@ -73,7 +73,7 @@ namespace FlowerShop.Web.Controllers
 
         }
         [HttpDelete]
-        public async Task<IActionResult> Deleate(string Name)
+        public async Task<ActionResult> Deleate(string Name)
         {
             var bouquet = await _context.Bouquets.FirstOrDefaultAsync(b => b.Name == Name);
             if (bouquet == null)
@@ -86,7 +86,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete("many")]
-        public async Task<IActionResult> DeleateMany([FromBody]string[] names)
+        public async Task<ActionResult> DeleateMany([FromBody]string[] names)
         {
             var bouquets = await _context.Bouquets
                 .Where(n => names.Contains(n.Name))

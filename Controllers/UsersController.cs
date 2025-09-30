@@ -46,8 +46,36 @@ namespace FlowerShop.Web.Controllers
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, userDto);
         }
 
+        [HttpPost("many")]
+        public async Task<ActionResult> CreateUserMany([FromBody] List<CreateUserDto> users)
+        {
+            if(users == null || users.Count < 1)
+            {
+                return BadRequest("Пустой список пользователей.");
+            }
+            var existUser = await _context.UserDomains
+                .Where(u => users.Select(dto => dto.Login).Contains(u.Login))
+                .Select(u => u.Login)
+                .ToListAsync();
+
+            if (existUser.Any()) return Conflict($"Логины уже существуют: {string.Join(", ", existUser)}");
+
+            var newUsers = users.Select(userDto => new UserDomain
+            {
+                Id = Guid.NewGuid(),
+                Name = userDto.UserName,
+                Login = userDto.Login,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password, 12),
+                DateRegistration = DateTime.UtcNow
+            }).ToList();
+
+            await _context.UserDomains.AddRangeAsync(newUsers);
+            await _context.SaveChangesAsync();
+            return Ok(newUsers);
+        }
+
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser(string login)
+        public async Task<ActionResult> DeleteUser(string login)
         {
             var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
             if (user == null)
@@ -57,6 +85,18 @@ namespace FlowerShop.Web.Controllers
             _context.UserDomains.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+        [HttpDelete("many")]
+        public async Task<ActionResult> DeleateUserMany()
+        {
+            var user = await _context.UserDomains.ToListAsync();
+            if (user == null || user.Count < 1)
+            {
+                return NoContent();
+            }
+            _context.UserDomains.RemoveRange(user);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

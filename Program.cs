@@ -14,7 +14,7 @@ builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", o =>
     {
         o.Cookie.Name = ".myapp.auth";          
-        o.LoginPath = "/Account/login";            
+        o.LoginPath = "/Account/Login";            
         o.AccessDeniedPath = "/Home";
         o.ExpireTimeSpan = TimeSpan.FromDays(7);
         o.SlidingExpiration = true;             
@@ -24,6 +24,7 @@ builder.Services.AddAuthentication("Cookies")
 builder.Services.AddRazorPages(o =>
 {
     o.Conventions.AuthorizePage("/Account/Profile");
+    o.Conventions.AuthorizePage("/Account/Purchases");
     o.Conventions.AllowAnonymousToPage("/Account/Login");
     o.Conventions.AllowAnonymousToPage("/Account/Register");
 });

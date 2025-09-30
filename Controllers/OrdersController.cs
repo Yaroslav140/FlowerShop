@@ -41,7 +41,7 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleateOrder(Guid id)
+        public async Task<ActionResult> DeleateOrder(Guid id)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)

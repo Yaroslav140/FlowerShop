@@ -31,7 +31,7 @@ namespace FlowerShop.Web.Pages.Account
             }
         }
 
-        public async Task<IActionResult> OnPostExitAsync()
+        public async Task<ActionResult> OnPostExitAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToPage("/Home");

@@ -28,7 +28,7 @@ namespace FlowerShop.Web.Pages.Account
         {
         }
 
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
+        public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)
                 return Page();

@@ -11,6 +11,7 @@
     <title>Flower — минималистичный магазин</title>
     <link rel="icon" href="~/img/icon.svg" type="image/x-icon" />
 </head>
+
 <body>
     <header class="container-header">
         <h1 class="container-header__text-logo">Flower & Shop</h1>
@@ -34,8 +35,8 @@
     <main class="container-main">
         @RenderBody()
     </main>
-    <footer class="container-footer">
-        <a><img src="@Url.Content("/Purchases")"/></a>
-     </footer>
+    <a href="@Url.Content("/Account/Purchases")" class="cart-icon" aria-label="Корзина">
+        🛒
+    </a>
 </body>
 </html>
