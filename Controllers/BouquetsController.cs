@@ -19,10 +19,11 @@ namespace FlowerShop.Web.Controllers
         {
             var bouquets = await _context.Bouquets
                 .Select(b => new GetBouquetDto(
+                    b.Id,
                     b.Name,
                     b.Description,
                     b.Price,
-                    b.Stock,
+                    b.Quantity,
                     b.ImageUrl,
                     b.FlowerLinks.Select(fl => new GetBouquetFlowerDto(fl.BouquetId, fl.FlowerId, fl.Quantity)).ToList()
                     )).ToListAsync();
@@ -41,7 +42,7 @@ namespace FlowerShop.Web.Controllers
                 Name = bouquet.NameBouquet,
                 Description = bouquet.DescriptionBouquet,
                 Price = bouquet.PriceBouquet,
-                Stock = bouquet.Stock,
+                Quantity = bouquet.Quantity,
                 ImageUrl = bouquet.ImageUrl
             };
 
@@ -68,7 +69,7 @@ namespace FlowerShop.Web.Controllers
                 Name = dto.NameBouquet,
                 Price = dto.PriceBouquet,
                 Description = dto.DescriptionBouquet,
-                Stock = dto.Stock,
+                Quantity = dto.Quantity,
                 ImageUrl = dto.ImageUrl
                 
             }).ToList();

@@ -5,7 +5,6 @@
     <p class="content__main">Наши прекрасные букеты</p>
     <p class="content__description">Каждый букет, созданный вручную с любовью, рассказывает уникальную историю</p>
 </div>
-
 <div class="bouquet-container">
     @if (Model.GetBouquets?.Count > 0)
     {
@@ -21,9 +20,9 @@
                 </div>
 
                 <form method="post" asp-page-handler="AddToCart" class="bouquet-card__actions">
-                    <input type="hidden" name="bouquetId" value="@bouquet.Name" />
+                    <input type="hidden" name="bouquetId" value="@bouquet.Id" />
                     <input type="hidden" name="qty" value="1" />
-                    <button class="btn" type="submit" aria-label="Добавить букет «@bouquet.Name»">
+                    <button class="btn" type="submit" aria-label="Добавить букет «@bouquet.Id»">
                         Добавить букет
                     </button>
                 </form>
@@ -32,6 +31,6 @@
     }
     else
     {
-        <p>Букеты не найдены.</p>
+        <p class="bouquet-empty">В данный момент букетов нету, возращайся чуть позже</p>
     }
 </div>

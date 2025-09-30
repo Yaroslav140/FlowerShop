@@ -19,9 +19,7 @@ namespace FlowerShop.Web.Controllers
             var cart = await _context.Carts.Select(c => new CartEntity()
             {
                 Id = c.Id,
-                CreatedAt = c.CreatedAt,
                 Items = c.Items,
-                UpdatedAt = c.UpdatedAt,
                 UserId = c.UserId
             }).ToListAsync();
             return Ok();
