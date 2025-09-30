@@ -19,7 +19,6 @@ namespace FlowerShop.Web.Controllers
         {
             var bouquets = await _context.Bouquets
                 .Select(b => new GetBouquetDto(
-                    b.Id,
                     b.Name,
                     b.Description,
                     b.Price,
