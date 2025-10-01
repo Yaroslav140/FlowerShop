@@ -65,6 +65,61 @@ namespace FlowerShop.Web.Controllers
             return Ok(newOrder);
         }
 
+        [HttpPost("many")]
+        public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> orders)
+        {
+            if (orders is null || orders.Count == 0) return NoContent();
+
+            var users = orders.Select(o => o.UserId).Distinct().ToList();
+
+            var existingByUsers = await _context.Orders
+                .Where(o => users.Contains(o.UserId))
+                .Select(o => o.UserId)
+                .Distinct()
+                .ToListAsync();
+
+            if (existingByUsers.Count > 0)
+                return Conflict($"Заказы уже существуют для пользователей с ID: {string.Join(", ", existingByUsers)}");
+
+            var newOrders = orders.Select(order => new OrderEntity
+            {
+                Id = Guid.NewGuid(),
+                UserId = order.UserId,
+                // если приходят даты без зоны — жёстко проставь UTC
+                PickupDate = DateTime.SpecifyKind(order.PickupDate, DateTimeKind.Utc),
+                TotalAmount = order.TotalAmount,
+                Status = order.Status,
+                Items = [.. order.Items.Select(i => new OrderItemEntity
+                {
+                    Id = Guid.NewGuid(),
+                    BouquetId = i.BouquetId,
+                    Quantity = i.Quantity,
+                    Price = i.Price
+                })]
+            }).ToList();
+
+            _context.Orders.AddRange(newOrders);
+            await _context.SaveChangesAsync();
+
+            var result = newOrders.Select(o => new
+            {
+                o.Id,
+                o.UserId,
+                o.PickupDate,
+                o.TotalAmount,
+                o.Status,
+                Items = o.Items.Select(i => new
+                {
+                    i.Id,
+                    i.BouquetId,
+                    i.Quantity,
+                    i.Price
+                })
+            });
+
+            return Ok(result);
+        }
+
         [HttpDelete]
         public async Task<ActionResult> DeleateOrder(Guid id)
         {

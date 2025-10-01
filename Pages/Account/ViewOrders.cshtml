@@ -35,7 +35,7 @@
                             <span class="status-dot"></span>
                             <span>@order.Status</span>
                         </div>
-                        @if ((order.Status.ToString() ?? "").Equals("Complated", StringComparison.OrdinalIgnoreCase))
+                        @if ((order.Status.ToString() ?? "").Equals("Completed", StringComparison.OrdinalIgnoreCase))
                         {
                             <span class="badge badge--delivered">Delivered</span>
                         }
@@ -64,7 +64,7 @@
     </div>
 
     @{
-        var delivered = Model.Orders.Count(o => (o.Status.ToString() ?? "").Equals("Complated", StringComparison.OrdinalIgnoreCase));
+        var delivered = Model.Orders.Count(o => (o.Status.ToString() ?? "").Equals("Completed", StringComparison.OrdinalIgnoreCase));
         var active = Model.Orders.Count - delivered;
     }
     <div class="grid profile-card order-summary">

@@ -207,6 +207,22 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
+    "Method": "CreateOrdersMany",
+    "RelativePath": "api/Orders/many",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orders",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOCreate.CreateOrderDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
     "Method": "DeleateOrderMany",
     "RelativePath": "api/Orders/many",
     "HttpMethod": "DELETE",
@@ -279,6 +295,32 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
+    "Method": "GetUsersGuid",
+    "RelativePath": "api/Users/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "FlowerShop.Dto.DTOGet.GetUserDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
     "Method": "GetUsersCount",
     "RelativePath": "api/Users/count",
     "HttpMethod": "GET",
@@ -286,6 +328,26 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
+    "Method": "GetUsersFullInfo",
+    "RelativePath": "api/Users/full info",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.UserDomain, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
