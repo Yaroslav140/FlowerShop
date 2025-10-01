@@ -1,5 +1,4 @@
 ﻿@page
-@using FlowerShop.Data.Models
 @using FlowerShop.Dto.DTOGet
 @model FlowerShop.Web.Pages.Account.ViewOrdersModel
 
@@ -19,41 +18,36 @@
                 var item = order.OrderItem.FirstOrDefault();
                 var bouquet = item?.Bouquet;
 
-                <article class="cart-item">
-                    <img class="cart-item__img" src="@Url.Content(bouquet?.ImagePath)" alt="@bouquet?.Name" />
-
-                    <div class="cart-item__info">
-                        <h2 class="cart-item__title">@bouquet?.Name</h2>
-
-                        <div class="label">Order ID</div>
-                        <div class="value">@bouquet?.Id</div>
-
-                        <div class="label">Дата получения</div>
-                        <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
-
-                        <div class="label">Статус</div>
-                        <div class="value">
-                            @if (order.Status.ToString().ToLower() == "complated")
-                            {
-                                <span class="verified">Доставлен</span>
-                            }
-                            else
-                            {
-                                <!-- простая метка без доп. CSS -->
-                                <span>@order.Status</span>
-                            }
+                <article class="order-row">
+                    <div class="order-left">
+                        <img class="order-thumb" src="@Url.Content(bouquet?.ImagePath ?? "/images/no-image.png")" alt="@bouquet?.Name" />
+                        <div class="order-text">
+                            <h3 class="order-title">@bouquet?.Name</h3>
+                            <div class="order-meta">
+                                <div>Order ID: <span>@bouquet?.Id</span></div>
+                                <div>Дата получения: <span>@order.PickupDate.ToString("yyyy-MM-dd")</span></div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="cart-item__total">
-                        $@order.TotalAmount
+                    <div class="order-status">
+                        <div class="status-line">
+                            <span class="status-dot"></span>
+                            <span>@order.Status</span>
+                        </div>
+                        @if ((order.Status.ToString() ?? "").Equals("Complated", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge badge--delivered">Delivered</span>
+                        }
                     </div>
 
-                    <div class="cart-item__remove">
-                        <div class="grid" style="gap:8px;">
-                            <a class="btn btn--brand">Подробнее</a>
-                            <a class="btn btn--outline-pink">Повторить заказ</a>
-                        </div>
+                    <div class="order-price">
+                        @order.TotalAmount ₽
+                    </div>
+
+                    <div class="order-actions">
+                        <a class="btn btn--brand btn--sm">Подробнее</a>
+                        <a class="btn btn--outline-pink btn--sm">Повторить заказ</a>
                     </div>
                 </article>
             }
@@ -64,31 +58,30 @@
                 <img class="cart-empty__img" src="/images/empty.png" alt="">
                 <h3 class="cart-empty__title">Пока нет заказов</h3>
                 <p class="cart-empty__text">Соберите первый букет — это быстро и приятно.</p>
-                <a asp-page="/Index" class="btn btn--brand cart-summary__checkout">Перейти к букетам</a>
+                <a asp-page="/PageHeader/Bouquets" class="btn btn--brand cart-summary__checkout">Перейти к букетам</a>
             </div>
         }
     </div>
 
     @{
-        var delivered = Model.Orders.Count(o => (o.Status.ToString()).ToLower() == "complated");
+        var delivered = Model.Orders.Count(o => (o.Status.ToString() ?? "").Equals("Complated", StringComparison.OrdinalIgnoreCase));
         var active = Model.Orders.Count - delivered;
     }
-    <div class="profile-card" style="margin-top:20px;">
-        <h3 style="margin:0 0 12px;">Краткое описание заказов</h3>
-        <div class="grid" style="grid-template-columns: repeat(3,1fr); gap:10px; text-align:center;">
+    <div class="profile-card order-summary">
+        <h3 class="order-summary__title">Краткое описание заказов</h3>
+        <div class="grid order-summary__grid">
             <div>
-                <div class="orders-count">@Model.Orders.Count</div>
-                <div class="orders-caption">Всего заказов</div>
+                <div class="orders-count order-summary__count">@Model.Orders.Count</div>
+                <div class="orders-caption order-summary__caption">Всего заказов</div>
             </div>
             <div>
-                <div class="orders-count">@delivered</div>
-                <div class="orders-caption">Доставлено</div>
+                <div class="orders-count order-summary__count">@delivered</div>
+                <div class="orders-caption order-summary__caption">Доставлено</div>
             </div>
             <div>
-                <div class="orders-count">@active</div>
-                <div class="orders-caption">Активные</div>
+                <div class="orders-count order-summary__count">@active</div>
+                <div class="orders-caption order-summary__caption">Активные</div>
             </div>
         </div>
     </div>
 </div>
-

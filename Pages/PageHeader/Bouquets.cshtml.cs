@@ -10,6 +10,7 @@ namespace FlowerShop.Web.Pages.PageHeader
     public class BouquetsModel : PageModel
     {
         public List<GetBouquetDto> GetBouquets { get; set; } = new();
+        public bool IsQuntity = false;
 
         private readonly FlowerDbContext _context;
         public BouquetsModel(FlowerDbContext context) => _context = context;
@@ -136,6 +137,7 @@ namespace FlowerShop.Web.Pages.PageHeader
         {
             GetBouquets = await _context.Bouquets
                 .AsNoTracking()
+                .Where(c => c.Quantity > 0)
                 .Select(b => new GetBouquetDto(
                     b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImageUrl)).ToListAsync();
         }

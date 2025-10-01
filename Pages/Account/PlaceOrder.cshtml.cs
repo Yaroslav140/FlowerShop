@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.Account
@@ -45,15 +46,58 @@ namespace FlowerShop.Web.Pages.Account
                 return Page();
             }
 
-            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate.Date, DateTimeKind.Utc);
+            var byBouquet = cart.Items
+                .GroupBy(i => i.BouquetId)
+                .Select(g => new
+                {
+                    BouquetId = g.Key,
+                    RequiredQty = g.Sum(x => x.Quantity)
+                })
+                .ToList();
+
+            var bouquetIds = byBouquet.Select(x => x.BouquetId).ToHashSet();
+
+            await using var tx = await _context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+
+            var bouquets = await _context.Bouquets
+                .Where(b => bouquetIds.Contains(b.Id))
+                .AsTracking()
+                .ToListAsync();
+
+            var missing = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
+            if (missing.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "Некоторые букеты недоступны.");
+                return Page();
+            }
+
+            foreach (var grp in byBouquet)
+            {
+                var b = bouquets.First(x => x.Id == grp.BouquetId);
+                if (b.Quantity < grp.RequiredQty) 
+                {
+                    ModelState.AddModelError(string.Empty,
+                        $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.");
+                    return Page();
+                }
+            }
+
+            foreach (var grp in byBouquet)
+            {
+                var b = bouquets.First(x => x.Id == grp.BouquetId);
+                b.Quantity -= grp.RequiredQty;
+                if (b.Quantity < 0) b.Quantity = 0;
+            }
 
             var total = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
+
+            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate.Date, DateTimeKind.Utc);
 
             var order = new OrderEntity
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                PickupDate = deliveryUtc,        
+                PickupDate = deliveryUtc,      
                 TotalAmount = total,
                 Items = [.. cart.Items.Select(i => new OrderItemEntity
                 {
@@ -63,8 +107,6 @@ namespace FlowerShop.Web.Pages.Account
                     Price = i.Quantity * i.PriceSnapshot
                 })]
             };
-
-            await using var tx = await _context.Database.BeginTransactionAsync();
 
             _context.Orders.Add(order);
 
