@@ -67,7 +67,7 @@
         var delivered = Model.Orders.Count(o => (o.Status.ToString() ?? "").Equals("Complated", StringComparison.OrdinalIgnoreCase));
         var active = Model.Orders.Count - delivered;
     }
-    <div class="profile-card order-summary">
+    <div class="grid profile-card order-summary">
         <h3 class="order-summary__title">Краткое описание заказов</h3>
         <div class="grid order-summary__grid">
             <div>

@@ -49,6 +49,7 @@ a {
 .grid {
     display: grid;
     gap: 20px;
+    margin: 20px;
 }
 
 .container-header {
@@ -728,6 +729,10 @@ a {
     width: 20%;
     margin-top: 8px;
 }
+.btn--brand .cart-summary__checkout{
+    width: 100%;
+}
+
 
 .cart-summary__link {
     display: inline-block;
@@ -749,7 +754,7 @@ a {
 .cart-empty {
     min-height: 40vh;
     text-align: center;
-    padding: 32px 0;
+    padding: 100px 0;
 }
 
 .cart-empty__img {
@@ -1093,5 +1098,26 @@ a {
 
     .order-meta {
         font-size: 12px;
+    }
+}
+.order-summary__grid {
+    display: flex;
+    justify-content: center;
+    gap: 20rem;
+    text-align: center;
+    flex-wrap: wrap; /* позволяет переноситься на новую строку */
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+    .order-summary__grid {
+        gap: 5rem; /* уменьшаем отступы */
+    }
+}
+
+@media (max-width: 768px) {
+    .order-summary__grid {
+        flex-direction: column; /* элементы идут столбиком */
+        gap: 2rem;
     }
 }
