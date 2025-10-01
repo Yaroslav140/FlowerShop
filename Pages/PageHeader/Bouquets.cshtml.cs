@@ -137,10 +137,7 @@ namespace FlowerShop.Web.Pages.PageHeader
             GetBouquets = await _context.Bouquets
                 .AsNoTracking()
                 .Select(b => new GetBouquetDto(
-                    b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImageUrl,
-                    b.FlowerLinks.Select(fl => new GetBouquetFlowerDto(
-                        fl.BouquetId, fl.FlowerId, fl.Quantity)).ToList()))
-                .ToListAsync();
+                    b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImageUrl)).ToListAsync();
         }
     }
 }

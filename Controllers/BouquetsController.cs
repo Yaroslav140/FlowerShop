@@ -2,7 +2,6 @@
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,8 +23,7 @@ namespace FlowerShop.Web.Controllers
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImageUrl,
-                    b.FlowerLinks.Select(fl => new GetBouquetFlowerDto(fl.BouquetId, fl.FlowerId, fl.Quantity)).ToList()
+                    b.ImageUrl
                     )).ToListAsync();
             return Ok(bouquets);
         }

@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace FlowerShop.Web.Pages.Account
 {
-    public class ProfileModel : PageModel
+    public class ProfileModel(FlowerDbContext context) : PageModel
     {
-        private readonly FlowerDbContext _context;
-        public string Username {  get; set; }
-        public string Login {  get; set; }
+        private readonly FlowerDbContext _context = context;
+
+        public string Username {  get; set; } = string.Empty;
+        public string Login {  get; set; } = string.Empty;
         public DateTime DateRegister {  get; set; }
 
         public List<GetOrderDto> Orders { get; set; } = [];
-        public ProfileModel(FlowerDbContext context) => _context = context;
+
         public async Task OnGetAsync()
         {
             if (User.Identity?.IsAuthenticated ?? false)
@@ -35,8 +36,14 @@ namespace FlowerShop.Web.Pages.Account
                     o.PickupDate,
                     o.TotalAmount,
                     o.Status,
-                    o.Items.Select(oi => new GetOrderItemDto(oi.BouquetId, oi.FlowerId, oi.Quantity, oi.Price)).ToList()
-                )).ToListAsync();
+                    o.Items.Select(oi => new GetOrderItemDto(oi.BouquetId, oi.Quantity, oi.Price,
+                        new GetBouquetDto(
+                            oi.Bouquet.Id, 
+                            oi.Bouquet.Name,
+                            oi.Bouquet.Description,
+                            oi.Bouquet.Price,
+                            oi.Bouquet.Quantity,
+                            oi.Bouquet.ImageUrl))).ToList().ToList())).ToListAsync();
             }
         }
 

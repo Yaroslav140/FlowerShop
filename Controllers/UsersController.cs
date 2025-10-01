@@ -28,11 +28,23 @@ namespace FlowerShop.Web.Controllers
                         o.Status,
                         o.Items.Select(i => new GetOrderItemDto(
                             i.BouquetId, 
-                            i.FlowerId, 
                             i.Quantity,
-                            i.Price)
-                        ).ToList())).ToList())).ToListAsync();
+                            i.Price,
+                            new GetBouquetDto(
+                                i.Bouquet.Id,
+                                i.Bouquet.Name,
+                                i.Bouquet.Description,
+                                i.Bouquet.Price,
+                                i.Bouquet.Quantity,
+                                i.Bouquet.ImageUrl))).ToList())).ToList())).ToListAsync();
             return Ok(users);
+        }
+
+        [HttpGet("count")]
+        public async Task<ActionResult> GetUsersCount()
+        {
+            var user = await _context.UserDomains.ToListAsync();
+            return Ok($"Пользователей {user.Count}");
         }
 
         [HttpPost]
