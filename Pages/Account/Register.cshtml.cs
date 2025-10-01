@@ -24,10 +24,6 @@ namespace FlowerShop.Web.Pages.Account
         private readonly FlowerDbContext _context;
         public RegisterModel(FlowerDbContext context) => _context = context;
 
-        public void OnGet()
-        {
-        }
-
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)

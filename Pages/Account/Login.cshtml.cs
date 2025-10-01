@@ -9,19 +9,14 @@ using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel(FlowerDbContext context) : PageModel
     {
-        private readonly FlowerDbContext _context;
+        private readonly FlowerDbContext _context = context;
         [BindProperty, Required(ErrorMessage = "¬ведите логин")]
         public string Login { get; set; }
 
         [BindProperty, Required(ErrorMessage = "¬ведите пароль")]
         public string Password { get; set; }
-
-        public LoginModel(FlowerDbContext context) => _context = context;
-        public void OnGet()
-        {
-        }
 
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {

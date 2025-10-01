@@ -15,10 +15,19 @@ namespace FlowerShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetOrderDto>>> GetOrders()
         {
+            var userId = Guid.Parse(User.Identity.Name!);
             var orders = await _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.Items)
-                .ToListAsync();
+                .Select(o => new GetOrderDto(
+                    userId,
+                    o.PickupDate,
+                    o.TotalAmount,
+                    o.Status,
+                    o.Items.Select(i => new GetOrderItemDto(
+                        i.BouquetId, 
+                        i.FlowerId, 
+                        i.Quantity,
+                        i.Price)
+                    ).ToList())).ToListAsync();
             return Ok(orders);
         }
 

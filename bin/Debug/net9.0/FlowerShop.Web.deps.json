@@ -726,6 +726,9 @@
         }
       },
       "FlowerShop.Dto/1.0.0": {
+        "dependencies": {
+          "FlowerShop.Data": "1.0.0"
+        },
         "runtime": {
           "FlowerShop.Dto.dll": {
             "assemblyVersion": "1.0.0.0",

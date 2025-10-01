@@ -21,9 +21,17 @@ namespace FlowerShop.Web.Controllers
                     u.Name,
                     u.Login,
                     u.Orders
-                    .Select(o => new GetOrderDto(o.OrderDate, o.TotalAmount))
-                    .ToList()
-                )).ToListAsync();
+                    .Select(o => new GetOrderDto(
+                        o.UserId,
+                        o.PickupDate, 
+                        o.TotalAmount,
+                        o.Status,
+                        o.Items.Select(i => new GetOrderItemDto(
+                            i.BouquetId, 
+                            i.FlowerId, 
+                            i.Quantity,
+                            i.Price)
+                        ).ToList())).ToList())).ToListAsync();
             return Ok(users);
         }
 

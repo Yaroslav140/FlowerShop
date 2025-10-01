@@ -1093,6 +1093,9 @@
       "FlowerShop.Dto/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "FlowerShop.Data": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/FlowerShop.Dto.dll": {}
         },

@@ -71,9 +71,7 @@
                     <strong>@subtotal.ToString("C", ru)</strong>
                 </div>
 
-                <form method="post" asp-page-handler="ProceedToCheckout">
-                    <button class="btn btn--brand cart-summary__checkout" type="submit">Перейти к оформлению</button>
-                </form>
+                <a asp-page="/Account/PlaceOrder" class="btn btn--brand cart-summary__checkout" type="submit">Перейти к оформлению</a>
 
                 <a class="cart-summary__link" asp-page="/PageHeader/Bouquets">Продолжить покупки</a>
             </aside>
