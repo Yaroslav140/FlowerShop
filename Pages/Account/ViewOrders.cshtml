@@ -24,7 +24,7 @@
                         <div class="order-text">
                             <h3 class="order-title">@bouquet?.Name</h3>
                             <div class="order-meta">
-                                <div>Order ID: <span>@bouquet?.Id</span></div>
+@*                                 <div>Секретный код: <span>@Model.SecredCode</span></div> *@
                                 <div>Дата получения: <span>@order.PickupDate.ToString("yyyy-MM-dd")</span></div>
                             </div>
                         </div>
@@ -33,11 +33,31 @@
                     <div class="order-status">
                         <div class="status-line">
                             <span class="status-dot"></span>
-                            <span>@order.Status</span>
+                            @switch(order.Status.ToString())
+                            {
+                                case "New":
+                                    <span class="status-text">Новый</span>
+                                    break;
+                                case "Pending":
+                                    <span class="status-text">Ожидает обработки</span>
+                                    break;
+                                case "InProgress":
+                                    <span class="status-text">В обработке</span>
+                                    break;
+                                case "Completed":
+                                    <span class="status-text">Выполнен</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="status-text">Отменен</span>
+                                    break;
+                                default:
+                                    <span class="status-text">@order.Status</span>
+                                    break;
+                            }
                         </div>
                         @if ((order.Status.ToString() ?? "").Equals("Completed", StringComparison.OrdinalIgnoreCase))
                         {
-                            <span class="badge badge--delivered">Delivered</span>
+                            <span class="badge badge--delivered">Выполнен</span>
                         }
                     </div>
 
@@ -46,7 +66,7 @@
                     </div>
 
                     <div class="order-actions">
-                        <a class="btn btn--brand btn--sm">Подробнее</a>
+                        <a class="btn btn--brand btn--sm" asp-page="/Account/ViewOrderDetails" asp-route-id="@order.Id"> Подробнее </a>
                         <a class="btn btn--outline-pink btn--sm">Повторить заказ</a>
                     </div>
                 </article>

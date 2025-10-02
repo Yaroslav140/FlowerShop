@@ -23,11 +23,13 @@ namespace FlowerShop.Web.Controllers
                     u.Login,
                     u.Orders
                     .Select(o => new GetOrderDto(
+                        o.Id,
                         o.UserId,
                         o.PickupDate, 
                         o.TotalAmount,
                         o.Status,
                         o.Items.Select(i => new GetOrderItemDto(
+                            i.Id,
                             i.BouquetId, 
                             i.Quantity,
                             i.Price,

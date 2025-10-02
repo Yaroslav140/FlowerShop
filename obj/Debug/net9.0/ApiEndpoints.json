@@ -63,6 +63,32 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
+    "Method": "GetBouquetId",
+    "RelativePath": "api/Bouquets/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "FlowerShop.Data.Models.BouquetEntity",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
     "Method": "DeleteAllBouquets",
     "RelativePath": "api/Bouquets/all",
     "HttpMethod": "DELETE",

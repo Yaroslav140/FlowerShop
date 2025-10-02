@@ -1,0 +1,167 @@
+﻿@page
+@using FlowerShop.Data.Models
+@model FlowerShop.Web.Pages.Account.ViewOrderDetailsModel
+@{
+    var order = Model.Order;
+    var firstItem = order?.OrderItem?.FirstOrDefault();
+
+    string StatusToCss(OrderStatus s) => s switch
+    {
+        OrderStatus.Pending => "badge badge--pending",
+        OrderStatus.InProgress => "badge badge--processing",
+        OrderStatus.Completed => "badge badge--delivered",
+        OrderStatus.Cancelled => "badge badge--cancelled",
+        _ => "badge"
+    };
+}
+
+@if (order is null)
+{
+    <div class="order-page__empty">Заказ не найден.</div>
+}
+else
+{
+    <div class="order-page container">
+        <!-- Breadcrumbs / Back -->
+        <nav class="order-page__nav">
+            <a class="order-page__back" asp-page="/Account/ViewOrders">← Back to Orders</a>
+        </nav>
+
+        <!-- Header -->
+        <header class="order-header">
+            <h1 class="order-header__title">Детали заказа</h1>
+            <p class="order-header__id">
+                <span>Order ID:</span>
+                <span class="order-header__id-value">@order.Id.ToString()[..8]…</span>
+            </p>
+        </header>
+
+        <!-- Status -->
+        <section class="card order-status">
+            <div class="order-status__row">
+                <h2 class="card__title">Статус заказа</h2>
+                <span class="@StatusToCss(order.Status)" data-status="@order.Status">@order.Status</span>
+            </div>
+
+            <div class="order-status__grid">
+                <div class="order-status__cell">
+                    <div class="order-status__label">Дата выполнения заказа</div>
+                    <div class="order-status__value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+                </div>
+
+                <div class="order-status__cell">
+                    <div class="order-status__label">
+                        @(order.Status == OrderStatus.Completed ? "Delivered On" :
+                                            order.Status == OrderStatus.Cancelled ? "Cancelled On" : "Pickup Date")
+                </div>
+                <div class="order-status__value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+            </div>
+        </div>
+
+        @if (order.Status == OrderStatus.Pending)
+            {
+                <form method="post" asp-page-handler="CancelOrder" asp-route-id="@order.Id" class="order-status__actions">
+                    <button type="submit" class="btn btn--outline-danger">Отменить заказ</button>
+                </form>
+            }
+            else if (order.Status == OrderStatus.Completed)
+            {
+                <p class="order-status__note">Заказ доставлен. Спасибо, что выбрали нас!</p>
+            }
+            else if (order.Status == OrderStatus.Cancelled)
+            {
+                <p class="order-status__note">Заказ был отменён.</p>
+            }
+        </section>
+
+        <!-- Items -->
+        <section class="card order-items">
+            <h2 class="card__title">Детали букетов</h2>
+
+            @if (order.OrderItem is { Count: > 0 })
+            {
+                <ul class="order-item-list">
+                    @foreach (var i in order.OrderItem)
+                    {
+                        <li class="order-item">
+                            <div class="order-item__media">
+                                <img class="order-item__img"
+                                     src="@(i.Bouquet?.ImagePath ?? "/img/placeholder-bouquet.png")"
+                                     alt="@(i.Bouquet?.Name ?? "Bouquet")" />
+                            </div>
+
+                            <div class="order-item__body">
+                                <div class="order-item__title">@i.Bouquet?.Name</div>
+                                <div class="order-item__meta">
+                                    <span class="order-item__qty">Количество: @i.Quantity</span>
+                                    <span class="order-item__price-each">@i.Price.ToString("C") each</span>
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(i.Bouquet?.Description))
+                                {
+                                    <p class="order-item__desc">@i.Bouquet!.Description</p>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <div class="order-items__empty">Позиции заказа не найдены.</div>
+            }
+        </section>
+
+        <!-- Delivery -->
+        <section class="card order-delivery">
+            <h2 class="card__title">Delivery Information</h2>
+            <div class="info-list">
+                <div class="info-list__row">
+                    <span class="info-list__icon i-user"></span>
+                    <div class="info-list__content">
+                        <div class="info-list__label">Recipient Name</div>
+                        <div class="info-list__value">@(!string.IsNullOrWhiteSpace(Model.UserInfo?.Username) ? Model.UserInfo.Username : Model.UserInfo?.Login)</div>
+                    </div>
+                </div>
+
+                <div class="info-list__row">
+                    <span class="info-list__icon i-mail"></span>
+                    <div class="info-list__content">
+                        <div class="info-list__label">Логин</div>
+                        <div class="info-list__value">
+                            <p>@Model.UserInfo?.Login</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="card order-summary">
+            <h2 class="card__title">Order Summary</h2>
+
+            <div class="summary__row">
+                <span class="summary__label">Subtotal</span>
+                <span class="summary__value">
+                    @{
+                        var subtotal = order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m;
+                    }
+                    @subtotal.ToString("C")
+                </span>
+            </div>
+
+            <div class="summary__row summary__row--total">
+                <span class="summary__label">Total</span>
+                <span class="summary__value">
+                    @((order.TotalAmount == 0m ? (order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m) : order.TotalAmount).ToString("C"))
+                </span>
+            </div>
+
+            <div class="summary__actions">
+                <form method="post" asp-page-handler="Reorder" asp-route-id="@order.Id">
+                    <button type="submit" class="btn btn--primary">Повторить</button>
+                </form>
+                <a class="btn btn--ghost" asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">Контакт поддержки</a>
+            </div>
+        </section>
+    </div>
+}

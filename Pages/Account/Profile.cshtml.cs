@@ -32,11 +32,12 @@ namespace FlowerShop.Web.Pages.Account
                     DateRegister = user.DateRegistration;
                 }
                 Orders = await _context.Orders.Where(o => o.UserId == userId).Select(o => new GetOrderDto(
+                    o.Id,
                     o.UserId,
                     o.PickupDate,
                     o.TotalAmount,
                     o.Status,
-                    o.Items.Select(oi => new GetOrderItemDto(oi.BouquetId, oi.Quantity, oi.Price,
+                    o.Items.Select(oi => new GetOrderItemDto(oi.Id, oi.BouquetId, oi.Quantity, oi.Price,
                         new GetBouquetDto(
                             oi.Bouquet.Id, 
                             oi.Bouquet.Name,
