@@ -5,162 +5,149 @@
     var order = Model.Order;
     var firstItem = order?.OrderItem?.FirstOrDefault();
 
-    string StatusToCss(OrderStatus s) => s switch
-    {
-        OrderStatus.Pending => "badge badge--pending",
-        OrderStatus.InProgress => "badge badge--processing",
-        OrderStatus.Completed => "badge badge--delivered",
-        OrderStatus.Cancelled => "badge badge--cancelled",
-        _ => "badge"
-    };
+    string BadgeClass(OrderStatus s)
+        => s == OrderStatus.Completed ? "badge badge--delivered" : "badge";
 }
 
 @if (order is null)
 {
-    <div class="order-page__empty">Заказ не найден.</div>
+    <div class="center" style="min-height:50vh;">Заказ не найден.</div>
 }
 else
 {
-    <div class="order-page container">
-        <!-- Breadcrumbs / Back -->
-        <nav class="order-page__nav">
-            <a class="order-page__back" asp-page="/Account/ViewOrders">← Back to Orders</a>
+    <div class="container">
+        <nav style="margin-bottom:8px;">
+            <a href="@(Url.Page("/Account/ViewOrders"))" class="container-header__nav-link">← Back to Orders</a>
         </nav>
 
-        <!-- Header -->
-        <header class="order-header">
-            <h1 class="order-header__title">Детали заказа</h1>
-            <p class="order-header__id">
-                <span>Order ID:</span>
-                <span class="order-header__id-value">@order.Id.ToString()[..8]…</span>
+        <header class="content" style="padding-top:8px; padding-bottom:0;">
+            <h1 class="content__main" style="font-size:28px;">Детали заказа</h1>
+            <p class="content__description" style="margin-top:-6px;">
+                <span>Order ID: </span><strong>@order.Id.ToString()[..8]…</strong>
             </p>
         </header>
 
-        <!-- Status -->
-        <section class="card order-status">
-            <div class="order-status__row">
-                <h2 class="card__title">Статус заказа</h2>
-                <span class="@StatusToCss(order.Status)" data-status="@order.Status">@order.Status</span>
+        <!-- Статус и даты (без новых классов) -->
+        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
+            <div class="card-header" style="justify-content:space-between;">
+                <div style="font-weight:700;">Статус заказа</div>
+                <span class="@BadgeClass(order.Status)" data-status="@order.Status">@order.Status</span>
             </div>
 
-            <div class="order-status__grid">
-                <div class="order-status__cell">
-                    <div class="order-status__label">Дата выполнения заказа</div>
-                    <div class="order-status__value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:0;">
+                <div>
+                    <div class="label">Дата выполнения заказа</div>
+                    <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
                 </div>
-
-                <div class="order-status__cell">
-                    <div class="order-status__label">
-                        @(order.Status == OrderStatus.Completed ? "Delivered On" :
-                                            order.Status == OrderStatus.Cancelled ? "Cancelled On" : "Pickup Date")
+                <div>
+                    <div class="label">
+                        @(order.Status == OrderStatus.Completed ? "Delivered On"
+                                            : order.Status == OrderStatus.Cancelled ? "Cancelled On" : "Pickup Date")
                 </div>
-                <div class="order-status__value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+                <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
             </div>
         </div>
 
         @if (order.Status == OrderStatus.Pending)
             {
-                <form method="post" asp-page-handler="CancelOrder" asp-route-id="@order.Id" class="order-status__actions">
-                    <button type="submit" class="btn btn--outline-danger">Отменить заказ</button>
-                </form>
+                <div style="margin-top:14px;">
+                    <form method="post" asp-page-handler="CancelOrder" asp-route-id="@order.Id">
+                        <button type="submit" class="btn btn--outline-pink">Отменить заказ</button>
+                    </form>
+                </div>
             }
             else if (order.Status == OrderStatus.Completed)
             {
-                <p class="order-status__note">Заказ доставлен. Спасибо, что выбрали нас!</p>
+                <p class="hint" style="margin-top:10px;">Заказ доставлен. Спасибо, что выбрали нас!</p>
             }
             else if (order.Status == OrderStatus.Cancelled)
             {
-                <p class="order-status__note">Заказ был отменён.</p>
+                <p class="hint" style="margin-top:10px; color:#b91c1c;">Заказ был отменён.</p>
             }
         </section>
 
-        <!-- Items -->
-        <section class="card order-items">
-            <h2 class="card__title">Детали букетов</h2>
+        <!-- Позиции заказа: переиспользуем твою карточку каталога -->
+        <section style="margin-top:16px;">
+            <h2 class="profile-title" style="font-size:22px; text-align:left;">Детали букетов</h2>
 
             @if (order.OrderItem is { Count: > 0 })
             {
-                <ul class="order-item-list">
+                <div class="bouquet-container" style="padding-left:0; padding-right:0;">
                     @foreach (var i in order.OrderItem)
                     {
-                        <li class="order-item">
-                            <div class="order-item__media">
-                                <img class="order-item__img"
-                                     src="@(i.Bouquet?.ImagePath ?? "/img/placeholder-bouquet.png")"
-                                     alt="@(i.Bouquet?.Name ?? "Bouquet")" />
-                            </div>
+                        <article class="bouquet-card">
+                            <img src="@(i.Bouquet?.ImagePath ?? "/img/placeholder-bouquet.png")"
+                                 alt="@(i.Bouquet?.Name ?? "Bouquet")" />
 
-                            <div class="order-item__body">
-                                <div class="order-item__title">@i.Bouquet?.Name</div>
-                                <div class="order-item__meta">
-                                    <span class="order-item__qty">Количество: @i.Quantity</span>
-                                    <span class="order-item__price-each">@i.Price.ToString("C") each</span>
-                                </div>
+                            <div class="bouquet-card__description">
+                                <h3 class="bouquet-card__title">@i.Bouquet?.Name</h3>
                                 @if (!string.IsNullOrWhiteSpace(i.Bouquet?.Description))
                                 {
-                                    <p class="order-item__desc">@i.Bouquet!.Description</p>
+                                    <p class="bouquet-card__text">@i.Bouquet!.Description</p>
                                 }
+                                <div class="bouquet-card__price">
+                                    @i.Price.ToString("C") <span style="font-weight:600; color:#555;">× @i.Quantity</span>
+                                </div>
                             </div>
-                        </li>
+                        </article>
                     }
-                </ul>
+                </div>
             }
             else
             {
-                <div class="order-items__empty">Позиции заказа не найдены.</div>
+                <div class="cart-empty">
+                    <img class="cart-empty__img" src="/img/placeholder-bouquet.png" alt="">
+                    <p class="cart-empty__text">Позиции заказа не найдены.</p>
+                </div>
             }
         </section>
 
-        <!-- Delivery -->
-        <section class="card order-delivery">
-            <h2 class="card__title">Delivery Information</h2>
+        <!-- Доставка/аккаунт: используем твои инфо-стили из профиля -->
+        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
+            <div class="card-header">
+                <div>Delivery Information</div>
+            </div>
+
             <div class="info-list">
-                <div class="info-list__row">
-                    <span class="info-list__icon i-user"></span>
-                    <div class="info-list__content">
-                        <div class="info-list__label">Recipient Name</div>
-                        <div class="info-list__value">@(!string.IsNullOrWhiteSpace(Model.UserInfo?.Username) ? Model.UserInfo.Username : Model.UserInfo?.Login)</div>
-                    </div>
+                <div class="row">
+                    <div class="label">Recipient Name</div>
+                    <div class="value">@(!string.IsNullOrWhiteSpace(Model.UserInfo?.Username) ? Model.UserInfo.Username : Model.UserInfo?.Login)</div>
                 </div>
 
-                <div class="info-list__row">
-                    <span class="info-list__icon i-mail"></span>
-                    <div class="info-list__content">
-                        <div class="info-list__label">Логин</div>
-                        <div class="info-list__value">
-                            <p>@Model.UserInfo?.Login</p>
-                        </div>
-                    </div>
+                <div class="row">
+                    <div class="label">Логин</div>
+                    <div class="value login">@Model.UserInfo?.Login</div>
                 </div>
             </div>
         </section>
 
-        <!-- Summary -->
-        <section class="card order-summary">
-            <h2 class="card__title">Order Summary</h2>
-
-            <div class="summary__row">
-                <span class="summary__label">Subtotal</span>
-                <span class="summary__value">
-                    @{
-                        var subtotal = order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m;
-                    }
-                    @subtotal.ToString("C")
-                </span>
+        <!-- Сводка -->
+        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
+            <div class="card-header">
+                <div>Order Summary</div>
             </div>
 
-            <div class="summary__row summary__row--total">
-                <span class="summary__label">Total</span>
-                <span class="summary__value">
-                    @((order.TotalAmount == 0m ? (order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m) : order.TotalAmount).ToString("C"))
-                </span>
+            @{
+                var subtotal = order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m;
+                var total = order.TotalAmount == 0m ? subtotal : order.TotalAmount;
+            }
+
+            <div class="order-summary__grid">
+                <div>
+                    <div class="label">Subtotal</div>
+                    <div class="value">@subtotal.ToString("C")</div>
+                </div>
+                <div>
+                    <div class="label">Total</div>
+                    <div class="value" style="color:var(--brand); font-weight:800;">@total.ToString("C")</div>
+                </div>
             </div>
 
-            <div class="summary__actions">
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
                 <form method="post" asp-page-handler="Reorder" asp-route-id="@order.Id">
-                    <button type="submit" class="btn btn--primary">Повторить</button>
+                    <button type="submit" class="btn btn--brand">Повторить</button>
                 </form>
-                <a class="btn btn--ghost" asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">Контакт поддержки</a>
+                <a class="btn btn--outline-pink" asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">Контакт поддержки</a>
             </div>
         </section>
     </div>
