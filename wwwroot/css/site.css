@@ -1157,3 +1157,43 @@ a {
 .cart-summary__checkout{
     width: 35%;
 }
+.edit-actions {
+    display: flex;
+    gap: 12px; /* расстояние между кнопками */
+    justify-content: center; /* центрируем внутри формы */
+    margin-top: 16px;
+}
+
+.edit-btn {
+    flex: 1; /* одинаковая ширина */
+    min-height: 40px; /* компактная высота */
+    padding: 8px 18px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+}
+
+.edit-btn--save {
+    background: var(--brand);
+    color: #fff;
+    border: none;
+}
+
+    .edit-btn--save:hover {
+        background: var(--brand-600);
+        transform: translateY(-1px);
+    }
+
+.edit-btn--delete {
+    background: #fff;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+}
+
+    .edit-btn--delete:hover {
+        background: var(--accent);
+        color: #fff;
+        transform: translateY(-1px);
+    }

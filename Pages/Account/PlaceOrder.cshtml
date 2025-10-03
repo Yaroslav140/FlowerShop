@@ -1,6 +1,8 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.PlaceOrderModel
-@{
+@if (TempData["ErrorMessage"] is string err)
+{
+    <div class="alert error">@err</div>
 }
 <div class="order-center">
     <div class="order-card">

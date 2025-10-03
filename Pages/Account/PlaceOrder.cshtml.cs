@@ -1,5 +1,6 @@
 using FlowerShop.Data;
 using FlowerShop.Data.Models;
+using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace FlowerShop.Web.Pages.Account
         [BindProperty, DataType(DataType.Date)]
         public DateTime DeliveryDate { get; set; } = DateTime.Today.AddDays(1);
 
-        public async Task<IActionResult> OnPostSubmitOrderAsync()
+        public async Task<ActionResult> OnPostSubmitOrderAsync()
         {
             if (!ModelState.IsValid)
                 return Page();
@@ -31,13 +32,17 @@ namespace FlowerShop.Web.Pages.Account
             var cart = await _context.Carts
                 .Include(c => c.Items)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
-
+            var user = await _context.UserDomains.FindAsync(userId);
             if (cart is null || cart.Items is null || cart.Items.Count == 0)
             {
                 ModelState.AddModelError(string.Empty, "Корзина пуста.");
                 return Page();
             }
-
+            if (user == null)
+            {
+                ViewData["ErrorMessage"] = "Нету пользваоетля";
+                return Page();
+            }
             var minDate = DateTime.Today.AddDays(1);
             if (DeliveryDate.Date < minDate)
             {
@@ -92,7 +97,7 @@ namespace FlowerShop.Web.Pages.Account
             var total = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
 
             var deliveryUtc = DateTime.SpecifyKind(DeliveryDate.Date, DateTimeKind.Utc);
-
+            user.Phone = Phone;
             var order = new OrderEntity
             {
                 Id = Guid.NewGuid(),
@@ -109,7 +114,6 @@ namespace FlowerShop.Web.Pages.Account
             };
 
             _context.Orders.Add(order);
-
             _context.RemoveRange(cart.Items);
             _context.Carts.Remove(cart);
 

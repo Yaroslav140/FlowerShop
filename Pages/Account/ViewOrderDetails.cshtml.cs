@@ -50,7 +50,7 @@ namespace FlowerShop.Web.Pages.Account
                 ))
                 .SingleOrDefaultAsync();
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
-            UserInfo = await _context.UserDomains.Where(u => u.Id == userId).Select(u => new GetUserDto(u.Id, u.Name, u.Login, new List<GetOrderDto>())).FirstOrDefaultAsync();
+            UserInfo = await _context.UserDomains.Where(u => u.Id == userId).Select(u => new GetUserDto(u.Id, u.Name, u.Login, u.Phone, new List<GetOrderDto>())).FirstOrDefaultAsync();
             if (Order is null)
                 return NotFound($"Заказ {Id} не найден.");
 
@@ -73,7 +73,6 @@ namespace FlowerShop.Web.Pages.Account
                 return RedirectToPage("/Account/ViewOrderDetails", new { id });
             }
 
-            // вернуть остатки
             foreach (var item in order.Items)
             {
                 item.Bouquet.Quantity += item.Quantity;

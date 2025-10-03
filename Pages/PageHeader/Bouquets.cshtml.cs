@@ -4,6 +4,7 @@ using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.PageHeader
 {
@@ -17,7 +18,8 @@ namespace FlowerShop.Web.Pages.PageHeader
 
         public async Task OnGetAsync() => await LoadBouquetsAsync();
 
-        public async Task<IActionResult> OnPostAddToCartAsync(Guid bouquetId, int qty)
+
+        public async Task<ActionResult> OnPostAddToCartAsync(Guid bouquetId, int qty)
         {
             if (!(User?.Identity?.IsAuthenticated ?? false))
                 return RedirectToPage("/Account/Login");
@@ -25,71 +27,44 @@ namespace FlowerShop.Web.Pages.PageHeader
             if (qty <= 0)
                 return BadRequest("Количество должно быть положительным числом.");
 
-            var userName = User.Identity?.Name;
-            if (string.IsNullOrWhiteSpace(userName))
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(idClaim) || !Guid.TryParse(idClaim, out var userId))
                 return NotFound("Не удалось определить пользователя.");
 
-            var userId = await _context.UserDomains
-                .Where(u => u.Name == userName)
-                .Select(u => (Guid?)u.Id)
-                .FirstOrDefaultAsync();
-
-            if (userId is null)
-                return NotFound("Пользователь не найден.");
-
-            var cartId = await _context.Carts
-                .Where(c => c.UserId == userId.Value)
-                .Select(c => (Guid?)c.Id)
-                .FirstOrDefaultAsync();
-
-            if (cartId is null)
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (cart is null)
             {
-                var newCart = new CartEntity
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId.Value
-                };
-                _context.Carts.Add(newCart);
+                cart = new CartEntity { Id = Guid.NewGuid(), UserId = userId };
+                _context.Carts.Add(cart);
                 await _context.SaveChangesAsync();
-                cartId = newCart.Id;
             }
 
-            var bouquet = await _context.Bouquets
-                .AsNoTracking()
-                .FirstOrDefaultAsync(b => b.Id == bouquetId);
-
-            if (bouquet is null)
-                return NotFound("Такого букета нет на сайте.");
-
-            if (bouquet.Quantity <= 0)
-                return BadRequest("Букет закончился.");
+            var bouquet = await _context.Bouquets.AsNoTracking().FirstOrDefaultAsync(b => b.Id == bouquetId);
+            if (bouquet is null) return NotFound("Такого букета нет на сайте.");
+            if (bouquet.Quantity <= 0) return BadRequest("Букет закончился.");
 
             var item = await _context.CartItems
-                .FirstOrDefaultAsync(i => i.CartId == cartId.Value && i.BouquetId == bouquetId);
+                .FirstOrDefaultAsync(i => i.CartId == cart.Id && i.BouquetId == bouquetId);
 
             var newQty = (item?.Quantity ?? 0) + qty;
             if (newQty > bouquet.Quantity)
-            {
                 return RedirectToPage("/Account/Purchases");
-            }
 
             if (item is null)
             {
-                var newItem = new CartItemEntity
+                _context.CartItems.Add(new CartItemEntity
                 {
                     Id = Guid.NewGuid(),
-                    CartId = cartId.Value,
+                    CartId = cart.Id,
                     BouquetId = bouquetId,
                     Quantity = qty,
                     PriceSnapshot = bouquet.Price
-                };
-                _context.CartItems.Add(newItem);
+                });
             }
             else
             {
                 item.Quantity = newQty;
                 item.PriceSnapshot = bouquet.Price;
-                _context.CartItems.Update(item);
             }
 
             try
@@ -103,7 +78,8 @@ namespace FlowerShop.Web.Pages.PageHeader
                 bouquet = await _context.Bouquets.AsNoTracking().FirstOrDefaultAsync(b => b.Id == bouquetId);
                 if (bouquet is null || bouquet.Quantity <= 0)
                     return BadRequest("Букет закончился.");
-                item = await _context.CartItems.FirstOrDefaultAsync(i => i.CartId == cartId.Value && i.BouquetId == bouquetId);
+
+                item = await _context.CartItems.FirstOrDefaultAsync(i => i.CartId == cart.Id && i.BouquetId == bouquetId);
                 var qtyAfterReload = (item?.Quantity ?? 0) + qty;
                 if (qtyAfterReload > bouquet.Quantity)
                     return BadRequest("Кто-то уже забрал часть товара. Попробуйте меньшее количество.");
@@ -113,7 +89,7 @@ namespace FlowerShop.Web.Pages.PageHeader
                     _context.CartItems.Add(new CartItemEntity
                     {
                         Id = Guid.NewGuid(),
-                        CartId = cartId.Value,
+                        CartId = cart.Id,
                         BouquetId = bouquetId,
                         Quantity = qty,
                         PriceSnapshot = bouquet.Price
@@ -123,7 +99,6 @@ namespace FlowerShop.Web.Pages.PageHeader
                 {
                     item.Quantity = qtyAfterReload;
                     item.PriceSnapshot = bouquet.Price;
-                    _context.CartItems.Update(item);
                 }
 
                 await _context.SaveChangesAsync();
@@ -131,6 +106,7 @@ namespace FlowerShop.Web.Pages.PageHeader
 
             return RedirectToPage("/PageHeader/Bouquets");
         }
+
 
 
         private async Task LoadBouquetsAsync()

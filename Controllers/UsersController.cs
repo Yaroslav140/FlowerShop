@@ -21,6 +21,7 @@ namespace FlowerShop.Web.Controllers
                     u.Id,
                     u.Name,
                     u.Login,
+                    u.Phone,
                     u.Orders
                     .Select(o => new GetOrderDto(
                         o.Id,
@@ -68,6 +69,7 @@ namespace FlowerShop.Web.Controllers
                 u.Id,
                 u.Name,
                 u.Login,
+                u.Phone,
                 u.PasswordHash
 
             }).ToList();
@@ -126,7 +128,7 @@ namespace FlowerShop.Web.Controllers
             var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound("UserProfile not found.");
             }
             _context.UserDomains.Remove(user);
             await _context.SaveChangesAsync();

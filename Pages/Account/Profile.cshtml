@@ -26,6 +26,13 @@
                         @Model.Login
                     </div>
                 </div>
+                @if(!string.IsNullOrEmpty(Model.Phone))
+                {
+                    <div class="row">
+                        <div class="label">Телефон</div>
+                        <div class="value">@Model.Phone</div>
+                    </div>
+                }
 
                 <div class="row">
                     <div class="label">Вы с нами c</div>
@@ -46,7 +53,7 @@
                 <div class="orders-caption">Количество заказов</div>
 
                 <a asp-page="/Account/ViewOrders" class="btn btn-green">Посмотреть заказы</a>
-                <button class="btn btn-outline-pink">Редактировать/Удалить профиль</button>
+                <a asp-page="/Account/EditProfile" class="btn btn-outline-pink">Редактировать/Удалить профиль</a>
             </div>
         </section>
     </div>

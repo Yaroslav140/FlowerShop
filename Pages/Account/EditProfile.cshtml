@@ -1,4 +1,57 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.EditProfileModel
-@{
+@if (TempData["Error"] is string err)
+{
+    <div class="alert error">@err</div>
 }
+<div class="profile-page">
+    <h1 class="profile-title">Редактирование профиля</h1>
+    <p class="profile-subtitle">Обновите свои данные и сохраните изменения</p>
+
+    <div class="profile-inner" style="grid-template-columns:1fr; place-items:center;">
+        <div class="profile-card info" style="width:min(520px,92vw);">
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="UserProfile.Name">Имя</label>
+                    <input asp-for="UserProfile.Name" type="text" class="form-control" />
+                    <span asp-validation-for="UserProfile.Name" class="text-danger"></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.UserProfile.Phone))
+                {
+                    <div class="form-group">
+                        <label asp-for="UserProfile.Phone">Телефон</label>
+                        <input asp-for="UserProfile.Phone" type="tel" class="form-control" />
+                        <span asp-validation-for="UserProfile.Phone" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label asp-for="UserProfile.Login">Логин</label>
+                    <input asp-for="UserProfile.Login" type="text" class="form-control" />
+                    <span asp-validation-for="UserProfile.Login" class="text-danger"></span>
+                </div>
+
+                <div class="edit-actions">
+                    <button type="submit"
+                            asp-page-handler="SaveProfile"
+                            class="edit-btn edit-btn--save">
+                        Сохранить
+                    </button>
+
+                    <button type="submit"
+                            asp-page-handler="Delete"
+                            class="edit-btn edit-btn--delete">
+                        Удалить
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

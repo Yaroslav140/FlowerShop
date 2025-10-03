@@ -15,6 +15,7 @@ namespace FlowerShop.Web.Pages.Account
 
         public string Username {  get; set; } = string.Empty;
         public string Login {  get; set; } = string.Empty;
+        public string Phone {  get; set; } = string.Empty;
         public DateTime DateRegister {  get; set; }
 
         public List<GetOrderDto> Orders { get; set; } = [];
@@ -29,6 +30,7 @@ namespace FlowerShop.Web.Pages.Account
                 {
                     Username = string.IsNullOrWhiteSpace(user.Name) ? user.Login : user.Name;
                     Login = user.Login;
+                    Phone = user.Phone;
                     DateRegister = user.DateRegistration;
                 }
                 Orders = await _context.Orders.Where(o => o.UserId == userId).Select(o => new GetOrderDto(
