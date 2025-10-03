@@ -198,14 +198,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "order",
+        "Name": "dto",
         "Type": "FlowerShop.Dto.DTOCreate.CreateOrderDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.OrderEntity, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "FlowerShop.Data.Models.OrderEntity",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -217,8 +217,8 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
-    "Method": "DeleateOrder",
-    "RelativePath": "api/Orders",
+    "Method": "DeleateOrderId",
+    "RelativePath": "api/Orders/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -226,7 +226,7 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -240,7 +240,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "orders",
+        "Name": "dtos",
         "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOCreate.CreateOrderDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }

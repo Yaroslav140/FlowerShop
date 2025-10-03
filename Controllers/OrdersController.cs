@@ -43,62 +43,86 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<OrderEntity>>> CreateOrders([FromBody] CreateOrderDto order)
+        public async Task<ActionResult<OrderEntity>> CreateOrders([FromBody] CreateOrderDto dto)
         {
-            if (order is null)
-                return NoContent();
+            if (dto is null || dto.Items is null || dto.Items.Count == 0)
+                return BadRequest("Пустой заказ.");
+
+            var bouquetIds = dto.Items.Select(i => i.BouquetId).Distinct().ToList();
+            var bouquets = await _context.Bouquets
+                .Where(b => bouquetIds.Contains(b.Id))
+                .Select(b => new { b.Id, b.Price })
+                .ToDictionaryAsync(b => b.Id, b => b.Price);
+
+            var missing = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
+            if (missing.Count > 0)
+                return NotFound($"Нет букетов: {string.Join(", ", missing)}");
+
+            var items = dto.Items.Select(i => new OrderItemEntity
+            {
+                Id = Guid.NewGuid(),
+                BouquetId = i.BouquetId,
+                Quantity = i.Quantity,
+                Price = bouquets[i.BouquetId]
+            }).ToList();
+
+            var total = items.Sum(i => i.Price * i.Quantity);
 
             var newOrder = new OrderEntity
             {
                 Id = Guid.NewGuid(),
-                UserId = order.UserId,
-                PickupDate = order.PickupDate,
-                TotalAmount = order.TotalAmount,
-                Status = order.Status,
-                Items = [.. order.Items.Select(i => new OrderItemEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Quantity = i.Quantity,
-                    Price = i.Price
-                })]
+                UserId = dto.UserId,
+                PickupDate = DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc),
+                TotalAmount = total,
+                Status = dto.Status,
+                Items = items
             };
+
             await _context.Orders.AddAsync(newOrder);
             await _context.SaveChangesAsync();
             return Ok(newOrder);
         }
 
+
         [HttpPost("many")]
-        public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> orders)
+        public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> dtos)
         {
-            if (orders is null || orders.Count == 0) return NoContent();
+            if (dtos is null || dtos.Count == 0) return NoContent();
 
-            var users = orders.Select(o => o.UserId).Distinct().ToList();
+            var allBouquetIds = dtos.SelectMany(o => o.Items.Select(i => i.BouquetId)).Distinct().ToList();
+            var prices = await _context.Bouquets
+                .Where(b => allBouquetIds.Contains(b.Id))
+                .Select(b => new { b.Id, b.Price })
+                .ToDictionaryAsync(b => b.Id, b => b.Price);
 
-            var existingByUsers = await _context.Orders
-                .Where(o => users.Contains(o.UserId))
-                .Select(o => o.UserId)
-                .Distinct()
-                .ToListAsync();
+            var missing = allBouquetIds.Where(id => !prices.ContainsKey(id)).ToList();
+            if (missing.Count > 0)
+                return NotFound($"Нет букетов: {string.Join(", ", missing)}");
 
-            if (existingByUsers.Count > 0)
-                return Conflict($"Заказы уже существуют для пользователей с ID: {string.Join(", ", existingByUsers)}");
+            var newOrders = new List<OrderEntity>();
 
-            var newOrders = orders.Select(order => new OrderEntity
+            foreach (var dto in dtos)
             {
-                Id = Guid.NewGuid(),
-                UserId = order.UserId,
-                // если приходят даты без зоны — жёстко проставь UTC
-                PickupDate = DateTime.SpecifyKind(order.PickupDate, DateTimeKind.Utc),
-                TotalAmount = order.TotalAmount,
-                Status = order.Status,
-                Items = [.. order.Items.Select(i => new OrderItemEntity
+                var items = dto.Items.Select(i => new OrderItemEntity
                 {
                     Id = Guid.NewGuid(),
                     BouquetId = i.BouquetId,
                     Quantity = i.Quantity,
-                    Price = i.Price
-                })]
-            }).ToList();
+                    Price = prices[i.BouquetId] 
+                }).ToList();
+
+                var total = items.Sum(i => i.Price * i.Quantity);
+
+                newOrders.Add(new OrderEntity
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = dto.UserId,
+                    PickupDate = DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc),
+                    TotalAmount = total,
+                    Status = dto.Status,
+                    Items = items
+                });
+            }
 
             _context.Orders.AddRange(newOrders);
             await _context.SaveChangesAsync();
@@ -110,20 +134,15 @@ namespace FlowerShop.Web.Controllers
                 o.PickupDate,
                 o.TotalAmount,
                 o.Status,
-                Items = o.Items.Select(i => new
-                {
-                    i.Id,
-                    i.BouquetId,
-                    i.Quantity,
-                    i.Price
-                })
+                Items = o.Items.Select(i => new { i.Id, i.BouquetId, i.Quantity, i.Price })
             });
 
             return Ok(result);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> DeleateOrder(Guid id)
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> DeleateOrderId(Guid id)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
@@ -134,6 +153,7 @@ namespace FlowerShop.Web.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpDelete("many")]
         public async Task<ActionResult> DeleateOrderMany()
         {

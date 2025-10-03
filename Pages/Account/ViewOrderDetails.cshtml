@@ -17,7 +17,7 @@ else
 {
     <div class="container">
         <nav style="margin-bottom:8px;">
-            <a href="@(Url.Page("/Account/ViewOrders"))" class="container-header__nav-link">← Back to Orders</a>
+            <a href="@(Url.Page("/Account/ViewOrders"))" class="container-header__nav-link">← Вернуться к заказам</a>
         </nav>
 
         <header class="content" style="padding-top:8px; padding-bottom:0;">
@@ -27,7 +27,6 @@ else
             </p>
         </header>
 
-        <!-- Статус и даты (без новых классов) -->
         <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
             <div class="card-header" style="justify-content:space-between;">
                 <div style="font-weight:700;">Статус заказа</div>
@@ -41,18 +40,20 @@ else
                 </div>
                 <div>
                     <div class="label">
-                        @(order.Status == OrderStatus.Completed ? "Delivered On"
-                                            : order.Status == OrderStatus.Cancelled ? "Cancelled On" : "Pickup Date")
+                        @if(order.Status == OrderStatus.Completed)
+                        {
+                            <div class="label">Дата выполнения</div>
+                            <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+                        }
                 </div>
-                <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
             </div>
         </div>
 
-        @if (order.Status == OrderStatus.Pending)
+        @if (order.Status == OrderStatus.Pending || order.Status == OrderStatus.New)
             {
                 <div style="margin-top:14px;">
-                    <form method="post" asp-page-handler="CancelOrder" asp-route-id="@order.Id">
-                        <button type="submit" class="btn btn--outline-pink">Отменить заказ</button>
+                    <form method="post">
+                        <button type="submit" asp-page-handler="CancelOrder" asp-route-id="@order.Id" class="btn btn--outline-pink">Отменить заказ</button>
                     </form>
                 </div>
             }
@@ -66,7 +67,6 @@ else
             }
         </section>
 
-        <!-- Позиции заказа: переиспользуем твою карточку каталога -->
         <section style="margin-top:16px;">
             <h2 class="profile-title" style="font-size:22px; text-align:left;">Детали букетов</h2>
 
@@ -102,15 +102,14 @@ else
             }
         </section>
 
-        <!-- Доставка/аккаунт: используем твои инфо-стили из профиля -->
         <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
             <div class="card-header">
-                <div>Delivery Information</div>
+                <div>Онфрмация о покупатели</div>
             </div>
 
             <div class="info-list">
                 <div class="row">
-                    <div class="label">Recipient Name</div>
+                    <div class="label">Имя получателя</div>
                     <div class="value">@(!string.IsNullOrWhiteSpace(Model.UserInfo?.Username) ? Model.UserInfo.Username : Model.UserInfo?.Login)</div>
                 </div>
 
@@ -121,31 +120,20 @@ else
             </div>
         </section>
 
-        <!-- Сводка -->
         <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
             <div class="card-header">
-                <div>Order Summary</div>
+                <div>Краткое описание заказа</div>
             </div>
-
-            @{
-                var subtotal = order.OrderItem?.Sum(x => x.Price * x.Quantity) ?? 0m;
-                var total = order.TotalAmount == 0m ? subtotal : order.TotalAmount;
-            }
-
             <div class="order-summary__grid">
                 <div>
-                    <div class="label">Subtotal</div>
-                    <div class="value">@subtotal.ToString("C")</div>
-                </div>
-                <div>
-                    <div class="label">Total</div>
-                    <div class="value" style="color:var(--brand); font-weight:800;">@total.ToString("C")</div>
+                    <div class="label">Итого</div>
+                    <div class="value" style="color:var(--brand); font-weight:800;">@order.TotalAmount.ToString("C")</div>
                 </div>
             </div>
 
             <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
                 <form method="post" asp-page-handler="Reorder" asp-route-id="@order.Id">
-                    <button type="submit" class="btn btn--brand">Повторить</button>
+                    <a type="submit" class="btn btn--brand cart-summary__checkout_purchases">Повторить</a>
                 </form>
                 <a class="btn btn--outline-pink" asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">Контакт поддержки</a>
             </div>
