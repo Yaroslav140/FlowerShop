@@ -31,7 +31,7 @@ namespace FlowerShop.Web.Controllers
         public async Task<ActionResult<BouquetEntity>> GetBouquetId(Guid id)
         {
             var bouquet = await _context.Bouquets.Where(i => i.Id == id).FirstOrDefaultAsync();
-            return bouquet is null ? NoContent() : Ok(bouquet.Id);
+            return bouquet is null ? NoContent() : Ok(bouquet);
         }
         [HttpPost]
         public async Task<ActionResult<GetBouquetDto>> CreateBouquet([FromBody] CreateBouquetDto bouquet)

@@ -1,5 +1,7 @@
 using FlowerShop.Data;
+using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOGet;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -44,4 +46,55 @@ public class ViewOrdersModel(FlowerDbContext context) : PageModel
                 )).ToList()
             )).ToListAsync();
     }
+
+    public async Task<IActionResult> OnPostRepeatOrderAsync(Guid orderId)
+    {
+        var oldOrder = await _context.Orders
+            .Include(o => o.Items).ThenInclude(i => i.Bouquet)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+
+        if (oldOrder == null)
+            return NotFound();
+
+        foreach (var item in oldOrder.Items)
+        {
+            if (item.Bouquet.Quantity < item.Quantity)
+            {
+                TempData["ErrorMessage"] =
+                    $"Недостаточно на складе для «{item.Bouquet.Name}». Остаток: {item.Bouquet.Quantity}, требуется: {item.Quantity}";
+                return RedirectToPage("/Account/ViewOrderDetails", new { id = orderId });
+            }
+        }
+
+        // создать новый заказ + списать резерв
+        var newOrder = new OrderEntity
+        {
+            Id = Guid.NewGuid(),
+            UserId = oldOrder.UserId,
+            PickupDate = DateTime.UtcNow.AddDays(1),
+            Status = OrderStatus.New,
+            TotalAmount = oldOrder.TotalAmount,
+            Items = []
+        };
+
+        foreach (var item in oldOrder.Items)
+        {
+            newOrder.Items.Add(new OrderItemEntity
+            {
+                Id = Guid.NewGuid(),
+                BouquetId = item.BouquetId,
+                Quantity = item.Quantity,
+                Price = item.Price
+            });
+            item.Bouquet.Quantity -= item.Quantity;
+        }
+
+        _context.Orders.Add(newOrder);
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Заказ повторён.";
+        return RedirectToPage("/Account/ViewOrderDetails", new { id = newOrder.Id });
+    }
+
+
 }

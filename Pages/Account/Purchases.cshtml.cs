@@ -46,10 +46,16 @@ namespace FlowerShop.Web.Pages.Account
             if (direction == "increase")
             {
                 if (stock <= 0)
-                    return BadRequest("Нет на складе.");
+                {
+                    TempData["ErrorMessage"] = "Нет на складе";
+                    return RedirectToPage();
+                }
 
                 if (totalInCart + 1 > stock)
-                    return BadRequest("Недостаточно на складе для увеличения количества.");
+                {
+                    TempData["ErrorMessage"] = "На складе недостаточно данного букета";
+                    return RedirectToPage();
+                }
 
                 cartItem.Quantity += 1;
             }

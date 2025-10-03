@@ -5,7 +5,14 @@
     var ru = new CultureInfo("ru-RU");
     var subtotal = Model.CartEntities?.Sum(ci => ci.Bouquet.Price * ci.Quantity) ?? 0m;
 }
-
+@if (TempData["SuccessMessage"] is string ok)
+{
+    <div class="alert success">@ok</div>
+}
+@if (TempData["ErrorMessage"] is string err)
+{
+    <div class="alert error">@err</div>
+}
 <div class="container cart">
     @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
     {

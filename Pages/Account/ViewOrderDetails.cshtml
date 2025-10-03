@@ -8,6 +8,14 @@
     string BadgeClass(OrderStatus s)
         => s == OrderStatus.Completed ? "badge badge--delivered" : "badge";
 }
+@if (TempData["SuccessMessage"] is string ok)
+{
+    <div class="alert success">@ok</div>
+}
+@if (TempData["ErrorMessage"] is string err)
+{
+    <div class="alert error">@err</div>
+}
 
 @if (order is null)
 {
@@ -36,7 +44,7 @@ else
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:0;">
                 <div>
                     <div class="label">Дата выполнения заказа</div>
-                    <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+                    <div class="value">@order.PickupDate.ToString("dd-MM-yyyy")</div>
                 </div>
                 <div>
                     <div class="label">
@@ -120,23 +128,46 @@ else
             </div>
         </section>
 
-        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
+        <section class="profile-card order-summary-card" style="max-width:var(--container); margin:16px auto;">
             <div class="card-header">
                 <div>Краткое описание заказа</div>
             </div>
-            <div class="order-summary__grid">
-                <div>
+
+            <div class="order-summary">
+                @foreach (var i in order.OrderItem)
+                {
+                    var lineTotal = i.Price * i.Quantity;
+                    <div class="order-summary__row">
+                        <div class="label">
+                            @i.Bouquet?.Name
+                            <span style="color:var(--muted); font-weight:600;"> × @i.Quantity</span>
+                            <div style="font-size:12px; color:var(--muted); margin-top:2px;">
+                                @i.Price.ToString("C") за шт.
+                            </div>
+                        </div>
+                        <div class="value" style="font-variant-numeric: tabular-nums;">
+                            @lineTotal.ToString("C")
+                        </div>
+                    </div>
+                }
+
+                <hr class="order-summary__divider" />
+
+                <div class="order-summary__row order-summary__row--total">
                     <div class="label">Итого</div>
-                    <div class="value" style="color:var(--brand); font-weight:800;">@order.TotalAmount.ToString("C")</div>
+                    <div class="value" style="color:var(--brand); font-weight:800; font-variant-numeric: tabular-nums;">
+                        @order.TotalAmount.ToString("C")
+                    </div>
                 </div>
             </div>
-
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
-                <form method="post" asp-page-handler="Reorder" asp-route-id="@order.Id">
-                    <a type="submit" class="btn btn--brand cart-summary__checkout_purchases">Повторить</a>
-                </form>
-                <a class="btn btn--outline-pink" asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">Контакт поддержки</a>
-            </div>
         </section>
+
+        <!-- две широкие кнопки внизу -->
+        <div class="order-actions-bar" style="max-width:var(--container); margin:12px auto 0;">
+            <a class="btn btn--outline-pink btn-wide"
+               asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">
+                Контакт поддержки
+            </a>
+        </div>
     </div>
 }

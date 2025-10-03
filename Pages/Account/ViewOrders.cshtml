@@ -1,7 +1,11 @@
 ﻿@page
+@using FlowerShop.Data.Models
 @using FlowerShop.Dto.DTOGet
 @model FlowerShop.Web.Pages.Account.ViewOrdersModel
-
+@if (TempData["ErrorMessage"] is string msg)
+{
+    <div class="alert alert-danger">@msg</div>
+}
 <div class="container">
     <a asp-page="/Account/Profile" class="back-link">← Вернуться назад</a>
 
@@ -25,41 +29,43 @@
                             <h3 class="order-title">@bouquet?.Name</h3>
                             <div class="order-meta">
 @*                                 <div>Секретный код: <span>@Model.SecredCode</span></div> *@
-                                <div>Дата получения: <span>@order.PickupDate.ToString("yyyy-MM-dd")</span></div>
+                                <div>Дата получения: <span>@order.PickupDate.ToString("dd-MM-yyyy")</span></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="order-status">
                         <div class="status-line">
-                            <span class="status-dot"></span>
-                            @switch(order.Status.ToString())
+                            <span class="status-dot status-@order.Status.ToString().ToLower()"></span>
+                            @switch (order.Status)
                             {
-                                case "New":
+                                case OrderStatus.New:
                                     <span class="status-text">Новый</span>
                                     break;
-                                case "Pending":
+                                case OrderStatus.Pending:
                                     <span class="status-text">Ожидает обработки</span>
                                     break;
-                                case "InProgress":
+                                case OrderStatus.InProgress:
                                     <span class="status-text">В обработке</span>
                                     break;
-                                case "Completed":
+                                case OrderStatus.Completed:
                                     <span class="status-text">Выполнен</span>
                                     break;
-                                case "Cancelled":
-                                    <span class="status-text">Отменен</span>
+                                case OrderStatus.Cancelled:
+                                    <span class="status-text">Отменён</span>
                                     break;
                                 default:
                                     <span class="status-text">@order.Status</span>
                                     break;
                             }
                         </div>
-                        @if ((order.Status.ToString() ?? "").Equals("Completed", StringComparison.OrdinalIgnoreCase))
+
+                        @if (order.Status == OrderStatus.Completed)
                         {
                             <span class="badge badge--delivered">Выполнен</span>
                         }
                     </div>
+
 
                     <div class="order-price">
                         @order.TotalAmount ₽
@@ -67,7 +73,13 @@
 
                     <div class="order-actions">
                         <a class="btn btn--brand btn--sm" asp-page="/Account/ViewOrderDetails" asp-route-id="@order.Id"> Подробнее </a>
-                        <a class="btn btn--outline-pink btn--sm">Повторить заказ</a>
+                        <form method="post">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <button asp-page-handler="RepeatOrder" class="btn btn--outline-pink btn--sm">
+                                Повторить заказ
+                            </button>
+                        </form>
+
                     </div>
                 </article>
             }
