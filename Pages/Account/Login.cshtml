@@ -1,16 +1,14 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.LoginModel
-@{
-    ViewData["Title"] = "Вход";
-}
-
 <div class="auth-center">
     <div class="form-card">
         <h2>Вход</h2>
         <p class="subtitle">Введите данные своей учетной записи, чтобы продолжить</p>
 
-        <div asp-validation-summary="All" class="text-danger"></div>
-
+        @if (TempData["ErrorMessage"] is string err)
+        {
+            <div class="alert error">@err</div>
+        }
         <form method="post">
             <div class="form-group">
                 <label asp-for="Login">Логин</label>

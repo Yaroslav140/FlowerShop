@@ -43,128 +43,212 @@ namespace FlowerShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderEntity>> CreateOrders([FromBody] CreateOrderDto dto)
+        public async Task<ActionResult<GetOrderDto>> CreateOrders([FromBody] CreateOrderDto dto)
         {
-            if (dto is null || dto.Items is null || dto.Items.Count == 0)
-                return BadRequest("Пустой заказ.");
+            if (dto == null) return BadRequest("Пустой запрос.");
+            if (dto.Items == null || dto.Items.Count == 0) return BadRequest("В заказе нет позиций.");
+
+            if (dto.Items.Any(i => i.Quantity <= 0))
+                return BadRequest("Количество каждой позиции должно быть > 0.");
+            if (dto.Items.Any(i => i.Price < 0))
+                return BadRequest("Цена не может быть отрицательной.");
 
             var bouquetIds = dto.Items.Select(i => i.BouquetId).Distinct().ToList();
             var bouquets = await _context.Bouquets
                 .Where(b => bouquetIds.Contains(b.Id))
-                .Select(b => new { b.Id, b.Price })
-                .ToDictionaryAsync(b => b.Id, b => b.Price);
+                .ToDictionaryAsync(b => b.Id);
 
             var missing = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
             if (missing.Count > 0)
-                return NotFound($"Нет букетов: {string.Join(", ", missing)}");
+                return BadRequest($"Не найдены букеты: {string.Join(", ", missing)}.");
 
-            var items = dto.Items.Select(i => new OrderItemEntity
+            var needByBouquet = dto.Items
+                .GroupBy(i => i.BouquetId)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+            foreach (var (bouquetId, needQty) in needByBouquet)
             {
-                Id = Guid.NewGuid(),
-                BouquetId = i.BouquetId,
-                Quantity = i.Quantity,
-                Price = bouquets[i.BouquetId]
-            }).ToList();
-
-            var total = items.Sum(i => i.Price * i.Quantity);
+                var b = bouquets[bouquetId];
+                if (b.Quantity < needQty)
+                    return BadRequest($"Недостаточно «{b.Name}»: нужно {needQty}, доступно {b.Quantity}.");
+            }
 
             var newOrder = new OrderEntity
             {
-                Id = Guid.NewGuid(),
                 UserId = dto.UserId,
-                PickupDate = DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc),
-                TotalAmount = total,
+                PickupDate = dto.PickupDate,
+                TotalAmount = dto.TotalAmount, 
                 Status = dto.Status,
-                Items = items
+                Items = dto.Items.Select(i => new OrderItemEntity
+                {
+                    BouquetId = i.BouquetId,
+                    Quantity = i.Quantity,
+                    Price = i.Price
+                }).ToList()
             };
 
-            await _context.Orders.AddAsync(newOrder);
-            await _context.SaveChangesAsync();
-            return Ok(newOrder);
+            await using var tx = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var (bouquetId, needQty) in needByBouquet)
+                    bouquets[bouquetId].Quantity -= needQty;
+
+                _context.Orders.Add(newOrder);
+                _context.Bouquets.UpdateRange(bouquets.Values);
+
+                await _context.SaveChangesAsync();
+                await tx.CommitAsync();
+            }
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
+
+            var result = new GetOrderDto(
+                newOrder.Id,
+                newOrder.UserId,
+                newOrder.PickupDate,
+                newOrder.TotalAmount,
+                newOrder.Status,
+                [.. newOrder.Items.Select(oi => new GetOrderItemDto(
+                    oi.Id,
+                    oi.BouquetId,
+                    oi.Quantity,
+                    oi.Price,
+                    new GetBouquetDto(
+                        bouquets[oi.BouquetId].Id,
+                        bouquets[oi.BouquetId].Name,
+                        bouquets[oi.BouquetId].Description,
+                        bouquets[oi.BouquetId].Price,
+                        bouquets[oi.BouquetId].Quantity,
+                        bouquets[oi.BouquetId].ImageUrl
+                    )
+                ))]);
+
+            return Ok(result);
         }
 
 
         [HttpPost("many")]
         public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> dtos)
         {
-            if (dtos is null || dtos.Count == 0) return NoContent();
+            if (dtos == null || dtos.Count == 0)
+                return BadRequest("Список заказов пуст.");
 
-            var allBouquetIds = dtos.SelectMany(o => o.Items.Select(i => i.BouquetId)).Distinct().ToList();
-            var prices = await _context.Bouquets
-                .Where(b => allBouquetIds.Contains(b.Id))
-                .Select(b => new { b.Id, b.Price })
-                .ToDictionaryAsync(b => b.Id, b => b.Price);
-
-            var missing = allBouquetIds.Where(id => !prices.ContainsKey(id)).ToList();
-            if (missing.Count > 0)
-                return NotFound($"Нет букетов: {string.Join(", ", missing)}");
-
-            var newOrders = new List<OrderEntity>();
-
+            var newOrders = new List<OrderEntity>(dtos.Count);
             foreach (var dto in dtos)
             {
-                var items = dto.Items.Select(i => new OrderItemEntity
-                {
-                    Id = Guid.NewGuid(),
-                    BouquetId = i.BouquetId,
-                    Quantity = i.Quantity,
-                    Price = prices[i.BouquetId] 
-                }).ToList();
-
-                var total = items.Sum(i => i.Price * i.Quantity);
-
                 newOrders.Add(new OrderEntity
                 {
-                    Id = Guid.NewGuid(),
                     UserId = dto.UserId,
-                    PickupDate = DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc),
-                    TotalAmount = total,
+                    PickupDate = dto.PickupDate,
+                    TotalAmount = dto.TotalAmount,
                     Status = dto.Status,
-                    Items = items
+                    Items = dto.Items
+                        .Select(i => new OrderItemEntity
+                        {
+                            BouquetId = i.BouquetId,
+                            Quantity = i.Quantity,
+                            Price = i.Price
+                        })
+                        .ToList()
                 });
             }
 
-            _context.Orders.AddRange(newOrders);
-            await _context.SaveChangesAsync();
+            var bouquetIds = newOrders
+                .SelectMany(o => o.Items)
+                .Select(i => i.BouquetId)
+                .Distinct()
+                .ToList();
 
-            var result = newOrders.Select(o => new
+            if (bouquetIds.Count == 0)
+                return BadRequest("В заказах нет позиций.");
+
+            var bouquets = await _context.Bouquets
+                .Where(b => bouquetIds.Contains(b.Id))
+                .ToDictionaryAsync(b => b.Id);
+
+            var missingIds = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
+            if (missingIds.Count > 0)
+                return BadRequest($"Некоторые букеты не найдены: {string.Join(", ", missingIds)}.");
+
+            var requestedByBouquet = newOrders
+                .SelectMany(o => o.Items)
+                .GroupBy(i => i.BouquetId)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+            foreach (var (bouquetId, needQty) in requestedByBouquet)
             {
-                o.Id,
-                o.UserId,
-                o.PickupDate,
-                o.TotalAmount,
-                o.Status,
-                Items = o.Items.Select(i => new { i.Id, i.BouquetId, i.Quantity, i.Price })
-            });
+                var b = bouquets[bouquetId];
+                if (needQty <= 0)
+                    return BadRequest($"Некорректное количество для букета {b.Name}.");
 
-            return Ok(result);
-        }
-
-
-        [HttpDelete("{id:guid}")]
-        public async Task<ActionResult> DeleateOrderId(Guid id)
-        {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-            if (order == null)
-            {
-                return NotFound("Order not found.");
+                if (b.Quantity < needQty)
+                    return BadRequest($"Недостаточно «{b.Name}»: нужно {needQty}, доступно {b.Quantity}.");
             }
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
-            return NoContent();
+
+            await using var tx = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var (bouquetId, needQty) in requestedByBouquet)
+                {
+                    bouquets[bouquetId].Quantity -= needQty;
+                }
+
+                _context.Orders.AddRange(newOrders);
+                _context.Bouquets.UpdateRange(bouquets.Values);
+
+                await _context.SaveChangesAsync();
+                await tx.CommitAsync();
+            }
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
+
+            return Ok(); 
         }
 
-        [HttpDelete("many")]
-        public async Task<ActionResult> DeleateOrderMany()
+        [HttpPost("{id:guid}/cancel")]
+        public async Task<ActionResult> Cancel(Guid id)
         {
-            var order = await _context.Orders.ToListAsync();
+            var order = await _context.Orders
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Bouquet)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
             if (order == null)
-            {
                 return NotFound("Order not found.");
+
+            if (order.Status == OrderStatus.Cancelled)
+                return Ok();
+
+            if (order.Status is not OrderStatus.New and not OrderStatus.Pending)
+                return BadRequest($"Нельзя отменить заказ в статусе {order.Status}.");
+
+            await using var tx = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var item in order.Items)
+                {
+                    item.Bouquet.Quantity += item.Quantity;
+                }
+
+                order.Status = OrderStatus.Cancelled;
+
+                await _context.SaveChangesAsync();
+                await tx.CommitAsync();
             }
-            _context.Orders.RemoveRange(order);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
+
+            return Ok();
         }
+
     }
 }

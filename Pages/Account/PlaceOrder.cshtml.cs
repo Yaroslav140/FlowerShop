@@ -109,7 +109,7 @@ namespace FlowerShop.Web.Pages.Account
                     Id = Guid.NewGuid(),
                     BouquetId = i.BouquetId,
                     Quantity = i.Quantity,
-                    Price = i.Quantity * i.PriceSnapshot
+                    Price = i.PriceSnapshot
                 })]
             };
 

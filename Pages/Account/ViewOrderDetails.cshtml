@@ -112,7 +112,7 @@ else
 
         <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
             <div class="card-header">
-                <div>Онфрмация о покупатели</div>
+                <div>Инфрмация о покупатели</div>
             </div>
 
             <div class="info-list">
@@ -125,6 +125,13 @@ else
                     <div class="label">Логин</div>
                     <div class="value login">@Model.UserInfo?.Login</div>
                 </div>
+                @if (!string.IsNullOrWhiteSpace(Model.UserInfo?.Phone))
+                {
+                    <div class="row">
+                        <div class="label">Номер телефона</div>
+                        <div class="value login">@Model.UserInfo?.Phone</div>
+                    </div>
+                }
             </div>
         </section>
 

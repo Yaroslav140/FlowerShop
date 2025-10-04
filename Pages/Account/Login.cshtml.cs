@@ -1,5 +1,4 @@
 using FlowerShop.Data;
-using FlowerShop.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +21,18 @@ namespace FlowerShop.Web.Pages.Account
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
+            }
 
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
-                ModelState.AddModelError(string.Empty, "Укажите логин и пароль");
+                TempData["ErrorMessage"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
             }
 
@@ -35,7 +41,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (user is null || !BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash))
             {
-                ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
+                TempData["ErrorMessage"] = "Неверный логин или пароль";
                 return Page();
             }
 

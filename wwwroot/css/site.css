@@ -646,9 +646,14 @@ a {
 .cart-item__info {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
 }
 
+@media(max-width: 890px) {
+    .cart-item__info {
+        margin-left:20px;
+    }
+}
 .cart-item__qty {
     display: inline-flex;
     align-items: center;
@@ -665,9 +670,9 @@ a {
     cursor: pointer;
 }
 
-    .qty__btn:hover {
-        background: #f5f5f5;
-    }
+.qty__btn:hover {
+    background: #f5f5f5;
+}
 
 .qty__value {
     min-width: 24px;
@@ -688,11 +693,10 @@ a {
     color: #9ca3af;
 }
 
-    .cart-item__remove .remove__btn:hover {
-        color: #374151;
-    }
+.cart-item__remove .remove__btn:hover {
+    color: #374151;
+}
 
-/* Сводка */
 .cart-summary {
     position: sticky;
     top: 16px;
@@ -1015,7 +1019,7 @@ a {
 }
 
 /* ====== <= 900px: статус компактнее, цена ближе ====== */
-@media (max-width:900px) {
+@media (max-width: 900px) {
     .order-row {
         gap: 14px;
         padding: 14px;
@@ -1065,6 +1069,9 @@ a {
         align-items: end;
         width: 160px;
     }
+        .order-actions .btn {
+            width: 100%;
+        }
 }
 
 /* ====== <= 560px: в столбик, кнопки на всю ширину ====== */
@@ -1098,10 +1105,6 @@ a {
         width: 100%;
         align-items: stretch; /* кнопки на всю ширину */
     }
-
-        .order-actions .btn {
-            width: 100%;
-        }
 }
 
 /* Небольшой косметический тюнинг текста для мобильных */

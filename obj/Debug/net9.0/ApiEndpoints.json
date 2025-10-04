@@ -205,7 +205,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "FlowerShop.Data.Models.OrderEntity",
+        "Type": "FlowerShop.Dto.DTOGet.GetOrderDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -217,9 +217,9 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
-    "Method": "DeleateOrderId",
-    "RelativePath": "api/Orders/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "Cancel",
+    "RelativePath": "api/Orders/{id}/cancel",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -245,16 +245,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
-    "Method": "DeleateOrderMany",
-    "RelativePath": "api/Orders/many",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {

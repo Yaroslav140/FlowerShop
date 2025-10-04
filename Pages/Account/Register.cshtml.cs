@@ -10,30 +10,35 @@ using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class RegisterModel(FlowerDbContext context) : PageModel
     {
         [BindProperty, Required(ErrorMessage = "Введите имя пользователя")]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
         [BindProperty, Required(ErrorMessage = "Введите корректный Login")]
-        public string Login { get; set; }
-        [BindProperty, Required, MinLength(6, ErrorMessage = "Пароль должен быть минимум 6 символов")] 
-        public string Password { get; set; }
-        [BindProperty, Required, Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public string ConfirmPassword { get; set; }
+        public string Login { get; set; } = string.Empty;
+        [BindProperty, Required(ErrorMessage = "Поле с паролем не заполнено"), MinLength(6, ErrorMessage = "Пароль должен быть минимум 6 символов")] 
+        public string Password { get; set; } = string.Empty;
+        [BindProperty, Required(ErrorMessage = "Поле с паролем не заполнено"), Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
-        private readonly FlowerDbContext _context;
-        public RegisterModel(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
+            }
 
-            var userName = UserName?.Trim();
+            var userName = UserName.Trim();
+            var login = Login.Trim();
 
             if (await _context.UserDomains.AnyAsync(u => u.Login == Login, ct))
             {
-                ModelState.AddModelError(string.Empty, "Пользователь с таким логином уже существует");
+                TempData["ErrorMessage"] = "Пользователь с таким логином уже существует";  
                 return Page();
             }
 
@@ -41,7 +46,7 @@ namespace FlowerShop.Web.Pages.Account
             {
                 Id = Guid.NewGuid(),
                 Name = userName,
-                Login = Login,
+                Login = login,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password, workFactor: 12),
                 DateRegistration = DateTime.UtcNow
             };
@@ -54,15 +59,15 @@ namespace FlowerShop.Web.Pages.Account
             }
             catch (DbUpdateException)
             {
-                ModelState.AddModelError(string.Empty, "Пользователь с такой почтой уже существует");
+                TempData["ErrorMessage"] = "Пользователь с таким логином уже существует";
                 return Page();
             }
 
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(ClaimTypes.Name, user.Name ?? Login),
-                new("Login", Login)
+                new(ClaimTypes.Name, user.Name ?? user.Login),
+                new("Login", user.Login)
             };
 
             var principal = new ClaimsPrincipal(

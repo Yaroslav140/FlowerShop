@@ -123,6 +123,5 @@ namespace FlowerShop.Web.Controllers
 
             return Ok($"{deleted} букетов удалено вместе с позициями в корзине.");
         }
-
     }
 }

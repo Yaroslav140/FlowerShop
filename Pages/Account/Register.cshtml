@@ -1,13 +1,13 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.RegisterModel
-@{
-    ViewData["Title"] = "Регистрация";
-}
 <div class="auth-center">
     <div class="form-card">
         <h2>Создание аккаунта</h2>
         <p class="subtitle">Присоединяйтесь к Нам, чтобы начать заказывать красивые цветы</p>
-
+        @if (TempData["ErrorMessage"] is string err)
+        {
+            <div class="alert error">@err</div>
+        }
         <form method="post">
             <div class="form-group">
                 <label for="username">Имя пользователя</label>

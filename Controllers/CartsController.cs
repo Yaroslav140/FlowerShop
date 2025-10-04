@@ -8,11 +8,9 @@ namespace FlowerShop.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CartsController : Controller
+    public class CartsController(FlowerDbContext context) : Controller
     {
-        private readonly FlowerDbContext _context;
-
-        public CartsController(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<List<GetCartDto>>> GetCartsAsync()

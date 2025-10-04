@@ -56,5 +56,16 @@ namespace FlowerShop.Web.Pages.Account
 
             return RedirectToPage("/Account/Profile");
         }
+
+        public async Task<ActionResult> OnPostDeleteAsync()
+        {
+            var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? " ");
+            var user = await _context.UserDomains.FindAsync(userId);
+            if (user == null) return NotFound();
+            _context.UserDomains.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Home");
+        }
     }
 }
