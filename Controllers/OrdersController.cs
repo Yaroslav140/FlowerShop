@@ -79,12 +79,12 @@ namespace FlowerShop.Web.Controllers
                 PickupDate = dto.PickupDate,
                 TotalAmount = dto.TotalAmount, 
                 Status = dto.Status,
-                Items = dto.Items.Select(i => new OrderItemEntity
+                Items = [.. dto.Items.Select(i => new OrderItemEntity
                 {
                     BouquetId = i.BouquetId,
                     Quantity = i.Quantity,
                     Price = i.Price
-                }).ToList()
+                })]
             };
 
             await using var tx = await _context.Database.BeginTransactionAsync();
@@ -145,14 +145,13 @@ namespace FlowerShop.Web.Controllers
                     PickupDate = dto.PickupDate,
                     TotalAmount = dto.TotalAmount,
                     Status = dto.Status,
-                    Items = dto.Items
+                    Items = [.. dto.Items
                         .Select(i => new OrderItemEntity
                         {
                             BouquetId = i.BouquetId,
                             Quantity = i.Quantity,
                             Price = i.Price
-                        })
-                        .ToList()
+                        })]
                 });
             }
 

@@ -295,6 +295,32 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Users",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "FlowerShop.Dto.DTOUpdate.UpdateUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "FlowerShop.Dto.DTOGet.GetUserDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
     "Method": "DeleteUsers",
     "RelativePath": "api/Users",
     "HttpMethod": "DELETE",

@@ -1,7 +1,11 @@
-﻿using FlowerShop.Data;
+﻿using BCrypt.Net;
+using FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
+using FlowerShop.Dto.DTOUpdate;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -121,6 +125,69 @@ namespace FlowerShop.Web.Controllers
             await _context.UserDomains.AddRangeAsync(newUsers);
             await _context.SaveChangesAsync();
             return Ok(newUsers);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<GetUserDto>> UpdateUser([FromBody] UpdateUserDto userDto, CancellationToken ct)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Id == userDto.UserId, ct);
+            if (user == null)
+                return NotFound($"Пользователь с Id = {userDto.UserId} не найден");
+
+            string? newLoginRaw = userDto.Login?.Trim();
+            string? newLoginNorm = newLoginRaw?.ToLowerInvariant();
+            string currentLoginNorm = user.Login.Trim().ToLowerInvariant();
+
+            if (!string.IsNullOrEmpty(newLoginNorm) && newLoginNorm != currentLoginNorm)
+            {
+                bool loginBusy = await _context.UserDomains
+                    .AnyAsync(u => u.Id != user.Id && u.Login.ToLower() == newLoginNorm, ct);
+
+                if (loginBusy)
+                    return Conflict($"Логин '{newLoginRaw}' уже занят");
+
+                user.Login = newLoginRaw!; 
+            }
+
+            if (!string.IsNullOrWhiteSpace(userDto.Name))
+                user.Name = userDto.Name!.Trim();
+
+            if (!string.IsNullOrEmpty(userDto.NewPassword) || !string.IsNullOrEmpty(userDto.OldPassword))
+            {
+                if (string.IsNullOrEmpty(userDto.OldPassword) || string.IsNullOrEmpty(userDto.NewPassword))
+                    return BadRequest("Для смены пароля нужны и старый, и новый пароль.");
+
+                if (userDto.NewPassword!.Length < 6)
+                    return BadRequest("Длина пароля должна быть больше 6 символов.");
+
+                if (!BCrypt.Net.BCrypt.Verify(userDto.OldPassword!, user.PasswordHash))
+                    return BadRequest("Старый пароль указан неверно.");
+
+                if (userDto.OldPassword == userDto.NewPassword)
+                    return BadRequest("Новый пароль не должен совпадать со старым.");
+
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDto.NewPassword, workFactor: 12);
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync(ct);
+                return Ok();
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException?.Message?.Contains("23505") == true ||
+                    ex.InnerException?.Message?.Contains("2601") == true ||
+                    ex.InnerException?.Message?.Contains("2627") == true)
+                {
+                    return Conflict("Такой логин уже существует.");
+                }
+
+                return BadRequest($"Ошибка при обновлении пользователя: {ex.Message}");
+            }
         }
 
         [HttpDelete]
