@@ -532,7 +532,7 @@ a {
 
 .orders-caption {
     color: #6b7280;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
 }
 
 @media (max-width: 1024px) {
@@ -1128,14 +1128,14 @@ a {
 /* Адаптив */
 @media (max-width: 1024px) {
     .order-summary__grid {
-        gap: 5rem; /* уменьшаем отступы */
+        gap: 15rem; /* уменьшаем отступы */
     }
 }
 
 @media (max-width: 768px) {
     .order-summary__grid {
         flex-direction: column; 
-        gap: 2rem;
+        gap: 1rem;
     }
 }
 .alert {

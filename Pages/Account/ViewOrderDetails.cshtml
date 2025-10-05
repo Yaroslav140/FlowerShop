@@ -132,6 +132,13 @@ else
                         <div class="value login">@Model.UserInfo?.Phone</div>
                     </div>
                 }
+                @if (!string.IsNullOrWhiteSpace(Model.UserInfo?.CodeOrder))
+                {
+                    <div class="row">
+                        <div class="label">Код</div>
+                        <div class="value login">@Model.UserInfo?.CodeOrder</div>
+                    </div>
+                }
             </div>
         </section>
 

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09b883f4e845a820ad46cca1763aec2ca532c94e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e6c165234ab708bcbfebb715d946f26c0d6ba48")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

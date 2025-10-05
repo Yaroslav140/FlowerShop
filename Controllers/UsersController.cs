@@ -22,6 +22,7 @@ namespace FlowerShop.Web.Controllers
                     u.Name,
                     u.Login,
                     u.Phone,
+                    u.CodeOrder,
                     u.Orders
                     .Select(o => new GetOrderDto(
                         o.Id,
