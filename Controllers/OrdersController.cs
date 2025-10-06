@@ -14,9 +14,15 @@ namespace FlowerShop.Web.Controllers
         private readonly FlowerDbContext _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<GetOrderDto>>> GetOrders()
+        public async Task<ActionResult<List<GetOrderDto>>> GetOrders(Guid? userId)
         {
             var orders = await _context.Orders
+                .AsNoTracking()
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Bouquet)
+                .Where(o => userId != null
+                    ? o.UserId == userId
+                    : o.Status != OrderStatus.Cancelled && o.Status != OrderStatus.Completed)
                 .Select(o => new GetOrderDto(
                     o.Id,
                     o.UserId,
@@ -37,7 +43,8 @@ namespace FlowerShop.Web.Controllers
                             i.Bouquet.ImageUrl
                         )
                     )).ToList()
-                )).ToListAsync();
+                ))
+                .ToListAsync();
 
             return Ok(orders);
         }
