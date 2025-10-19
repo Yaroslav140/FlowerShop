@@ -116,7 +116,11 @@
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\FlowerShop.Data.csproj": {
+                "projectPath": "C:\\Users\\param\\source\\repos\\FlowerShop.Data\\FlowerShop.Data.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

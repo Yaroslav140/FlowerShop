@@ -4,6 +4,7 @@ C:\Users\param\source\repos\FlowerShop\wwwroot\css\site.css
 wwwroot\css\site.css
 wwwroot\img\Flower.jpg
 wwwroot\img\icon.svg
+wwwroot\img\ShopCart.png
 wwwroot\img\user.png
 wwwroot\js\site.js
 wwwroot\uploads\bouquets\1.png

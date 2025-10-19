@@ -1,7 +1,89 @@
 ﻿@page
 @model FlowerShop.Web.Pages.PageHeader.ContactsModel
-@{
-}
-<div class="contact-container">
-    <h1>Контакты</h1>
+
+<div class="container-main">
+    <div class="container">
+        <!-- Заголовок страницы -->
+        <section class="content">
+            <h1 class="content__main">Контакты</h1>
+            <p class="content__description">
+                Свяжитесь с нами, чтобы оформить заказ или задать любые вопросы
+            </p>
+        </section>
+
+        <!-- Две карточки: информация и часы работы -->
+        <div class="profile-inner">
+            <!-- Карточка: контактная информация -->
+            <section class="profile-card info" aria-labelledby="contact-info-title">
+                <div class="card-header" id="contact-info-title">
+                    <span class="icon-circle" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2z"></path>
+                        </svg>
+                    </span>
+                    Наши данные
+                </div>
+
+                <div class="info-list">
+                    <div class="row">
+                        <div class="label">Телефон</div>
+                        <div class="value">
+                            <p>+8 (926) 426-54 14</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Адрес</div>
+                        <div class="value">
+                            <address class="not-italic">
+                                123 Flower Street<br />
+                                Garden City, GC 12345
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Почта</div>
+                        <div class="value">
+                            <a href="mailto:hello@bloomandblossom.com">hello@bloomandblossom.com</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="profile-card info" aria-labelledby="business-hours-title">
+                <div class="card-header" id="business-hours-title">
+                    <span class="icon-circle" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M12 1a11 11 0 1011 11A11.012 11.012 0 0012 1zm.75 5.5a.75.75 0 00-1.5 0v5.06c0 .2.08.39.22.53l3.23 3.23a.75.75 0 101.06-1.06l-3.01-3.01V6.5z"></path>
+                        </svg>
+                    </span>
+                    Время работы
+                </div>
+
+                <div class="info-list">
+                    <div class="row">
+                        <div class="label">Понедельник – Пятницу</div>
+                        <div class="value">
+                            <time datetime="09:00">9:00 </time> – <time datetime="19:00">19:00</time>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Суббота</div>
+                        <div class="value">
+                            <time datetime="09:00">9:00</time> – <time datetime="18:00">18:00</time>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Воскресенье</div>
+                        <div class="value">
+                            <time datetime="10:00">10:00</time> – <time datetime="16:00">16:00</time>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 </div>

@@ -2,7 +2,6 @@
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,16 +18,21 @@ namespace FlowerShop.Web.Controllers
         {
             var bouquets = await _context.Bouquets
                 .Select(b => new GetBouquetDto(
+                    b.Id,
                     b.Name,
                     b.Description,
                     b.Price,
-                    b.Stock,
-                    b.ImageUrl,
-                    b.FlowerLinks.Select(fl => new GetBouquetFlowerDto(fl.BouquetId, fl.FlowerId, fl.Quantity)).ToList()
+                    b.Quantity,
+                    b.ImageUrl
                     )).ToListAsync();
             return Ok(bouquets);
         }
-
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<BouquetEntity>> GetBouquetId(Guid id)
+        {
+            var bouquet = await _context.Bouquets.Where(i => i.Id == id).FirstOrDefaultAsync();
+            return bouquet is null ? NoContent() : Ok(bouquet);
+        }
         [HttpPost]
         public async Task<ActionResult<GetBouquetDto>> CreateBouquet([FromBody] CreateBouquetDto bouquet)
         {
@@ -41,7 +45,7 @@ namespace FlowerShop.Web.Controllers
                 Name = bouquet.NameBouquet,
                 Description = bouquet.DescriptionBouquet,
                 Price = bouquet.PriceBouquet,
-                Stock = bouquet.Stock,
+                Quantity = bouquet.Quantity,
                 ImageUrl = bouquet.ImageUrl
             };
 
@@ -68,7 +72,7 @@ namespace FlowerShop.Web.Controllers
                 Name = dto.NameBouquet,
                 Price = dto.PriceBouquet,
                 Description = dto.DescriptionBouquet,
-                Stock = dto.Stock,
+                Quantity = dto.Quantity,
                 ImageUrl = dto.ImageUrl
                 
             }).ToList();
@@ -119,6 +123,5 @@ namespace FlowerShop.Web.Controllers
 
             return Ok($"{deleted} букетов удалено вместе с позициями в корзине.");
         }
-
     }
 }

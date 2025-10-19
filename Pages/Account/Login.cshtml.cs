@@ -9,28 +9,30 @@ using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel(FlowerDbContext context) : PageModel
     {
-        private readonly FlowerDbContext _context;
+        private readonly FlowerDbContext _context = context;
         [BindProperty, Required(ErrorMessage = "Введите логин")]
         public string Login { get; set; }
 
         [BindProperty, Required(ErrorMessage = "Введите пароль")]
         public string Password { get; set; }
 
-        public LoginModel(FlowerDbContext context) => _context = context;
-        public void OnGet()
-        {
-        }
-
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
+            }
 
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
-                ModelState.AddModelError(string.Empty, "Укажите логин и пароль");
+                TempData["ErrorMessage"] = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
             }
 
@@ -39,7 +41,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (user is null || !BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash))
             {
-                ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
+                TempData["ErrorMessage"] = "Неверный логин или пароль";
                 return Page();
             }
 
