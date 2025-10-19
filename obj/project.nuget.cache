@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< Updated upstream
   "dgSpecHash": "YqLeFgzr0GA=",
+=======
+  "dgSpecHash": "ouSrwYZtOUs=",
+>>>>>>> Stashed changes
   "success": true,
   "projectFilePath": "C:\\Users\\param\\source\\repos\\FlowerShop\\FlowerShop.Web.csproj",
   "expectedPackageFiles": [
