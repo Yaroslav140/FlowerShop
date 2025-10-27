@@ -29,8 +29,8 @@ namespace FlowerShop.Web.Pages.Account
                 .Where(o => o.Id == Id)
                 .Select(o => new GetOrderDto(
                     o.Id,
-                    o.UserId,
-                    o.PickupDate,
+                    o.User.Name,
+                    o.PickupDate.ToString("dd.MM.yyyy"),
                     o.TotalAmount,
                     o.Status,
                     o.Items.Select(oi => new GetOrderItemDto(

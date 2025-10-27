@@ -30,8 +30,8 @@ namespace FlowerShop.Web.Controllers
                     u.Orders
                     .Select(o => new GetOrderDto(
                         o.Id,
-                        o.UserId,
-                        o.PickupDate, 
+                        o.User.Name,
+                        o.PickupDate.ToString("dd.MM.yyyy"), 
                         o.TotalAmount,
                         o.Status,
                         o.Items.Select(i => new GetOrderItemDto(

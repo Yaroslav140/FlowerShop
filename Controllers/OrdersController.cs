@@ -25,8 +25,8 @@ namespace FlowerShop.Web.Controllers
                     : o.Status != OrderStatus.Cancelled && o.Status != OrderStatus.Completed)
                 .Select(o => new GetOrderDto(
                     o.Id,
-                    o.UserId,
-                    o.PickupDate,
+                    o.User.Name,
+                    o.PickupDate.ToString("dd.MM.yyyy"),
                     o.TotalAmount,
                     o.Status,
                     o.Items.Select(i => new GetOrderItemDto(
@@ -114,8 +114,8 @@ namespace FlowerShop.Web.Controllers
 
             var result = new GetOrderDto(
                 newOrder.Id,
-                newOrder.UserId,
-                newOrder.PickupDate,
+                newOrder.User.Name,
+                newOrder.PickupDate.ToString("dd.MM.yyyy"),
                 newOrder.TotalAmount,
                 newOrder.Status,
                 [.. newOrder.Items.Select(oi => new GetOrderItemDto(

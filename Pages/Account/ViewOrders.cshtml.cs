@@ -27,8 +27,8 @@ public class ViewOrdersModel(FlowerDbContext context) : PageModel
             .Where(o => o.UserId == userId)
             .Select(o => new GetOrderDto(
                 o.Id,                
-                o.UserId,
-                o.PickupDate,
+                o.User.Name,
+                o.PickupDate.ToString("dd.MM.yyyy"),
                 o.TotalAmount,
                 o.Status,
                 o.Items.Select(i => new GetOrderItemDto(

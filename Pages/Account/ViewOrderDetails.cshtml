@@ -44,14 +44,14 @@ else
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:0;">
                 <div>
                     <div class="label">Дата выполнения заказа</div>
-                    <div class="value">@order.PickupDate.ToString("dd-MM-yyyy")</div>
+                    <div class="value">@order.PickupDate</div>
                 </div>
                 <div>
                     <div class="label">
                         @if(order.Status == OrderStatus.Completed)
                         {
                             <div class="label">Дата выполнения</div>
-                            <div class="value">@order.PickupDate.ToString("yyyy-MM-dd")</div>
+                            <div class="value">@order.PickupDate</div>
                         }
                 </div>
             </div>
