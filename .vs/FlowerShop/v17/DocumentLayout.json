@@ -1,7 +1,20 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\viewmodel\\userviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\apiclient\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\apiclient\\baseapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B54C0641-CE14-70E5-5036-1594E6695859}|..\\FloraConnect\\FlowerShop.WpfClient.csproj|c:\\users\\param\\source\\repos\\floraconnect\\viewmodel\\base\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,8 +22,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseApiClient.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\ApiClient\\BaseApiClient.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\ApiClient\\BaseApiClient.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\ApiClient\\BaseApiClient.cs",
+              "RelativeToolTip": "..\\FloraConnect\\ApiClient\\BaseApiClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T10:11:30.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserApi.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\ApiClient\\UserApi.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\ApiClient\\UserApi.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\ApiClient\\UserApi.cs",
+              "RelativeToolTip": "..\\FloraConnect\\ApiClient\\UserApi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T10:11:06.275Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -18,6 +57,32 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RelayCommand.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\ViewModel\\Base\\RelayCommand.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\ViewModel\\Base\\RelayCommand.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\ViewModel\\Base\\RelayCommand.cs",
+              "RelativeToolTip": "..\\FloraConnect\\ViewModel\\Base\\RelayCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T10:09:30.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FloraConnect\\ViewModel\\UserViewModel.cs",
+              "RelativeDocumentMoniker": "..\\FloraConnect\\ViewModel\\UserViewModel.cs",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FloraConnect\\ViewModel\\UserViewModel.cs",
+              "RelativeToolTip": "..\\FloraConnect\\ViewModel\\UserViewModel.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAADUAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T10:08:28.161Z",
+              "EditorCaption": ""
             }
           ]
         }
