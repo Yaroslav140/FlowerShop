@@ -84,7 +84,7 @@ namespace FlowerShop.Web.Controllers
             {
                 UserId = dto.UserId,
                 PickupDate = dto.PickupDate,
-                TotalAmount = dto.TotalAmount, 
+                TotalAmount = dto.TotalAmount,
                 Status = dto.Status,
                 Items = [.. dto.Items.Select(i => new OrderItemEntity
                 {
@@ -214,7 +214,7 @@ namespace FlowerShop.Web.Controllers
                 throw;
             }
 
-            return Ok(); 
+            return Ok();
         }
 
         [HttpPost("{id:guid}/cancel")]
@@ -256,5 +256,15 @@ namespace FlowerShop.Web.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        public async Task<ActionResult> DeleteOrder(Guid id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+                return NotFound("Order not found.");
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
