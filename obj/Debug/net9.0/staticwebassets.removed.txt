@@ -1,0 +1,3 @@
+C:\Users\param\source\repos\FlowerShop\wwwroot\img\icon.svg
+C:\Users\param\source\repos\FlowerShop\wwwroot\js\site.js
+C:\Users\param\source\repos\FlowerShop\wwwroot\css\site.css
