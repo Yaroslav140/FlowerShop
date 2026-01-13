@@ -47,7 +47,7 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "DeleateBouquet",
+    "Method": "DeleteBouquet",
     "RelativePath": "api/Bouquets",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -63,9 +63,9 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "GetBouquetId",
+    "Method": "UpdateBouquet",
     "RelativePath": "api/Bouquets/{id}",
-    "HttpMethod": "GET",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -73,19 +73,14 @@
         "Name": "id",
         "Type": "System.Guid",
         "IsRequired": true
+      },
+      {
+        "Name": "dtoBouquet",
+        "Type": "FlowerShop.Dto.DTOUpdate.UpdateBouquetDto",
+        "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "FlowerShop.Data.Models.BouquetEntity",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
@@ -125,19 +120,29 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.BouquetsController",
-    "Method": "DeleateBouquetsMany",
-    "RelativePath": "api/Bouquets/many",
-    "HttpMethod": "DELETE",
+    "Method": "SearchBouquets",
+    "RelativePath": "api/Bouquets/search",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "names",
-        "Type": "System.String[]",
-        "IsRequired": true
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetBouquetDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.CartsController",
@@ -167,6 +172,47 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.ImageController",
+    "Method": "UploadImage",
+    "RelativePath": "api/Image/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ContentType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ContentDisposition",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Headers",
+        "Type": "Microsoft.AspNetCore.Http.IHeaderDictionary",
+        "IsRequired": false
+      },
+      {
+        "Name": "Length",
+        "Type": "System.Int64",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "FileName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -286,6 +332,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
+    "Method": "SearchOrders",
+    "RelativePath": "api/Orders/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetOrderDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/Users",
@@ -375,62 +447,6 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "GetUsersGuid",
-    "RelativePath": "api/Users/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "FlowerShop.Dto.DTOGet.GetUserDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "GetUsersCount",
-    "RelativePath": "api/Users/count",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
-    "Method": "GetUsersFullInfo",
-    "RelativePath": "api/Users/full info",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Data.Models.UserDomain, FlowerShop.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
     "Method": "CreateUserMany",
     "RelativePath": "api/Users/many",
     "HttpMethod": "POST",
@@ -454,5 +470,31 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.UsersController",
+    "Method": "SearchUsers",
+    "RelativePath": "api/Users/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetUserDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

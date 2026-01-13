@@ -1,4 +1,5 @@
 ﻿using FlowerShop.Data;
+using FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
@@ -48,6 +49,45 @@ namespace FlowerShop.Web.Controllers
                 .ToListAsync();
 
             return Ok(orders);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<List<GetOrderDto>>> SearchOrders([FromQuery] string? name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return await GetOrders(null);
+
+            var orders = await _context.Orders
+                .AsNoTracking()
+                .Include(o => o.User)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Bouquet)
+                .Where(o => EF.Functions.Like(o.User.Name, $"%{name}%") ||
+                           EF.Functions.Like(o.User.Login ?? "", $"%{name}%") ||
+                           EF.Functions.Like(o.Id.ToString(), $"%{name}%"))
+                .ToListAsync();
+            var result = orders.Select(o => new GetOrderDto(
+                o.Id,
+                o.User.Name,
+                o.PickupDate.ToString("dd.MM.yyyy"),
+                o.TotalAmount,
+                o.Status,
+                [.. o.Items.Select(i => new GetOrderItemDto(
+                    i.Id,
+                    i.BouquetId,
+                    i.Quantity,
+                    i.Price,
+                    new GetBouquetDto(
+                        i.Bouquet.Id,
+                        i.Bouquet.Name,
+                        i.Bouquet.Description,
+                        i.Bouquet.Price,
+                        i.Bouquet.Quantity,
+                        i.Bouquet.ImageUrl
+                    )
+                ))]
+            )).ToList();
+            return Ok(result);
         }
 
 
@@ -182,8 +222,6 @@ namespace FlowerShop.Web.Controllers
                 throw;
             }
         }
-
-
 
         [HttpPost("many")]
         public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> dtos)
@@ -328,21 +366,17 @@ namespace FlowerShop.Web.Controllers
             if (order == null)
                 return NotFound("Заказ не найден.");
 
-            // Запрещаем правки закрытых статусов (по желанию)
             if (order.Status is OrderStatus.Completed or OrderStatus.Cancelled)
                 return BadRequest($"Нельзя редактировать заказ в статусе {order.Status}.");
 
-            // 1) Нормализуем позиции: какие букеты нужны в новом заказе
             var newNeedByBouquet = dto.Items
                 .GroupBy(i => i.BouquetId)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            // 2) Сколько было в старом заказе (по букетам)
             var oldNeedByBouquet = order.Items
                 .GroupBy(i => i.BouquetId)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            // 3) Достать букеты, которые могут затронуться (старые + новые)
             var allBouquetIds = newNeedByBouquet.Keys
                 .Union(oldNeedByBouquet.Keys)
                 .Distinct()
@@ -356,8 +390,6 @@ namespace FlowerShop.Web.Controllers
             if (missing.Count > 0)
                 return BadRequest($"Не найдены букеты: {string.Join(", ", missing)}.");
 
-            // 4) Проверка остатков по "дельте":
-            // нужно списать (new - old). Если отрицательная — это возврат, он всегда ок.
             foreach (var bouquetId in allBouquetIds)
             {
                 oldNeedByBouquet.TryGetValue(bouquetId, out var oldQty);
@@ -371,7 +403,6 @@ namespace FlowerShop.Web.Controllers
             await using var tx = await _context.Database.BeginTransactionAsync();
             try
             {
-                // 5) Применяем изменения остатков (дельта)
                 foreach (var bouquetId in allBouquetIds)
                 {
                     oldNeedByBouquet.TryGetValue(bouquetId, out var oldQty);
@@ -379,28 +410,20 @@ namespace FlowerShop.Web.Controllers
 
                     var delta = newQty - oldQty;
                     if (delta != 0)
-                        bouquets[bouquetId].Quantity -= delta; // delta>0 списали, delta<0 вернули
+                        bouquets[bouquetId].Quantity -= delta;
                 }
-
-                // 6) Обновляем пользователя (можно просто поменять имя у текущего пользователя или найти другого)
-                // Вариант A (просто меняем имя текущего пользователя):
                 order.User.Name = userName;
 
-                // 7) Пересобираем позиции заказа:
-                // Удаляем отсутствующие, обновляем существующие, добавляем новые.
                 var byId = order.Items.ToDictionary(i => i.Id);
 
-                // какие id должны остаться
                 var incomingExistingIds = dto.Items
                     .Where(i => i.OrderItemId.HasValue)
                     .Select(i => i.OrderItemId!.Value)
                     .ToHashSet();
 
-                // удалить те, которых нет во входе
                 var toRemove = order.Items.Where(i => !incomingExistingIds.Contains(i.Id)).ToList();
                 _context.OrderItems.RemoveRange(toRemove);
 
-                // обновить/добавить
                 foreach (var it in dto.Items)
                 {
                     if (it.OrderItemId.HasValue && byId.TryGetValue(it.OrderItemId.Value, out var existingItem))
@@ -420,7 +443,6 @@ namespace FlowerShop.Web.Controllers
                     }
                 }
 
-                // 8) Обновляем поля заказа
                 order.PickupDate = pickupUtc;
                 order.Status = dto.Status;
                 order.TotalAmount = dto.TotalAmount;

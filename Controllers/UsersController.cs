@@ -49,36 +49,46 @@ namespace FlowerShop.Web.Controllers
             return Ok(users);
         }
 
-        [HttpGet("count")]
-        public async Task<ActionResult> GetUsersCount()
+        [HttpGet("search")]
+        public async Task<ActionResult<List<GetUserDto>>> SearchUsers([FromQuery] string? name)
         {
-            var user = await _context.UserDomains.ToListAsync();
-            return Ok($"Пользователей {user.Count}");
-        }
+            if (string.IsNullOrWhiteSpace(name))
+                return await GetUsers(); 
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<GetUserDto>> GetUsersGuid(Guid id)
-        {
-            var user = await _context.UserDomains.Where(i => i.Id == id).FirstOrDefaultAsync();
-            if (user is null)
-                return NoContent();
-            return Ok($"Пользователе {user.Login}");
-        }
+            var users = await _context.UserDomains
+                .Where(u => EF.Functions.Like(u.Name, $"%{name}%") ||
+                           EF.Functions.Like(u.Login, $"%{name}%"))
+                .Select(u => new GetUserDto(
+                    u.Id,
+                    u.Name,
+                    u.Login,
+                    u.Phone,
+                    u.CodeOrder,
+                    u.Orders.Select(o => new GetOrderDto(
+                        o.Id,
+                        o.User.Name,
+                        o.PickupDate.ToString("dd.MM.yyyy"),
+                        o.TotalAmount,
+                        o.Status,
+                        o.Items.Select(i => new GetOrderItemDto(
+                            i.Id,
+                            i.BouquetId,
+                            i.Quantity,
+                            i.Price,
+                            new GetBouquetDto(
+                                i.Bouquet.Id,
+                                i.Bouquet.Name,
+                                i.Bouquet.Description,
+                                i.Bouquet.Price,
+                                i.Bouquet.Quantity,
+                                i.Bouquet.ImageUrl
+                            )
+                        )).ToList()
+                    )).ToList()
+                ))
+                .ToListAsync();
 
-        [HttpGet("full info")]
-        public async Task<ActionResult<List<UserDomain>>> GetUsersFullInfo()
-        {
-            var users = await _context.UserDomains.Include(u => u.Orders).ThenInclude(o => o.Items).ThenInclude(i => i.Bouquet).ToListAsync();
-            var result = users.Select(u => new
-            {
-                u.Id,
-                u.Name,
-                u.Login,
-                u.Phone,
-                u.PasswordHash
-
-            }).ToList();
-            return Ok(result);
+            return Ok(users);
         }
 
         [HttpPost]

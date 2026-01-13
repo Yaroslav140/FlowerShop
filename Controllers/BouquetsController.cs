@@ -2,6 +2,7 @@
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
+using FlowerShop.Dto.DTOUpdate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,6 @@ namespace FlowerShop.Web.Controllers
     public class BouquetsController(FlowerDbContext context) : ControllerBase
     {
         private readonly FlowerDbContext _context = context;
-
         [HttpGet]
         public async Task<ActionResult<List<GetBouquetDto>>> GetBouquets()
         {
@@ -27,12 +27,28 @@ namespace FlowerShop.Web.Controllers
                     )).ToListAsync();
             return Ok(bouquets);
         }
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<BouquetEntity>> GetBouquetId(Guid id)
+
+        [HttpGet("search")]
+        public async Task<ActionResult<List<GetBouquetDto>>> SearchBouquets([FromQuery] string? name)
         {
-            var bouquet = await _context.Bouquets.Where(i => i.Id == id).FirstOrDefaultAsync();
-            return bouquet is null ? NoContent() : Ok(bouquet);
+            if (string.IsNullOrWhiteSpace(name))
+                return await GetBouquets(); 
+
+            var bouquets = await _context.Bouquets
+                .Where(b => EF.Functions.Like(b.Name, $"%{name}%"))
+                .Select(b => new GetBouquetDto(
+                    b.Id,
+                    b.Name,
+                    b.Description,
+                    b.Price,
+                    b.Quantity,
+                    b.ImageUrl
+                ))
+                .ToListAsync();
+
+            return Ok(bouquets);
         }
+
         [HttpPost]
         public async Task<ActionResult<GetBouquetDto>> CreateBouquet([FromBody] CreateBouquetDto bouquet)
         {
@@ -83,30 +99,34 @@ namespace FlowerShop.Web.Controllers
             return Ok();
 
         }
+
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> UpdateBouquet(Guid id, [FromBody] UpdateBouquetDto dtoBouquet)
+        {
+            var existingBouquet = await _context.Bouquets
+                .Where(i => i.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (existingBouquet == null)
+                return BadRequest("Букет не найден.");
+
+            var oldImageUrl = existingBouquet.ImageUrl;
+
+            _context.Entry(existingBouquet).CurrentValues.SetValues(dtoBouquet);
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+
         [HttpDelete]
-        public async Task<ActionResult> DeleateBouquet(string Name)
+        public async Task<ActionResult> DeleteBouquet(string Name)
         {
             var bouquet = await _context.Bouquets.FirstOrDefaultAsync(b => b.Name == Name);
             if (bouquet == null)
-            {
                 return NotFound("Букет не найден.");
-            }
-            _context.Bouquets.Remove(bouquet);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
 
-        [HttpDelete("many")]
-        public async Task<ActionResult> DeleateBouquetsMany([FromBody]string[] names)
-        {
-            var bouquets = await _context.Bouquets
-                .Where(n => names.Contains(n.Name))
-                .ToListAsync();
-            if (bouquets.Count == 0)
-            {
-                return NotFound("Букет не найден.");
-            }
-            _context.Bouquets.RemoveRange(bouquets);
+            _context.Bouquets.Remove(bouquet);
             await _context.SaveChangesAsync();
             return NoContent();
         }
