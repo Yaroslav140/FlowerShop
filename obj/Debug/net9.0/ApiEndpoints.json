@@ -223,8 +223,24 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
-    "Method": "DeleteOrder",
+    "Method": "Update",
     "RelativePath": "api/Orders",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "FlowerShop.Dto.DTOUpdate.UpdateOrderDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
+    "Method": "DeleteOrder",
+    "RelativePath": "api/Orders/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -232,7 +248,7 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
