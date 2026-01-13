@@ -196,7 +196,7 @@ namespace FlowerShop.Web.Controllers
             var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
             if (user == null)
             {
-                return NotFound("UserProfile not found.");
+                return NotFound("Такой пользователь не найден.");
             }
             _context.UserDomains.Remove(user);
             await _context.SaveChangesAsync();

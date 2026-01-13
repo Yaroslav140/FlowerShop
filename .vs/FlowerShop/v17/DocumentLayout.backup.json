@@ -1,7 +1,15 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\param\\repos\\FlowerShop\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F024275-F57C-4E5C-A238-2B1B06066D81}|..\\FlowerShop.Data\\FlowerShop.Data.csproj|c:\\users\\param\\repos\\flowershop.data\\models\\bouquetentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +17,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +26,32 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAuwMoAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-13T15:33:06.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BouquetEntity.cs",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop.Data\\Models\\BouquetEntity.cs",
+              "RelativeDocumentMoniker": "..\\FlowerShop.Data\\Models\\BouquetEntity.cs",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop.Data\\Models\\BouquetEntity.cs",
+              "RelativeToolTip": "..\\FlowerShop.Data\\Models\\BouquetEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-13T15:11:42.085Z",
+              "EditorCaption": ""
             }
           ]
         },

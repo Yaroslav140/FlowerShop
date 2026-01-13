@@ -59,12 +59,11 @@ namespace FlowerShop.Web.Controllers
             if (dto.Items.Any(i => i.Quantity <= 0)) return BadRequest("Количество каждой позиции должно быть > 0.");
             if (dto.Items.Any(i => i.Price < 0)) return BadRequest("Цена не может быть отрицательной.");
 
-            // Нормализуем имя (минимум: Trim)
             var userName = (dto.Username ?? "").Trim();
-            if (string.IsNullOrWhiteSpace(userName))
-                return BadRequest("Имя клиента обязательно.");
+            var login = (dto.Login ?? "").Trim();
+            if (string.IsNullOrWhiteSpace(userName) && string.IsNullOrEmpty(login))
+                return BadRequest("Имя клиента или логин обязателен.");
 
-            // Если у тебя в БД timestamp with time zone — тут лучше гарантировать UTC
             var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc
                 ? dto.PickupDate
                 : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
@@ -92,18 +91,16 @@ namespace FlowerShop.Web.Controllers
             await using var tx = await _context.Database.BeginTransactionAsync();
             try
             {
-                // 1) Найти/создать пользователя
                 UserDomain? user = null;
 
                 if (dto.UserId != Guid.Empty)
                     user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Id == dto.UserId);
 
                 if (user == null)
-                    user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Name == userName);
+                    user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
 
                 if (user == null)
                 {
-                    // пароль = имя (как ты просил) -> BCrypt хеш
                     var passwordHash = BCrypt.Net.BCrypt.HashPassword(userName);
 
                     user = new UserDomain
@@ -126,11 +123,11 @@ namespace FlowerShop.Web.Controllers
                     TotalAmount = dto.TotalAmount,
                     Status = dto.Status,
                     Items = [.. dto.Items.Select(i => new OrderItemEntity
-                {
-                    BouquetId = i.BouquetId,
-                    Quantity = i.Quantity,
-                    Price = i.Price
-                })]
+                    {
+                        BouquetId = i.BouquetId,
+                        Quantity = i.Quantity,
+                        Price = i.Price
+                    })]
                 };
 
                 newOrder.User = user;
