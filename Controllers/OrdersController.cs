@@ -6,6 +6,7 @@ using FlowerShop.Dto.DTOGet;
 using FlowerShop.Dto.DTOUpdate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace FlowerShop.Web.Controllers
 {
@@ -104,9 +105,7 @@ namespace FlowerShop.Web.Controllers
             if (string.IsNullOrWhiteSpace(userName) && string.IsNullOrEmpty(login))
                 return BadRequest("Имя клиента или логин обязателен.");
 
-            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc
-                ? dto.PickupDate
-                : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
+            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc ? dto.PickupDate : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
 
             var bouquetIds = dto.Items.Select(i => i.BouquetId).Distinct().ToList();
             var bouquets = await _context.Bouquets
@@ -141,13 +140,14 @@ namespace FlowerShop.Web.Controllers
 
                 if (user == null)
                 {
-                    var passwordHash = BCrypt.Net.BCrypt.HashPassword(userName);
+                    var passwordHash = BCrypt.Net.BCrypt.HashPassword(userName ?? login);
 
                     user = new UserDomain
                     {
                         Id = Guid.NewGuid(),
-                        Name = userName,
-                        PasswordHash = passwordHash
+                        Name = string.IsNullOrEmpty(userName) ? login : userName,
+                        Login = string.IsNullOrEmpty(login) ? userName : login,
+                        PasswordHash = passwordHash,
                     };
 
                     _context.UserDomains.Add(user);
@@ -155,6 +155,8 @@ namespace FlowerShop.Web.Controllers
 
                 foreach (var (bouquetId, needQty) in needByBouquet)
                     bouquets[bouquetId].Quantity -= needQty;
+
+                user.CodeOrder = GeneratedCode.Generated.GenerateRandomCode();
 
                 var newOrder = new OrderEntity
                 {
@@ -167,10 +169,9 @@ namespace FlowerShop.Web.Controllers
                         BouquetId = i.BouquetId,
                         Quantity = i.Quantity,
                         Price = i.Price
-                    })]
+                    })],
+                    User = user
                 };
-
-                newOrder.User = user;
 
                 _context.Orders.Add(newOrder);
                 _context.Bouquets.UpdateRange(bouquets.Values);
@@ -303,44 +304,6 @@ namespace FlowerShop.Web.Controllers
             return Ok();
         }
 
-        [HttpPost("{id:guid}/cancel")]
-        public async Task<ActionResult> Cancel(Guid id)
-        {
-            var order = await _context.Orders
-                .Include(o => o.Items)
-                .ThenInclude(i => i.Bouquet)
-                .FirstOrDefaultAsync(o => o.Id == id);
-
-            if (order == null)
-                return NotFound("Order not found.");
-
-            if (order.Status == OrderStatus.Cancelled)
-                return Ok();
-
-            if (order.Status is not OrderStatus.New and not OrderStatus.Pending)
-                return BadRequest($"Нельзя отменить заказ в статусе {order.Status}.");
-
-            await using var tx = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                foreach (var item in order.Items)
-                {
-                    item.Bouquet.Quantity += item.Quantity;
-                }
-
-                order.Status = OrderStatus.Cancelled;
-
-                await _context.SaveChangesAsync();
-                await tx.CommitAsync();
-            }
-            catch
-            {
-                await tx.RollbackAsync();
-                throw;
-            }
-
-            return Ok();
-        }
         [HttpPut]
         public async Task<ActionResult> Update([FromBody] UpdateOrderDto dto)
         {
@@ -353,14 +316,12 @@ namespace FlowerShop.Web.Controllers
             if (string.IsNullOrWhiteSpace(userName))
                 return BadRequest("Имя клиента обязательно.");
 
-            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc
-                ? dto.PickupDate
-                : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
+            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc ? dto.PickupDate : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
 
             var order = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.Items)
-                    .ThenInclude(i => i.Bouquet)
+                .ThenInclude(i => i.Bouquet)
                 .FirstOrDefaultAsync(o => o.Id == dto.OrderId);
 
             if (order == null)
@@ -464,9 +425,26 @@ namespace FlowerShop.Web.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteOrder(Guid id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
                 return NotFound("Заказ не найден.");
+
+            var bouquetIds = order.Items.Select(i => i.BouquetId).ToList();
+            var bouquets = await _context.Bouquets
+                .Where(b => bouquetIds.Contains(b.Id))
+                .ToListAsync();
+
+            foreach (var item in bouquets)
+            {
+                var orderItem = order.Items.FirstOrDefault(oi => oi.BouquetId == item.Id);
+                if (orderItem != null)
+                {
+                    item.Quantity += orderItem.Quantity;
+                }
+            }
+
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
             return Ok();

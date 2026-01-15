@@ -203,15 +203,33 @@ namespace FlowerShop.Web.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUsers(string login)
         {
-            var user = await _context.UserDomains.FirstOrDefaultAsync(u => u.Login == login);
+            var user = await _context.UserDomains
+                .Include(u => u.Orders) 
+                    .ThenInclude(o => o.Items) 
+                .FirstOrDefaultAsync(u => u.Login == login);
+
             if (user == null)
             {
                 return NotFound("Такой пользователь не найден.");
             }
+
+            foreach (var order in user.Orders)
+            {
+                foreach (var orderItem in order.Items)
+                {
+                    var bouquet = await _context.Bouquets.FirstOrDefaultAsync(b => b.Id == orderItem.BouquetId);
+                    if (bouquet != null)
+                    {
+                        bouquet.Quantity += orderItem.Quantity;
+                    }
+                }
+            }
+
             _context.UserDomains.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
 
         [HttpDelete("many")]
         public async Task<ActionResult> DeleateUsersMany()

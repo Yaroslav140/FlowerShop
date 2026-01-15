@@ -175,47 +175,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FlowerShop.Web.Controllers.ImageController",
-    "Method": "UploadImage",
-    "RelativePath": "api/Image/upload",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "ContentType",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "ContentDisposition",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Headers",
-        "Type": "Microsoft.AspNetCore.Http.IHeaderDictionary",
-        "IsRequired": false
-      },
-      {
-        "Name": "Length",
-        "Type": "System.Int64",
-        "IsRequired": false
-      },
-      {
-        "Name": "Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "FileName",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
     "Method": "GetOrders",
     "RelativePath": "api/Orders",
@@ -288,22 +247,6 @@
     "Method": "DeleteOrder",
     "RelativePath": "api/Orders/{id}",
     "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FlowerShop.Web.Controllers.OrdersController",
-    "Method": "Cancel",
-    "RelativePath": "api/Orders/{id}/cancel",
-    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
