@@ -28,6 +28,7 @@ public class ViewOrdersModel(FlowerDbContext context) : PageModel
             .Select(o => new GetOrderDto(
                 o.Id,                
                 o.User.Name,
+                o.User.Login,
                 o.PickupDate,
                 o.DeliveryAddress,
                 o.TotalAmount,
@@ -67,7 +68,6 @@ public class ViewOrdersModel(FlowerDbContext context) : PageModel
             }
         }
 
-        // создать новый заказ + списать резерв
         var newOrder = new OrderEntity
         {
             Id = Guid.NewGuid(),

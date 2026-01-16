@@ -36,6 +36,7 @@ namespace FlowerShop.Web.Pages.Account
                 Orders = await _context.Orders.Where(o => o.UserId == userId).Select(o => new GetOrderDto(
                     o.Id,
                     o.User.Name,
+                    o.User.Login,
                     o.PickupDate,
                     o.DeliveryAddress,
                     o.TotalAmount,

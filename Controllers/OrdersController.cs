@@ -29,6 +29,7 @@ namespace FlowerShop.Web.Controllers
                 .Select(o => new GetOrderDto(
                     o.Id,
                     o.User.Name,
+                    o.User.Login,
                     o.PickupDate,
                     o.DeliveryAddress,
                     o.TotalAmount,
@@ -71,6 +72,7 @@ namespace FlowerShop.Web.Controllers
             var result = orders.Select(o => new GetOrderDto(
                 o.Id,
                 o.User.Name,
+                o.User.Login,
                 o.PickupDate,
                 o.DeliveryAddress,
                 o.TotalAmount,
@@ -198,6 +200,7 @@ namespace FlowerShop.Web.Controllers
                 var result = new GetOrderDto(
                     newOrder.Id,
                     user.Name,
+                    user.Login,
                     newOrder.PickupDate,
                     newOrder.DeliveryAddress,
                     newOrder.TotalAmount,
