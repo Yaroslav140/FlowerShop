@@ -44,7 +44,7 @@ else
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:0;">
                 <div>
                     <div class="label">Дата выполнения заказа</div>
-                    <div class="value">@order.PickupDate</div>
+                    <div class="value">@order.PickupDate.ToString("dd.MM.yy HH:mm")</div>
                 </div>
                 <div>
                     <div class="label">

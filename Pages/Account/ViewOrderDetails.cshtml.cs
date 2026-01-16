@@ -30,7 +30,8 @@ namespace FlowerShop.Web.Pages.Account
                 .Select(o => new GetOrderDto(
                     o.Id,
                     o.User.Name,
-                    o.PickupDate.ToString("dd.MM.yyyy"),
+                    o.PickupDate,
+                    o.DeliveryAddress,
                     o.TotalAmount,
                     o.Status,
                     o.Items.Select(oi => new GetOrderItemDto(

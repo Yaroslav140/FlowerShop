@@ -1,12 +1,13 @@
 using FlowerShop.Data;
 using FlowerShop.Data.Models;
-using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Globalization;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace FlowerShop.Web.Pages.Account
 {
@@ -17,8 +18,12 @@ namespace FlowerShop.Web.Pages.Account
         [BindProperty, Required(ErrorMessage = "Введите номер телефона"), Phone]
         public string Phone { get; set; } = string.Empty;
 
-        [BindProperty, DataType(DataType.Date)]
-        public DateTime DeliveryDate { get; set; } = DateTime.Today.AddDays(1);
+        [BindProperty, DataType(DataType.DateTime)]
+        public DateTime DeliveryDate { get; set; } = DateTime.Now;
+
+        [BindProperty, Required(ErrorMessage = "Введите адрес доставки"),
+         StringLength(500, MinimumLength = 10, ErrorMessage = "Адрес должен содержать от 10 до 500 символов")]
+        public string DeliveryAddress { get; set; } = string.Empty;
 
         public async Task<ActionResult> OnPostSubmitOrderAsync()
         {
@@ -38,16 +43,18 @@ namespace FlowerShop.Web.Pages.Account
                 .Include(c => c.Items)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
             var user = await _context.UserDomains.FindAsync(userId);
+
             if (cart is null || cart.Items is null || cart.Items.Count == 0)
             {
-                ModelState.AddModelError(string.Empty, "Корзина пуста.");
+                TempData["ErrorMessage"] = "Корзина пуста.";
                 return Page();
             }
             if (user == null)
             {
-                TempData["ErrorMessage"] = "Нету пользваоетля";
+                TempData["ErrorMessage"] = "Пользователь не найден";
                 return Page();
             }
+
             if (string.IsNullOrWhiteSpace(user.CodeOrder))
             {
                 var code = GeneratedCode.Generated.GenerateRandomCode();
@@ -58,10 +65,11 @@ namespace FlowerShop.Web.Pages.Account
                 if (exitsCode == null)
                     user.CodeOrder = code;
             }
-            var minDate = DateTime.Today.AddDays(1);
-            if (DeliveryDate.Date < minDate)
+
+            var minDateTime = DateTime.Now.AddHours(2);
+            if (DeliveryDate < minDateTime)
             {
-                TempData["ErrorMessage"] = $"Дата доставки не может быть раньше {minDate:dd.MM.yyyy}";
+                TempData["ErrorMessage"] = $"Дата доставки не может быть раньше {minDateTime:dd.MM.yyyy HH:mm}";
                 return Page();
             }
 
@@ -86,14 +94,14 @@ namespace FlowerShop.Web.Pages.Account
             var missing = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
             if (missing.Count > 0)
             {
-                ModelState.AddModelError(string.Empty, "Некоторые букеты недоступны.");
+                TempData["ErrorMessage"] = "Некоторые букеты недоступны.";
                 return Page();
             }
 
             foreach (var grp in byBouquet)
             {
                 var b = bouquets.First(x => x.Id == grp.BouquetId);
-                if (b.Quantity < grp.RequiredQty) 
+                if (b.Quantity < grp.RequiredQty)
                 {
                     TempData["ErrorMessage"] = $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.";
                     return Page();
@@ -109,13 +117,15 @@ namespace FlowerShop.Web.Pages.Account
 
             var total = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
 
-            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate.Date, DateTimeKind.Utc);
+            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate, DateTimeKind.Utc);
             user.Phone = Phone;
+
             var order = new OrderEntity
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                PickupDate = deliveryUtc,      
+                PickupDate = deliveryUtc,
+                DeliveryAddress = DeliveryAddress,
                 TotalAmount = total,
                 Items = [.. cart.Items.Select(i => new OrderItemEntity
                 {

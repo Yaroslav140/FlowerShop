@@ -29,7 +29,8 @@ namespace FlowerShop.Web.Controllers
                 .Select(o => new GetOrderDto(
                     o.Id,
                     o.User.Name,
-                    o.PickupDate.ToString("dd.MM.yyyy"),
+                    o.PickupDate,
+                    o.DeliveryAddress,
                     o.TotalAmount,
                     o.Status,
                     o.Items.Select(i => new GetOrderItemDto(
@@ -70,7 +71,8 @@ namespace FlowerShop.Web.Controllers
             var result = orders.Select(o => new GetOrderDto(
                 o.Id,
                 o.User.Name,
-                o.PickupDate.ToString("dd.MM.yyyy"),
+                o.PickupDate,
+                o.DeliveryAddress,
                 o.TotalAmount,
                 o.Status,
                 [.. o.Items.Select(i => new GetOrderItemDto(
@@ -196,7 +198,8 @@ namespace FlowerShop.Web.Controllers
                 var result = new GetOrderDto(
                     newOrder.Id,
                     user.Name,
-                    newOrder.PickupDate.ToString("dd.MM.yyyy"),
+                    newOrder.PickupDate,
+                    newOrder.DeliveryAddress,
                     newOrder.TotalAmount,
                     newOrder.Status,
                     [.. newOrder.Items.Select(oi => new GetOrderItemDto(
