@@ -600,10 +600,10 @@ C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerSh.871ED29F.Up2Date
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.dll
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\refint\FlowerShop.Web.dll
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.pdb
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.genruntimeconfig.cache
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\ref\FlowerShop.Web.dll
+C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
