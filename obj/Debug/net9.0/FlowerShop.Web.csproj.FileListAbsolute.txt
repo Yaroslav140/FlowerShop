@@ -592,9 +592,7 @@ C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\a3ygkwa5zy-2z0ns9nrw
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\nezrqnk58p-muycvpuwrr.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\v0zgfp0y55-87fc7y1x7t.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\tae4rvkakm-kygew2pwr4.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\0s3k475ldr-g075r161fg.gz
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\72ufz0hpd5-3r8b2a0bt1.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.development.json
@@ -606,5 +604,5 @@ C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.pdb
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.genruntimeconfig.cache
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\ref\FlowerShop.Web.dll
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\vnan24pagf-dyjx89twm7.gz
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\zr7ob9lp2u-4696xt8gkm.gz
+C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\vnan24pagf-vimkrv93f6.gz
+C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\zr7ob9lp2u-zg3iyh0zvb.gz

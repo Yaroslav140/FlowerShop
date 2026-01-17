@@ -1,13 +1,9 @@
 C:\Users\param\repos\FlowerShop\wwwroot\img\icon.svg
-C:\Users\param\repos\FlowerShop\wwwroot\js\site.js
-C:\Users\param\repos\FlowerShop\wwwroot\fonts\InformRegular.otf
 C:\Users\param\repos\FlowerShop\wwwroot\css\home.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\main.css
 wwwroot\css\home.css
 wwwroot\css\main.css
-wwwroot\fonts\InformRegular.otf
 wwwroot\img\Flower.jpg
 wwwroot\img\icon.svg
 wwwroot\img\ShopCart.png
 wwwroot\img\user.png
-wwwroot\js\site.js

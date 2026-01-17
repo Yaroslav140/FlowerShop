@@ -1,2 +1,45 @@
-﻿body {
+﻿.home-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+.blur-orb {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none; 
+    z-index: 100; 
+    opacity: 0.6; 
+}
+
+.blur-orb--cyan {
+    bottom: 80px;
+    left: 80px;
+    background: radial-gradient(circle, #22d3ee, #3b82f6);
+    animation: float-orb 8s ease-in-out infinite;
+}
+
+.blur-orb--blue {
+    top: 100px;
+    right: 100px;
+    background: radial-gradient(circle, #3b82f6, #8b5cf67a);
+    animation: float-orb 10s ease-in-out infinite reverse;
+}
+
+@keyframes float-orb {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.home-hero {
+    display: flex;
+    position: relative;
+    z-index: 1;
 }

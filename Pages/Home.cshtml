@@ -1,16 +1,50 @@
 ﻿@page
 @model FlowerShop.Web.Pages.HomeModel
-@section Styles{
-    <link rel="stylesheet" href="/css/home.css" asp-append-version="true"/>
+@section Styles {
+    <link rel="stylesheet" href="/css/home.css" asp-append-version="true" />
 }
 
 <div class="home-container">
-    <div class="content">
-        <h1 class="content__main">Красивые цветы для любого случая</h1>
-        <p class="content__description">
-            Букеты ручной работы из самых свежих цветов, доставленные с любовью к вашему порогу.
-        </p>
-        <img class="home-container__image" src="~/img/Flower.jpg" alt="Flower Bouquet" />
-        <a class="btn btn--accent btn--pill" asp-page="/PageHeader/Bouquets">Купить сейчас</a>
+    <div class="blur-orb blur-orb--cyan"></div>
+    <div class="blur-orb blur-orb--blue"></div>
+
+    <div class="home-hero">
+        <div class="home-hero__content">
+            <span class="home-hero__badge">
+                🌿 Премиум букеты с доставкой
+            </span>
+            <h1 class="home-hero__title">
+                Красивые <span>цветы</span> для<br />любого случая
+            </h1>
+            <p class="home-hero__description">
+                Букеты ручной работы из самых свежих цветов,
+                доставленные с любовью к вашему порогу
+            </p>
+            <div class="home-hero__actions">
+                <a class="btn btn--accent btn--pill" asp-page="/PageHeader/Bouquets">
+                    Купить сейчас
+                </a>
+                <a class="btn btn--outline btn--pill" asp-page="/PageHeader/Contact">
+                    Узнать больше
+                </a>
+            </div>
+            <div class="home-hero__stats">
+                <div class="stat">
+                    <h3>5000+</h3>
+                    <p>Довольных клиентов</p>
+                </div>
+                <div class="stat">
+                    <h3>4.9★</h3>
+                    <p>Средний рейтинг</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Поддержка</p>
+                </div>
+            </div>
+        </div>
+        <div class="home-hero__image">
+            <img src="~/img/Flower.jpg" alt="Flower Bouquet" />
+        </div>
     </div>
 </div>
