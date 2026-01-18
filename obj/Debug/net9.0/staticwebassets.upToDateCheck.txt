@@ -3,6 +3,7 @@ C:\Users\param\repos\FlowerShop\wwwroot\css\home.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\main.css
 wwwroot\css\home.css
 wwwroot\css\main.css
+wwwroot\img\cart-icon.png
 wwwroot\img\Flower.jpg
 wwwroot\img\icon.svg
 wwwroot\img\ShopCart.png

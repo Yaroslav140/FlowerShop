@@ -15,7 +15,7 @@
 
 <body>
     <header class="container-header">
-        <h1 class="container-header__text-logo">Flower & Shop</h1>
+        <a class="container-header__text-logo" asp-page="/Home">Flower & Shop</a>
         <nav class="container-header__nav">
             <ul>
                 <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
@@ -37,7 +37,7 @@
         @RenderBody()
     </main>
     <a href="@Url.Content("/Account/Purchases")" class="cart-icon" aria-label="Корзина">
-        🛒
+        <img src="/img/cart-icon.png" alt="корзина"/>
     </a>
 </body>
 </html>

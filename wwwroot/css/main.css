@@ -20,8 +20,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
-    padding: 0 40px;
+    min-height: 90px;
+    padding: 0 280px;
     box-shadow: #7ecda6a3 0px 2px 3px;
     position: relative;
     z-index: 10;
@@ -29,12 +29,13 @@ body {
 }
 
 .container-header__text-logo {
-    font-size: 20px;
-    background: linear-gradient(180deg, #009967, #0093b2);
+    font-size: 30px;
+    background: linear-gradient(90deg, #00cb89, #00b5db);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #009967;
+    font-weight: 700;
 }
 
 .container-header__nav ul {
@@ -49,7 +50,7 @@ body {
 
 .container-header__nav a {
     text-decoration: none;
-    font-size: 13px;
+    font-size: 16px;
     padding: 10px 25px;
     color: #364153;
     display: inline-block;
@@ -62,18 +63,32 @@ body {
     background: #00bc811a;
     text-shadow: 0 0 0.5px #364153, 0 0 0.5px #364153;
     box-shadow: 0 4px 8px rgba(0, 188, 129, 0.15);
-    font-size: 14px;
+    font-size: 18px;
     transition: font-size 0.3s ease;
 }
 
 .container-header__nav a.active {
     background: #00bc81;
     color: white;
-    font-weight: 500;
+    font-weight: 600;
     box-shadow: 0 2px 10px rgba(0, 188, 129, 0.3);
 }
 
-.cart-icon{
-    position: relative;
-    z-index: 100;
+.cart-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    text-decoration: none;
+    background: #13dd9a;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-icon img {
+    max-width: 30px;
 }
