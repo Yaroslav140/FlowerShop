@@ -15,24 +15,27 @@
 
 <body>
     <header class="container-header">
-        <a class="container-header__text-logo" asp-page="/Home">Flower & Shop</a>
-        <nav class="container-header__nav">
-            <ul>
-                <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
-                <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
-                <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
-                <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
-                @if (User?.Identity?.IsAuthenticated == true)
-                {
-                    <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
-                }
-                else
-                {
-                    <li><a asp-page="/Account/Register" class="@(currentPage == "/Account/Register" ? "active" : "")">Регистрация/Вход</a></li>
-                }
-            </ul>
-        </nav>
-     </header>
+        <div class="container-header__wrapper">
+            <a class="container-header__text-logo" asp-page="/Home">Flower & Shop</a>
+            <nav class="container-header__nav">
+                <ul>
+                    <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
+                    <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
+                    <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
+                    <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-page="/Account/Register" class="@(currentPage == "/Account/Register" ? "active" : "")">Регистрация/Вход</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </header>
+
     <main class="container-main">
         @RenderBody()
     </main>
