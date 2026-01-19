@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\param\\repos\\FlowerShop\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\about.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\about.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\contact.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\contact.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
@@ -27,14 +39,53 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "about.css",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\about.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\about.css",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\about.css",
+              "RelativeToolTip": "wwwroot\\css\\about.css",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAUwJsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-19T17:53:10.224Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "contact.css",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\contact.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\contact.css",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\contact.css",
+              "RelativeToolTip": "wwwroot\\css\\contact.css",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAUwN4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-19T17:53:07.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "main.css",
               "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\main.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\main.css",
               "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\main.css",
               "RelativeToolTip": "wwwroot\\css\\main.css",
-              "ViewState": "AgIAADMAAAAAAAAAAAAAAHoAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAgwJ8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-19T02:08:36.999Z",
+              "WhenOpened": "2026-01-19T17:52:58.672Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "home.css",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\home.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\home.css",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\home.css",
+              "RelativeToolTip": "wwwroot\\css\\home.css",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAgwOQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-19T17:52:58.311Z",
               "EditorCaption": ""
             }
           ]
