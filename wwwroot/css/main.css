@@ -29,7 +29,7 @@ a{
 
 .container-header {
     min-height: 90px;
-    box-shadow: #7ecda6a3 0px 2px 3px;
+    box-shadow: #a6d9c08a 0px 2px 3px;
     position: relative;
     z-index: 10;
     background: white;
@@ -120,7 +120,7 @@ a{
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
 .cart-icon img {
