@@ -1,10 +1,15 @@
 C:\Users\param\repos\FlowerShop\wwwroot\img\icon.svg
+C:\Users\param\repos\FlowerShop\wwwroot\css\about.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\home.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\main.css
+wwwroot\css\about.css
 wwwroot\css\home.css
 wwwroot\css\main.css
 wwwroot\img\cart-icon.png
-wwwroot\img\Flower.jpg
+wwwroot\img\flower-icon-about.png
+wwwroot\img\flower-img-home.jpg
+wwwroot\img\hand-icon-about.png
 wwwroot\img\icon.svg
+wwwroot\img\shipped-icon-about.png
 wwwroot\img\ShopCart.png
 wwwroot\img\user.png

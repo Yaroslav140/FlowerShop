@@ -1,11 +1,40 @@
 ﻿@page
 @model FlowerShop.Web.Pages.PageHeader.AboutModel
-@{
+@section Styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
 }
+
 <div class="home-container">
-    <div class="content about">
+    <div class="content__about">
+        <span class="home-hero__badge">🌿 О нашей компании</span>
         <h1 class="content__main">О Flower&Shop</h1>
-        <p class="content__description">Основанная в 2018 году, компания Flower & Shop создает потрясающие цветочные композиции, которые дарят радость и красоту в самые драгоценные моменты жизни. Наша увлеченная команда флористов тщательно отбирает самые свежие цветы у местных производителей, чтобы создать каждый букет с любовью и вниманием к деталям.</p>
-        <p class="content__description">Будь то романтический жест, празднование или просто украшение чьего-то дня, мы верим, что каждый цветок рассказывает историю. Мы придерживаемся принципов устойчивого развития и поддерживаем наше местное сообщество, обеспечивая при этом исключительное качество и сервис.</p>
+        <div class="container-content__description">
+            <p class="content__description">
+                Flower&Shop был основан в 2015 году с простой идеей: приносить радость через красоту природы.
+                Каждый букет создается вручную нашими опытными флористами с особым вниманием к деталям.
+                Мы выбираем только самые свежие цветы от проверенных поставщиков и работаем с любовью,
+                чтобы каждый заказ стал незабываемым подарком. Наша миссия — сделать мир немного ярче,
+                один букет за другим.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="~/img/flower-icon-about.png" alt="Свежие цветы" />
+                    <h2>Свежие цветы</h2>
+                    <p>Ежедневные поставки</p>
+                </div>
+
+                <div class="feature-card">
+                    <img src="~/img/hand-icon-about.png" alt="Ручная работа" />
+                    <h2>Ручная работа</h2>
+                    <p>Каждый букет уникален</p>
+                </div>
+
+                <div class="feature-card">
+                    <img src="~/img/shipped-icon-about.png" alt="Доставка" />
+                    <h2>Быстрая доставка</h2>
+                    <p>В день заказа</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

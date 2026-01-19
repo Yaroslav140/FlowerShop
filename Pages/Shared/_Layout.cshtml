@@ -39,8 +39,10 @@
     <main class="container-main">
         @RenderBody()
     </main>
-    <a href="@Url.Content("/Account/Purchases")" class="cart-icon" aria-label="Корзина">
-        <img src="/img/cart-icon.png" alt="корзина"/>
-    </a>
+    <div class="cart-wrapper">
+        <a href="@Url.Content("/Account/Purchases")" class="cart-icon" aria-label="Корзина">
+            <img src="/img/cart-icon.png" alt="корзина"/>
+        </a>
+    </div>
 </body>
 </html>
