@@ -19,7 +19,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: auto;
-    background: linear-gradient(to bottom, #f0fdfb, #eef2ff 100%) no-repeat;
+    background: linear-gradient(135deg, #edfbf582, #edfdf66e 100%) no-repeat;
     background-attachment: fixed;
 }
 
@@ -69,10 +69,11 @@ a{
 }
 
 .container-header__nav a {
+    display: inline-block;
     font-size: 16px;
     padding: 10px 25px;
     color: #364153;
-    display: inline-block;
+    font-weight: 600;
     transition: all 0.3s ease;
     border-radius: 50px;
     white-space: nowrap;
@@ -80,7 +81,6 @@ a{
 
 .container-header__nav a:hover {
     background: #00bc811a;
-    text-shadow: 0 0 0.5px #364153, 0 0 0.5px #364153;
     box-shadow: 0 4px 8px rgba(0, 188, 129, 0.15);
     font-size: 18px;
     transition: font-size 0.3s ease;
