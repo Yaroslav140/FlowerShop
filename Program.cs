@@ -1,13 +1,17 @@
 using FlowerShop.Data;
+using FlowerShop.Web.ApiKey;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<FlowerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(FlowerDbContext))));
+
+builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection("ApiKey"));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
@@ -61,6 +65,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,9 +1,11 @@
 C:\Users\param\repos\FlowerShop\wwwroot\img\icon.svg
 C:\Users\param\repos\FlowerShop\wwwroot\css\contact.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\about.css
+C:\Users\param\repos\FlowerShop\wwwroot\css\bouquet.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\home.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\main.css
 wwwroot\css\about.css
+wwwroot\css\bouquet.css
 wwwroot\css\contact.css
 wwwroot\css\home.css
 wwwroot\css\main.css
