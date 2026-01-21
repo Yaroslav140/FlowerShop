@@ -1,27 +1,31 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.LoginModel
+
+@section Styles{
+    <link rel="stylesheet" href="/css/authorization.css" asp-append-version="true"/>
+}
 <div class="auth-center">
     <div class="form-card">
-        <h2>Вход</h2>
-        <p class="subtitle">Введите данные своей учетной записи, чтобы продолжить</p>
+        <span class="hero-badge">
+            <img src="/img/star-icon-authorization.png" />
+        </span>
+        <h2>Вход в аккаунт</h2>
+        <p class="subtitle">Войдите, чтобы продолжить заказ</p>
 
-        @if (TempData["ErrorMessage"] is string err)
-        {
-            <div class="alert error">@err</div>
-        }
         <form method="post">
+            <div asp-validation-summary="ModelOnly" class="alert error"></div>
             <div class="form-group">
-                <label asp-for="Login">Логин</label>
-                <input asp-for="Login" type="text" />
+                <label asp-for="Login"></label>
+                <input asp-for="Login" class="form-control" type="text" placeholder="Введите логин" />
                 <span asp-validation-for="Login" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Password">Пароль</label>
-                <input asp-for="Password" type="password" />
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Введите пароль" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <button type="submit">Вход</button>
+            <button type="submit" class="submit-btn">Войти</button>
         </form>
 
         <div class="signin">

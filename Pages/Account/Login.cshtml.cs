@@ -12,27 +12,22 @@ namespace FlowerShop.Web.Pages.Account
     public class LoginModel(FlowerDbContext context) : PageModel
     {
         private readonly FlowerDbContext _context = context;
-        [BindProperty, Required(ErrorMessage = "Введите логин")]
-        public string Login { get; set; }
+        [BindProperty, Display(Name = "Логин"), Required(ErrorMessage = "Введите логин")]
+        public string Login { get; set; } = string.Empty;
 
-        [BindProperty, Required(ErrorMessage = "Введите пароль")]
-        public string Password { get; set; }
+        [BindProperty, Display(Name = "Пароль"), Required(ErrorMessage = "Введите пароль"), DataType(DataType.Password)]
+        public string Password { get; set; } = string.Empty;
 
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .FirstOrDefault()?.ErrorMessage;
                 return Page();
             }
 
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
-                TempData["ErrorMessage"] = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .FirstOrDefault()?.ErrorMessage;
+                ModelState.AddModelError(string.Empty, "Логин или пароль не введены");
                 return Page();
             }
 
@@ -41,7 +36,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (user is null || !BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash))
             {
-                TempData["ErrorMessage"] = "Неверный логин или пароль";
+                ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
                 return Page();
             }
 
