@@ -604,10 +604,10 @@ C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\refint\FlowerShop.Web.dll
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.pdb
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\FlowerShop.Web.genruntimeconfig.cache
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\ref\FlowerShop.Web.dll
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\uffwu20534-2gmiscxsvm.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\tpqnftqrx6-o6qmz1xomo.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\8rpcmg9qoz-mks6w1p5mi.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\zr7ob9lp2u-w9xkfr036p.gz
 C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\nw3nsve6ta-54485n1577.gz
-C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\nhotqbiayq-m5chyah3b2.gz
+C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\nhotqbiayq-4z3zzuikwm.gz
+C:\Users\param\repos\FlowerShop\obj\Debug\net9.0\compressed\uffwu20534-xg39n5yprx.gz
