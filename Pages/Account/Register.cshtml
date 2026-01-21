@@ -1,35 +1,45 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.RegisterModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/authorization.css" asp-append-version="true" />
+}
+
 <div class="auth-center">
     <div class="form-card">
+        <span class="hero-badge">
+            <img src="/img/star-icon-authorization.png" />
+        </span>
         <h2>Создание аккаунта</h2>
-        <p class="subtitle">Присоединяйтесь к Нам, чтобы начать заказывать красивые цветы</p>
+        <p class="subtitle">Присоединяйтесь к нам, чтобы начать заказывать<br /> красивые цветы</p>
+
         @if (TempData["ErrorMessage"] is string err)
         {
             <div class="alert error">@err</div>
         }
+
         <form method="post">
             <div class="form-group">
                 <label for="username">Имя пользователя</label>
-                <input asp-for="UserName" id="username" type="text">
+                <input asp-for="UserName" id="username" type="text" placeholder="Введите имя пользователя">
             </div>
 
             <div class="form-group">
-                <label for="email">Логин</label>
-                <input asp-for="Login" id="login" type="login">
+                <label for="login">Логин</label>
+                <input asp-for="Login" id="login" type="text" placeholder="Введите логин">
             </div>
 
             <div class="form-group">
                 <label for="password">Пароль</label>
-                <input asp-for="Password" id="password" type="password">
+                <input asp-for="Password" id="password" type="password" placeholder="Введите пароль">
             </div>
 
             <div class="form-group">
                 <label for="confirm">Повторите пароль</label>
-                <input asp-for="ConfirmPassword" id="confirm" type="password">
+                <input asp-for="ConfirmPassword" id="confirm" type="password" placeholder="Введите повторите пароль">
             </div>
 
-            <button type="submit">Зарегистрироваться</button>
+            <button type="submit" class="submit-btn">Зарегистрироваться</button>
         </form>
 
         <div class="signin">

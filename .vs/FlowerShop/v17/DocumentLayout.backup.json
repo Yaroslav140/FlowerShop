@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\param\\repos\\FlowerShop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\bouquet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\bouquet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\wwwroot\\css\\authorization.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\authorization.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\pages\\pageheader\\bouquets.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\pageheader\\bouquets.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\pages\\pageheader\\bouquets.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\pageheader\\bouquets.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\repos\\flowershop\\pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,52 +30,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Bouquets.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\PageHeader\\Bouquets.cshtml.cs",
-              "RelativeDocumentMoniker": "Pages\\PageHeader\\Bouquets.cshtml.cs",
-              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\PageHeader\\Bouquets.cshtml.cs",
-              "RelativeToolTip": "Pages\\PageHeader\\Bouquets.cshtml.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAIwBUAAABLAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-21T01:05:27.813Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Bouquets.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\PageHeader\\Bouquets.cshtml",
-              "RelativeDocumentMoniker": "Pages\\PageHeader\\Bouquets.cshtml",
-              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\PageHeader\\Bouquets.cshtml",
-              "RelativeToolTip": "Pages\\PageHeader\\Bouquets.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABiAAAAAAAAAA==",
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\Pages\\Account\\Register.cshtml",
+              "RelativeToolTip": "Pages\\Account\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-21T00:56:51.068Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "bouquet.css",
-              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\bouquet.css",
-              "RelativeDocumentMoniker": "wwwroot\\css\\bouquet.css",
-              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\bouquet.css",
-              "RelativeToolTip": "wwwroot\\css\\bouquet.css",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAAE8AAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-21T00:52:07.278Z",
+              "WhenOpened": "2026-01-21T02:06:25.254Z",
               "EditorCaption": ""
             }
           ]
         },
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "authorization.css",
+              "DocumentMoniker": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\authorization.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\authorization.css",
+              "ToolTip": "C:\\Users\\param\\repos\\FlowerShop\\wwwroot\\css\\authorization.css",
+              "RelativeToolTip": "wwwroot\\css\\authorization.css",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAAALAAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-21T02:06:23.47Z",
+              "EditorCaption": ""
             }
           ]
         }

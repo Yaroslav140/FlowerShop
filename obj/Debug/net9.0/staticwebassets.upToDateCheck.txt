@@ -1,5 +1,6 @@
 C:\Users\param\repos\FlowerShop\wwwroot\img\icon.svg
 C:\Users\param\repos\FlowerShop\wwwroot\img\chat-icno-about.svg
+C:\Users\param\repos\FlowerShop\wwwroot\css\authorization.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\contact.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\about.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\feedback.css
@@ -7,6 +8,7 @@ C:\Users\param\repos\FlowerShop\wwwroot\css\bouquet.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\home.css
 C:\Users\param\repos\FlowerShop\wwwroot\css\main.css
 wwwroot\css\about.css
+wwwroot\css\authorization.css
 wwwroot\css\bouquet.css
 wwwroot\css\contact.css
 wwwroot\css\feedback.css
@@ -23,4 +25,5 @@ wwwroot\img\phone-icon.png
 wwwroot\img\shipped-icon-about.png
 wwwroot\img\ShopCart.png
 wwwroot\img\star-icon-about.png
+wwwroot\img\star-icon-authorization.png
 wwwroot\img\user.png
