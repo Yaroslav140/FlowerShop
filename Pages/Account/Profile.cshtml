@@ -1,60 +1,47 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.ProfileModel
 
+@section Styles{
+    <link rel="stylesheet" href="/css/profile.css" asp-append-version="true"/>
+}
+
 <div class="profile-page">
     <h1 class="profile-title">Мой профиль</h1>
-    <p class="profile-subtitle">Управляйте своей учетной записью и просматривайте историю заказов</p>
+    <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
 
-    <div class="profile-inner">
-        <section class="profile-card info">
-            <div class="card-header">
-                <div class="icon-circle">
-                    <img src="@Url.Content("~/img/user.png")" alt="icon">
-                </div>
-                <span>Информация аккаунта</span>
+    <div class="profile-card">
+
+        <div class="profile-header">
+            <span class="profile-avatar">
+                <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
+            </span>
+            <h2 class="profile-name">@Model.Username</h2>
+            <p class="profile-login">@("@")@Model.Login</p>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-label">Дата регистрации</span>
+                <span class="stat-value">@Model.DateRegister.ToShortDateString()</span>
             </div>
-
-            <div class="info-list">
-                <div class="row">
-                    <div class="label">Имя</div>
-                    <div class="value">@Model.Username</div>
-                </div>
-
-                <div class="row">
-                    <div class="label">Логин</div>
-                    <div class="value login">
-                        @Model.Login
-                    </div>
-                </div>
-                @if(!string.IsNullOrEmpty(Model.Phone))
-                {
-                    <div class="row">
-                        <div class="label">Телефон</div>
-                        <div class="value">@Model.Phone</div>
-                    </div>
-                }
-
-                <div class="row">
-                    <div class="label">Вы с нами c</div>
-                    <div class="value">@Model.DateRegister.ToString("D")</div>
-                </div>
+            <div class="stat-item">
+                <span class="stat-label">Заказов выполнено</span>
+                <span class="stat-value">@Model.CountOrderCompleted</span>
             </div>
-            <form method="post" asp-page-handler="Exit">
-                <button type="submit" class="btn">Выйти</button>
+        </div>
+
+        <div class="profile-actions">
+            <a asp-action="EditProfile" asp-controller="Account" class="btn btn-primary">
+                <img src="/img/icons/edit.svg" alt="" class="btn-icon" />
+                Редактировать профиль
+            </a>
+
+            <form method="post" asp-action="DeleteProfile" asp-controller="Account">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить профиль?');">
+                    <img src="/img/icons/trash.svg" alt="" class="btn-icon" />
+                    Удалить профиль
+                </button>
             </form>
-        </section>
-
-        <section class="profile-card overview">
-            <div class="card-header">
-                <span>Обзор аккаунта</span>
-            </div>
-            <div class="overview-body">
-                <div class="orders-count">@Model.Orders.Count</div>
-                <div class="orders-caption">Количество заказов</div>
-
-                <a asp-page="/Account/ViewOrders" class="btn btn-green">Посмотреть заказы</a>
-                <a asp-page="/Account/EditProfile" class="btn btn-outline-pink">Редактировать/Удалить профиль</a>
-            </div>
-        </section>
+        </div>
     </div>
 </div>

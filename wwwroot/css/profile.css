@@ -1,0 +1,38 @@
+﻿.profile-page{
+    display: grid;
+    margin: 120px 60px;
+    align-content: center;
+}
+
+.profile-title{
+    font-size: 48px;
+}
+
+.profile-subtitle{
+    font-size: 18px;
+}
+
+.profile-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 50px;
+    background: white;
+}
+
+.profile-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00bc81;
+    padding: 20px;
+    border-radius: 999px;
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.profile-avatar img {
+    max-width: 40px;
+    filter: brightness(0) invert(1);
+}

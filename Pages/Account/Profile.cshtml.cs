@@ -1,11 +1,11 @@
 using FlowerShop.Data;
+using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace FlowerShop.Web.Pages.Account
 {
@@ -17,8 +17,10 @@ namespace FlowerShop.Web.Pages.Account
         public string Login {  get; set; } = string.Empty;
         public string Phone {  get; set; } = string.Empty;
         public DateTime DateRegister {  get; set; }
+        public int CountOrderCompleted { get; set; } = 0;
 
         public List<GetOrderDto> Orders { get; set; } = [];
+
 
         public async Task OnGetAsync()
         {
@@ -49,6 +51,9 @@ namespace FlowerShop.Web.Pages.Account
                             oi.Bouquet.Price,
                             oi.Bouquet.Quantity,
                             oi.Bouquet.ImageUrl))).ToList().ToList())).ToListAsync();
+                CountOrderCompleted = Orders
+                    .Where(c => c.Status == OrderStatus.Completed)
+                    .Count();
             }
         }
 
