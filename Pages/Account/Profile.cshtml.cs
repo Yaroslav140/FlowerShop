@@ -20,6 +20,7 @@ namespace FlowerShop.Web.Pages.Account
         public int CountOrderCompleted { get; set; } = 0;
 
         public List<GetOrderDto> Orders { get; set; } = [];
+        public List<GetFeedbackDto> Feedbacks { get; set; } = [];
 
 
         public async Task OnGetAsync()

@@ -1,47 +1,116 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.ProfileModel
 
-@section Styles{
-    <link rel="stylesheet" href="/css/profile.css" asp-append-version="true"/>
+@section Styles {
+    <link rel="stylesheet" href="/css/profile.css" asp-append-version="true" />
 }
 
 <div class="profile-page">
     <h1 class="profile-title">Мой профиль</h1>
     <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
 
-    <div class="profile-card">
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <span class="profile-avatar">
+                    <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
+                </span>
+                <h2 class="profile-name">@Model.Username</h2>
+                <p class="profile-login">@("@")@Model.Login</p>
+            </div>
 
-        <div class="profile-header">
-            <span class="profile-avatar">
-                <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
-            </span>
-            <h2 class="profile-name">@Model.Username</h2>
-            <p class="profile-login">@("@")@Model.Login</p>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Дата регистрации</span>
+                    <span class="stat-value">@Model.DateRegister.ToString("dd.MM.yyyy")</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Заказов выполнено</span>
+                    <span class="stat-value">@Model.CountOrderCompleted</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a asp-action="EditProfile" asp-controller="Account" class="btn btn-primary">
+                    <img src="/img/edit-icon.png" alt="" class="btn-icon edit-icon" />
+                    Редактировать профиль
+                </a>
+
+                <form method="post" asp-action="DeleteProfile" asp-controller="Account">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить профиль?');">
+                        <img src="/img/delete-icon.png" alt="" class="btn-icon" />
+                        Удалить профиль
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-reviews">
+                <div class="reviews-header">
+                    <h3>Мои отзывы</h3>
+                    <a href="#" class="link-all">⭐ Все отзывы</a>
+                </div>
+
+                @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+                {
+                    @foreach (var review in Model.Feedbacks)
+                    {
+                        <div class="review-item">
+                            <div class="review-stars">
+                                @for (int i = 0; i < review.StoreRating; i++)
+                                {
+                                    <span class="star">⭐</span>
+                                }
+                            </div>
+                            <p class="review-text">@review.Description</p>
+                            <span class="review-date">@review.DateCreation.ToString("dd.MM.yyyy")</span>
+                        </div>
+                    }
+                }
+            </div>
         </div>
 
-        <div class="profile-stats">
-            <div class="stat-item">
-                <span class="stat-label">Дата регистрации</span>
-                <span class="stat-value">@Model.DateRegister.ToShortDateString()</span>
+        <div class="orders-section">
+            <div class="orders-header">
+                <h2>Мои заказы</h2>
+                <span class="orders-badge">📦 @Model.Orders.Count заказов</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">Заказов выполнено</span>
-                <span class="stat-value">@Model.CountOrderCompleted</span>
+
+            <div class="orders-list">
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="order-card">
+                        <div class="order-header-row">
+                            <div class="order-info">
+                                <h3 class="order-number">Заказ #@order.Id.ToString()[4..]..</h3>
+                                <span class="order-status status-@order.Status.ToString().ToLower()">@order.Status</span>
+                            </div>
+                            <div class="order-price">
+                                <span class="price-amount">@order.TotalAmount.ToString("0.00") руб.</span>
+                                <span class="items-count">@order.OrderItem.Count позиций</span>
+                            </div>
+                        </div>
+
+                        <p class="order-date">Дата заказа: @order.PickupDate.ToString("dd.MM.yyyy")</p>
+
+                        <div class="order-actions">
+                            <a href="#" class="btn-order btn-details">
+                                <img src="/img/icons/eye.svg" alt="" />
+                                Подробнее
+                            </a>
+                            <a href="#" class="btn-order btn-repeat">
+                                <img src="/img/icons/repeat.svg" alt="" />
+                                Повторить
+                            </a>
+@*                             @if (order.CanReview)
+                            {
+                                <a href="#" class="btn-order btn-review">
+                                    ⭐ Оставить отзыв
+                                </a>
+                            } *@
+                        </div>
+                    </div>
+                }
             </div>
-        </div>
-
-        <div class="profile-actions">
-            <a asp-action="EditProfile" asp-controller="Account" class="btn btn-primary">
-                <img src="/img/icons/edit.svg" alt="" class="btn-icon" />
-                Редактировать профиль
-            </a>
-
-            <form method="post" asp-action="DeleteProfile" asp-controller="Account">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить профиль?');">
-                    <img src="/img/icons/trash.svg" alt="" class="btn-icon" />
-                    Удалить профиль
-                </button>
-            </form>
         </div>
     </div>
 </div>

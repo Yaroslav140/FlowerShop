@@ -22,6 +22,7 @@
                     <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
                     <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
                     <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
+                    <li><a asp-page="/PageHeader/SoftToys" class="@(currentPage == "/PageHeader/SoftToys" ? "active" : "")">Мягкие игрушки</a></li>
                     <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
                     @if (User?.Identity?.IsAuthenticated == true)
                     {
