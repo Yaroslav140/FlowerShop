@@ -20,7 +20,17 @@ namespace FlowerShop.Web.Pages.Account
         public int CountOrderCompleted { get; set; } = 0;
 
         public List<GetOrderDto> Orders { get; set; } = [];
-        public List<GetFeedbackDto> Feedbacks { get; set; } = [];
+        public List<GetFeedbackDto> Feedbacks { get; set; } = new()
+        {
+            new GetFeedbackDto(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Все гуд", 5, new()
+            {
+
+            }),
+            new GetFeedbackDto(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum", 5, new()
+            {
+
+            })
+        };
 
 
         public async Task OnGetAsync()
@@ -56,6 +66,51 @@ namespace FlowerShop.Web.Pages.Account
                     .Where(c => c.Status == OrderStatus.Completed)
                     .Count();
             }
+        }
+
+        public async Task<ActionResult> OnPostDeleteAsync()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
+            var user = await _context.UserDomains.FindAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            await using var tx = await _context.Database.BeginTransactionAsync();
+
+            var returns = await _context.OrderItems
+                .Where(i => i.Order.UserId == userId)
+                .GroupBy(i => i.BouquetId)
+                .Select(g => new { BouquetId = g.Key, Qty = g.Sum(x => x.Quantity) })
+                .ToListAsync();
+
+            if (returns.Count > 0)
+            {
+                var bouquetIds = returns.Select(r => r.BouquetId).ToList();
+                var bouquets = await _context.Set<BouquetEntity>()
+                    .Where(b => bouquetIds.Contains(b.Id))
+                    .ToListAsync();
+
+                var map = returns.ToDictionary(r => r.BouquetId, r => r.Qty);
+                foreach (var b in bouquets)
+                {
+                    if (map.TryGetValue(b.Id, out var qty))
+                        b.Quantity += qty;
+                }
+            }
+
+            _context.UserDomains.Remove(user);
+            await _context.SaveChangesAsync();
+            await tx.CommitAsync();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            foreach (var cookie in Request.Cookies.Keys)
+                Response.Cookies.Delete(cookie);
+
+            return RedirectToPage("/Home");
         }
 
         public async Task<ActionResult> OnPostExitAsync()

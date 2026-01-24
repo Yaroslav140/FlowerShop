@@ -58,50 +58,5 @@ namespace FlowerShop.Web.Pages.Account
 
             return RedirectToPage("/Account/Profile");
         }
-
-        public async Task<ActionResult> OnPostDeleteAsync()
-        {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(userIdClaim, out var userId))
-                return Unauthorized();
-
-            var user = await _context.UserDomains.FindAsync(userId);
-            if (user == null)
-                return NotFound();
-
-            await using var tx = await _context.Database.BeginTransactionAsync();
-
-            var returns = await _context.OrderItems
-                .Where(i => i.Order.UserId == userId)
-                .GroupBy(i => i.BouquetId)
-                .Select(g => new { BouquetId = g.Key, Qty = g.Sum(x => x.Quantity) })
-                .ToListAsync();
-
-            if (returns.Count > 0)
-            {
-                var bouquetIds = returns.Select(r => r.BouquetId).ToList();
-                var bouquets = await _context.Set<BouquetEntity>()
-                    .Where(b => bouquetIds.Contains(b.Id))
-                    .ToListAsync();
-
-                var map = returns.ToDictionary(r => r.BouquetId, r => r.Qty);
-                foreach (var b in bouquets)
-                {
-                    if (map.TryGetValue(b.Id, out var qty))
-                        b.Quantity += qty;
-                }
-            }
-
-            _context.UserDomains.Remove(user);
-            await _context.SaveChangesAsync();
-            await tx.CommitAsync();
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            foreach (var cookie in Request.Cookies.Keys)
-                Response.Cookies.Delete(cookie);
-
-            return RedirectToPage("/Home");
-        }
     }
 }

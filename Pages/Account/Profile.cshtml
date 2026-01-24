@@ -36,22 +36,21 @@
                     Редактировать профиль
                 </a>
 
-                <form method="post" asp-action="DeleteProfile" asp-controller="Account">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить профиль?');">
+                <form method="post" asp-page-handler="Delete">
+                    <button type="submit" class="btn btn-danger">
                         <img src="/img/delete-icon.png" alt="" class="btn-icon" />
                         Удалить профиль
                     </button>
                 </form>
             </div>
 
-            <div class="profile-reviews">
-                <div class="reviews-header">
-                    <h3>Мои отзывы</h3>
-                    <a href="#" class="link-all">⭐ Все отзывы</a>
-                </div>
-
-                @if (Model.Feedbacks != null && Model.Feedbacks.Any())
-                {
+            @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+            {
+                <div class="profile-reviews">
+                    <div class="reviews-header">
+                        <h3>Мои отзывы</h3>
+                        <a href="#" class="link-all">⭐ Все отзывы</a>
+                    </div>
                     @foreach (var review in Model.Feedbacks)
                     {
                         <div class="review-item">
@@ -65,8 +64,8 @@
                             <span class="review-date">@review.DateCreation.ToString("dd.MM.yyyy")</span>
                         </div>
                     }
-                }
-            </div>
+                </div>
+            }
         </div>
 
         <div class="orders-section">
@@ -81,7 +80,7 @@
                     <div class="order-card">
                         <div class="order-header-row">
                             <div class="order-info">
-                                <h3 class="order-number">Заказ #@order.Id.ToString()[4..]..</h3>
+                                <h3 class="order-number">Заказ #@order.Id.ToString()[^4..]</h3>
                                 <span class="order-status status-@order.Status.ToString().ToLower()">@order.Status</span>
                             </div>
                             <div class="order-price">
@@ -94,11 +93,11 @@
 
                         <div class="order-actions">
                             <a href="#" class="btn-order btn-details">
-                                <img src="/img/icons/eye.svg" alt="" />
+                                <img src="/img/eye-icon.png" alt="" />
                                 Подробнее
                             </a>
                             <a href="#" class="btn-order btn-repeat">
-                                <img src="/img/icons/repeat.svg" alt="" />
+                                <img src="/img/box-icon.png" alt="" />
                                 Повторить
                             </a>
 @*                             @if (order.CanReview)

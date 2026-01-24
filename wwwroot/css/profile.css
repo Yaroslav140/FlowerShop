@@ -106,9 +106,6 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #e5e7eb;
 }
 
 .profile-actions form {
@@ -155,13 +152,14 @@
     border: 1px solid #f95d5d;
 }
 
-    .btn-danger:hover {
-        background: #fef2f2;
-    }
+.btn-danger:hover {
+    background: #fef2f2;
+}
 
-/* Отзывы */
 .profile-reviews {
-    margin-top: 10px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e5e7eb;
 }
 
 .reviews-header {
@@ -184,13 +182,15 @@
 }
 
 .review-item {
-    padding: 16px 0;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 16px;
+    background-color: #eefdf8;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
 
-    .review-item:last-child {
-        border-bottom: none;
-    }
+.review-item:last-child {
+    border-bottom: none;
+}
 
 .review-stars {
     display: flex;
@@ -214,12 +214,11 @@
     color: #9ca3af;
 }
 
-/* Правая колонка - Заказы */
 .orders-section {
     background: white;
     padding: 30px;
     border-radius: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 30px #00000033;
 }
 
 .orders-header {
@@ -229,21 +228,20 @@
     margin-bottom: 30px;
 }
 
-    .orders-header h2 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 0;
-    }
+.orders-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
 
 .orders-badge {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
+    padding: 10px 25px;
     background: #f0fdf4;
-    color: #00bc81;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
 }
 
@@ -255,14 +253,15 @@
 
 .order-card {
     padding: 24px;
-    border: 1px solid #e5e7eb;
     border-radius: 16px;
     transition: all 0.2s;
+    background: linear-gradient(118deg, #ecfdf5, white 100%);
+    box-shadow: #cfcfcf7d 0px 2px 10px 0px;
 }
 
-    .order-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+.order-card:hover {
+    box-shadow: #85858561 0px 2px 15px 0px;
+}
 
 .order-header-row {
     display: flex;
@@ -340,28 +339,28 @@
     align-items: center;
     gap: 6px;
     padding: 10px 18px;
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
-    border: none;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-    .btn-order img {
-        width: 16px;
-        height: 16px;
-    }
+.btn-order img {
+    width: 16px;
+    height: 16px;
+}
 
 .btn-details {
     background: #00bc81;
     color: white;
 }
 
-    .btn-details:hover {
-        background: #00a571;
-    }
+.btn-details:hover {
+    background: #00a571;
+    transform: scale(1.09);
+}
 
 .btn-repeat {
     background: #f0fdf4;
@@ -369,9 +368,10 @@
     border: 1px solid #d1fae5;
 }
 
-    .btn-repeat:hover {
-        background: #d1fae5;
-    }
+.btn-repeat:hover {
+    background: #d1fae5;
+    transform: scale(1.09);
+}
 
 .btn-review {
     background: #fffbeb;
@@ -379,6 +379,6 @@
     border: 1px solid #fef3c7;
 }
 
-    .btn-review:hover {
-        background: #fef3c7;
-    }
+.btn-review:hover {
+    background: #fef3c7;
+}

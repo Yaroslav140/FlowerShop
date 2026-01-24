@@ -16,11 +16,13 @@ wwwroot\css\feedback.css
 wwwroot\css\home.css
 wwwroot\css\main.css
 wwwroot\css\profile.css
+wwwroot\img\box-icon.png
 wwwroot\img\cart-icon.png
 wwwroot\img\chat-icno-about.svg
 wwwroot\img\clock-icon.png
 wwwroot\img\delete-icon.png
 wwwroot\img\edit-icon.png
+wwwroot\img\eye-icon.png
 wwwroot\img\flower-icon-about.png
 wwwroot\img\flower-img-home.jpg
 wwwroot\img\hand-icon-about.png
