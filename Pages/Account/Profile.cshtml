@@ -31,10 +31,12 @@
             </div>
 
             <div class="profile-actions">
-                <a asp-action="EditProfile" asp-controller="Account" class="btn btn-primary">
-                    <img src="/img/edit-icon.png" alt="" class="btn-icon edit-icon" />
-                    Редактировать профиль
-                </a>
+                <form method="post" asp-page-handler="StartEdit" style="display:inline;">
+                    <button type="submit" class="btn btn-link text-decoration-none p-0 border-0">
+                        <img src="/img/edit-icon.png" alt="" class="btn-icon edit-icon" />
+                        <span style="color: inherit; font: inherit;">Редактировать профиль</span>
+                    </button>
+                </form>
 
                 <form method="post" asp-page-handler="Delete">
                     <button type="submit" class="btn btn-danger">
@@ -113,3 +115,32 @@
         </div>
     </div>
 </div>
+
+@if (Model.IsEditing)
+{
+    <div class="modal-overlay">
+        <div class="modal-window">
+            <h3>Редактирование профиля</h3>
+
+            <form method="post" asp-page-handler="UpdateProfile">
+                <div class="mb-3">
+                    <label asp-for="EditInput.NewUsername" class="form-label">Имя</label>
+                    <input asp-for="EditInput.NewUsername" class="form-control" />
+                    <!-- Ошибки валидации (серверные) -->
+                    <span asp-validation-for="EditInput.NewUsername" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EditInput.NewLogin" class="form-label">Логин</label>
+                    <input asp-for="EditInput.NewLogin" class="form-control" />
+                    <span asp-validation-for="EditInput.NewLogin" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="/Account/Profile" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
