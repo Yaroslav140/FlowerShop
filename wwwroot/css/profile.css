@@ -4,6 +4,10 @@
     padding: 0 60px;
 }
 
+.main-title {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
 .profile-title {
     font-size: 48px;
     font-weight: 700;
@@ -15,6 +19,12 @@
     font-size: 18px;
     color: #6b7280;
     margin-bottom: 40px;
+}
+
+.cards{
+    opacity: 0;
+    animation: fadeInLeft 1.5s ease forwards;
+    animation-delay: 0.5s;
 }
 
 .profile-container {
@@ -220,6 +230,9 @@
     padding: 30px;
     border-radius: 24px;
     box-shadow: 0 2px 30px #00000033;
+    opacity: 0;
+    animation: fadeInRight 1s ease forwards;
+    animation-delay: 0.2s; 
 }
 
 .orders-header {
@@ -258,10 +271,8 @@
     transition: all 0.2s;
     background: linear-gradient(118deg, #ecfdf5, white 100%);
     box-shadow: #cfcfcf7d 0px 2px 10px 0px;
-}
-
-.order-card:hover {
-    box-shadow: #85858561 0px 2px 15px 0px;
+    opacity: 0;
+    animation: fadeInRight 0.8s ease forwards;
 }
 
 .order-header-row {
@@ -437,4 +448,40 @@
     background: white;
     color: black;
     border: #bbbbbb6b solid 2px;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
 }

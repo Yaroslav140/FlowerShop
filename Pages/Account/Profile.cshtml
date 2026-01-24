@@ -7,8 +7,10 @@
 }
 
 <div class="profile-page">
-    <h1 class="profile-title">Мой профиль</h1>
-    <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
+    <div class="main-title">
+        <h1 class="profile-title">Мой профиль</h1>
+        <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
+    </div>
 
     <div class="profile-container">
         <div class="cards">
@@ -80,9 +82,13 @@
             </div>
 
             <div class="orders-list">
+                @{
+                    int u = 6;
+                }
                 @foreach (var order in Model.Orders)
                 {
-                    <div class="order-card">
+                    var delay = (u * 0.1).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+                    <div class="order-card" style="animation-delay: @(delay)s">
                         <div class="order-header-row">
                             <div class="order-info">
                                 <h3 class="order-number">Заказ #@order.Id.ToString()[^4..]</h3>
@@ -138,6 +144,7 @@
                             }
                         </div>
                     </div>
+                    u++;
                 }
             </div>
         </div>
