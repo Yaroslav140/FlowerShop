@@ -1,4 +1,5 @@
 ﻿@page
+@using FlowerShop.Data.Models
 @model FlowerShop.Web.Pages.Account.ProfileModel
 
 @section Styles {
@@ -10,40 +11,42 @@
     <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
 
     <div class="profile-container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <span class="profile-avatar">
-                    <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
-                </span>
-                <h2 class="profile-name">@Model.Username</h2>
-                <p class="profile-login">@("@")@Model.Login</p>
-            </div>
-
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Дата регистрации</span>
-                    <span class="stat-value">@Model.DateRegister.ToString("dd.MM.yyyy")</span>
+        <div class="cards">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <span class="profile-avatar">
+                        <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
+                    </span>
+                    <h2 class="profile-name">@Model.Username</h2>
+                    <p class="profile-login">@("@")@Model.Login</p>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Заказов выполнено</span>
-                    <span class="stat-value">@Model.CountOrderCompleted</span>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Дата регистрации</span>
+                        <span class="stat-value">@Model.DateRegister.ToString("dd.MM.yyyy")</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Заказов выполнено</span>
+                        <span class="stat-value">@Model.CountOrderCompleted</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="profile-actions">
-                <form method="post" asp-page-handler="StartEdit" style="display:inline;">
-                    <button type="submit" class="btn btn-link text-decoration-none p-0 border-0">
-                        <img src="/img/edit-icon.png" alt="" class="btn-icon edit-icon" />
-                        <span style="color: inherit; font: inherit;">Редактировать профиль</span>
-                    </button>
-                </form>
+                <div class="profile-actions">
+                    <form method="post" asp-page-handler="StartEdit" style="display:inline;">
+                        <button type="submit" class="btn btn-link text-decoration-none p-0 border-0">
+                            <img src="/img/edit-icon.png" alt="" class="btn-icon revert-icon" />
+                            <span>Редактировать профиль</span>
+                        </button>
+                    </form>
 
-                <form method="post" asp-page-handler="Delete">
-                    <button type="submit" class="btn btn-danger">
-                        <img src="/img/delete-icon.png" alt="" class="btn-icon" />
-                        Удалить профиль
-                    </button>
-                </form>
+                    <form method="post" asp-page-handler="Delete">
+                        <button type="submit" class="btn btn-danger">
+                            <img src="/img/delete-icon.png" alt="" class="btn-icon" />
+                            Удалить профиль
+                        </button>
+                    </form>
+                </div>
             </div>
 
             @if (Model.Feedbacks != null && Model.Feedbacks.Any())
@@ -83,7 +86,32 @@
                         <div class="order-header-row">
                             <div class="order-info">
                                 <h3 class="order-number">Заказ #@order.Id.ToString()[^4..]</h3>
-                                <span class="order-status status-@order.Status.ToString().ToLower()">@order.Status</span>
+                                <div class="order-status">
+                                    <div class="status-line">
+                                        <span class="status-dot status-@order.Status.ToString().ToLower()"></span>
+                                        @switch (order.Status)
+                                        {
+                                            case OrderStatus.New:
+                                                <span class="status-text" style="background: #78df7f;">Новый</span>
+                                                break;
+                                            case OrderStatus.Pending:
+                                                <span class="status-text" style="background: #f89e00;">Ожидает</span>
+                                                break;
+                                            case OrderStatus.InProgress:
+                                                <span class="status-text" style="background: #00ade4;">В обработке</span>
+                                                break;
+                                            case OrderStatus.Completed:
+                                                <span class="status-text" style="background: #00c857;">Выполнен</span>
+                                                break;
+                                            case OrderStatus.Cancelled:
+                                                <span class="status-text" style="background: #eb0a0a;">Отменён</span>
+                                                break;
+                                            default:
+                                                <span class="status-text">@order.Status</span>
+                                                break;
+                                        }
+                                    </div>
+                                </div>
                             </div>
                             <div class="order-price">
                                 <span class="price-amount">@order.TotalAmount.ToString("0.00") руб.</span>
@@ -94,20 +122,20 @@
                         <p class="order-date">Дата заказа: @order.PickupDate.ToString("dd.MM.yyyy")</p>
 
                         <div class="order-actions">
-                            <a href="#" class="btn-order btn-details">
-                                <img src="/img/eye-icon.png" alt="" />
+                            <a asp-page="/Account/ViewOrderDetails" class="btn-order btn-details" asp-route-id="@order.Id">
+                                <img src="/img/eye-icon.png" class="revert-icon"/>
                                 Подробнее
                             </a>
                             <a href="#" class="btn-order btn-repeat">
                                 <img src="/img/box-icon.png" alt="" />
                                 Повторить
                             </a>
-@*                             @if (order.CanReview)
+                            @if (order.CanReview)
                             {
                                 <a href="#" class="btn-order btn-review">
                                     ⭐ Оставить отзыв
                                 </a>
-                            } *@
+                            }
                         </div>
                     </div>
                 }
@@ -120,25 +148,24 @@
 {
     <div class="modal-overlay">
         <div class="modal-window">
-            <h3>Редактирование профиля</h3>
+            <h3 class="modal-window__title">Редактирование профиля</h3>
 
             <form method="post" asp-page-handler="UpdateProfile">
-                <div class="mb-3">
-                    <label asp-for="EditInput.NewUsername" class="form-label">Имя</label>
-                    <input asp-for="EditInput.NewUsername" class="form-control" />
-                    <!-- Ошибки валидации (серверные) -->
-                    <span asp-validation-for="EditInput.NewUsername" class="text-danger"></span>
+                <div class="form-field">
+                    <label asp-for="EditInput.NewUsername" class="form-field__label">Имя</label>
+                    <input asp-for="EditInput.NewUsername" class="form-field__input" />
+                    <span asp-validation-for="EditInput.NewUsername" class="form-field__error text-danger"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="EditInput.NewLogin" class="form-label">Логин</label>
-                    <input asp-for="EditInput.NewLogin" class="form-control" />
-                    <span asp-validation-for="EditInput.NewLogin" class="text-danger"></span>
+                <div class="form-field">
+                    <label asp-for="EditInput.NewLogin" class="form-field__label">Логин</label>
+                    <input asp-for="EditInput.NewLogin" class="form-field__input"/>
+                    <span asp-validation-for="EditInput.NewLogin" class="form-field__error text-danger"></span>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="/Account/Profile" class="btn btn-secondary">Отмена</a>
+                <div class="modal-window__buttons">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="/Account/Profile" class="btn btn-secondary">Отмена</a>
                 </div>
             </form>
         </div>

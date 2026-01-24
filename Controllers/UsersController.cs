@@ -36,6 +36,7 @@ namespace FlowerShop.Web.Controllers
                         o.DeliveryAddress,
                         o.TotalAmount,
                         o.Status,
+                        o.CanReview,
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
                             i.BouquetId, 
@@ -74,6 +75,7 @@ namespace FlowerShop.Web.Controllers
                         o.DeliveryAddress,
                         o.TotalAmount,
                         o.Status,
+                        o.CanReview,
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
                             i.BouquetId,
