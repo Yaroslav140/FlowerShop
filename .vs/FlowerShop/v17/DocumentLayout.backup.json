@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\pages\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\pages\\account\\purchases.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\purchases.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\wwwroot\\css\\purchases.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\purchases.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,26 +31,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "profile.css",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\wwwroot\\css\\profile.css",
-              "RelativeDocumentMoniker": "wwwroot\\css\\profile.css",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\wwwroot\\css\\profile.css",
-              "RelativeToolTip": "wwwroot\\css\\profile.css",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAZAAAAAAAAAA==",
+              "Title": "purchases.css",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\wwwroot\\css\\purchases.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\purchases.css",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\wwwroot\\css\\purchases.css",
+              "RelativeToolTip": "wwwroot\\css\\purchases.css",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-24T16:46:02.826Z"
+              "WhenOpened": "2026-01-25T19:43:13.399Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Profile.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\Profile.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Account\\Profile.cshtml",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\Profile.cshtml",
-              "RelativeToolTip": "Pages\\Account\\Profile.cshtml",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFkAAAAAAAAAAAAAAA==",
+              "Title": "Purchases.cshtml",
+              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\Purchases.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Account\\Purchases.cshtml",
+              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\Purchases.cshtml",
+              "RelativeToolTip": "Pages\\Account\\Purchases.cshtml",
+              "ViewState": "AgIAABoAAAAAAAAAAAAYwFQAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-24T16:45:11.73Z",
+              "WhenOpened": "2026-01-25T19:42:05.474Z",
               "EditorCaption": ""
             }
           ]

@@ -4,9 +4,11 @@ C:\Users\param\source\repos\FlowerShop\wwwroot\css\profile.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\authorization.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\contact.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\about.css
+C:\Users\param\source\repos\FlowerShop\wwwroot\css\purchases.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\feedback.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\bouquet.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\home.css
+C:\Users\param\source\repos\FlowerShop\wwwroot\css\placeOrder.css
 C:\Users\param\source\repos\FlowerShop\wwwroot\css\main.css
 wwwroot\css\about.css
 wwwroot\css\authorization.css
@@ -15,7 +17,9 @@ wwwroot\css\contact.css
 wwwroot\css\feedback.css
 wwwroot\css\home.css
 wwwroot\css\main.css
+wwwroot\css\placeOrder.css
 wwwroot\css\profile.css
+wwwroot\css\purchases.css
 wwwroot\img\box-icon.png
 wwwroot\img\cart-icon.png
 wwwroot\img\chat-icno-about.svg
@@ -29,7 +33,7 @@ wwwroot\img\hand-icon-about.png
 wwwroot\img\icon.svg
 wwwroot\img\phone-icon.png
 wwwroot\img\shipped-icon-about.png
-wwwroot\img\ShopCart.png
+wwwroot\img\shop-cart-icon.png
 wwwroot\img\star-icon-about.png
 wwwroot\img\star-icon-authorization.png
 wwwroot\img\user.png

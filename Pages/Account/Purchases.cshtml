@@ -5,22 +5,17 @@
     var ru = new CultureInfo("ru-RU");
     var subtotal = Model.CartEntities?.Sum(ci => ci.Bouquet.Price * ci.Quantity) ?? 0m;
 }
-@if (TempData["SuccessMessage"] is string ok)
-{
-    <div class="alert success">@ok</div>
-}
-@if (TempData["ErrorMessage"] is string err)
-{
-    <div class="alert error">@err</div>
+@section Styles{
+    <link rel="stylesheet" href="~/css/purchases.css" asp-append-version="true"/>
 }
 <div class="container cart">
+    <div class="container-title">
+        <h1 class="cart__title">Корзина</h1>
+        <p class="cart__subtitle">@Model.CartEntities?.Count позиций в вашей корзине</p>
+    </div>
     @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
     {
         <div class="cart__head">
-            <div>
-                <h1 class="cart__title">Корзина</h1>
-                <p class="cart__subtitle">@Model.CartEntities.Count позиций в вашей корзине</p>
-            </div>
             <form method="post" asp-page-handler="ClearCarts">
                 <button class="btn btn--outline-pink cart__clear" type="submit">Очистить корзину</button>
             </form>
@@ -87,12 +82,9 @@
     else
     {
         <div class="cart-empty center">
-            <div>
-                <img src="@Url.Content("~/img/ShopCart.png")" alt="Корзина пустая" class="cart-empty__img" />
-                <h2 class="cart-empty__title">Ваша корзина пуста</h2>
-                <p class="cart-empty__text">Добавьте несколько красивых букетов, чтобы начать</p>
-                <a class="btn btn--brand btn--pill" asp-page="/PageHeader/Bouquets">К букетам</a>
-            </div>
+            <img class="cart-empty__img" src="/img/shop-cart-icon.png" alt="Корзина пустая" />
+            <h2 class="cart-empty__title">Ваша корзина пуста</h2>
+            <a class="btn btn--brand btn--pill" asp-page="/PageHeader/Bouquets">Перейти к букетам</a>
         </div>
     }
 </div>

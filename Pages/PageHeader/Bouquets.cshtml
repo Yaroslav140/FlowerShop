@@ -4,7 +4,6 @@
 @section Styles{
     <link rel="stylesheet" href="/css/bouquet.css" asp-append-version="true"/>
 }
-
 <div class="bouquet-main-container">
     <div class="content">
         <span class="hero__badge">🌿 Наш каталог</span>
@@ -19,7 +18,7 @@
             var culture = new System.Globalization.CultureInfo("ru-RU");
             foreach (var (bouquet, idx) in Model.GetBouquets.Select((b, i) => (b, i)))
             {
-                <div class="bouquet-card bouquet-card__@idx" style="--delay: @(0.5 + idx * 0.5)s;">
+                <div class="bouquet-card bouquet-card__@idx">
                     <img src="@Url.Content(bouquet.ImagePath)" alt="@bouquet.Name" loading="lazy" />
                     <div class="bouquet-card__description">
                         <h2 class="bouquet-card__title">@bouquet.Name</h2>
