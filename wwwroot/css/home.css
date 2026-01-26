@@ -155,8 +155,7 @@
     display: flex;
     justify-content: flex-end;
     opacity: 0;
-    animation: slideInFromRight 0.8s ease-out forwards;
-    animation-delay: 0.2s; 
+    animation: slideInFromRight 0.8s ease-out forwards 0.2s;
 }
 
 .home-hero__image img {
@@ -167,8 +166,7 @@
     border-radius: 18px;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
     border: 1px solid rgba(255,255,255,0.7);
-    animation: img 3s ease-in-out infinite;
-    animation-delay: 1s;
+    animation: img 3s ease-in-out infinite 1s;
 }
 
 @keyframes slideInFromLeft {

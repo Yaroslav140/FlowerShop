@@ -49,8 +49,7 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
     width: 100%;
     opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
-    animation-delay: 0.2s;
+    animation: fadeIn 0.8s ease forwards 0.2s;
 }
 
 .content__description {
@@ -82,8 +81,7 @@
     text-align: center;
     box-shadow: 0 4px 6px -1px rgb(0, 0, 0, .05);
     transition: transform 0.2s ease;
-    animation: fadeIn 1.2s ease backwards;
-    animation-delay: 1s;
+    animation: fadeIn 1.2s ease backwards 1s;
 }
 
 .feature-card:nth-child(1) {
@@ -123,8 +121,7 @@
     border-radius: 25px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
-    animation-delay: 1s;
+    animation: fadeIn 1.5s ease forwards 1s;
 }
 
 .feedback-container__img {

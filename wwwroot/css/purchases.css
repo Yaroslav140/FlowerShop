@@ -6,8 +6,9 @@
 }
 
 .container-title {
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
     position: relative;
+    animation: fadeIn 1s ease;
 }
 
 .cart__title {
@@ -32,9 +33,11 @@
 
 .cart__head {
     position: absolute;
-    top: 4rem; 
-    right: 5rem; 
+    top: 4rem;
+    right: 5rem;
     z-index: 10;
+    opacity: 0;
+    animation: fadeInRight 1s ease forwards;
 }
 
 .cart__clear {
@@ -59,8 +62,6 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-
-
 .cart-item {
     display: flex;
     background: #ffffff;
@@ -70,6 +71,8 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     position: relative;
     align-items: center;
+    opacity: 0;
+    animation: fadeInLeft 0.5s ease forwards;
 }
 
 .cart-item__img {
@@ -166,6 +169,8 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 40px;
+    opacity: 0;
+    animation: fadeInRight 1s ease forwards;
 }
 
 .cart-summary__title {
@@ -276,5 +281,40 @@
 
     100% {
         transform: translateY(5px) rotateZ(5deg);
+    }
+}
+
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fadeInLeft{
+    0%{
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
     }
 }

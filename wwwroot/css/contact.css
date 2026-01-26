@@ -171,8 +171,7 @@
     border-radius: 25px;
     box-shadow: 0 28px 60px rgba(15, 118, 110, 0.18);
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
-    animation-delay: 0.5s;
+    animation: fadeIn 1.5s ease forwards 0.5s;
 }
 
 .feedback-container__img {

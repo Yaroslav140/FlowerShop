@@ -31,8 +31,7 @@
     background: #00bc81;
     margin-bottom: 20px;
     opacity: 0;
-    animation: fadeInScale 0.5s ease-in-out forwards;
-    animation-delay: 0.3s;
+    animation: fadeInScale 0.5s ease-in-out forwards 0.3s;
 }
 
 .hero-badge img {
@@ -114,8 +113,7 @@ form {
     margin-top: 10px;
     transition: background-color 0.2s;
     opacity: 0;
-    animation: slideInUp 1s ease forwards;
-    animation-delay: 1s;
+    animation: slideInUp 1s ease forwards 1s;
 }
 
 .submit-btn:hover {

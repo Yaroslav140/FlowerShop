@@ -1,3 +1,4 @@
+C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\css\account-view-order-details.css
 C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\img\icon.svg
 C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\img\chat-icno-about.svg
 C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\css\profile.css
@@ -11,6 +12,7 @@ C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\css\home.css
 C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\css\placeOrder.css
 C:\Users\param\source\repos\FlowerShopApp\FlowerShop\wwwroot\css\main.css
 wwwroot\css\about.css
+wwwroot\css\account-view-order-details.css
 wwwroot\css\authorization.css
 wwwroot\css\bouquet.css
 wwwroot\css\contact.css

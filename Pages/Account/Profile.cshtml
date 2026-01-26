@@ -94,7 +94,7 @@
                                 <h3 class="order-number">Заказ #@order.Id.ToString()[^4..]</h3>
                                 <div class="order-status">
                                     <div class="status-line">
-                                        <span class="status-dot status-@order.Status.ToString().ToLower()"></span>
+                                        <span class="status-dot status"></span>
                                         @switch (order.Status)
                                         {
                                             case OrderStatus.New:

@@ -3,185 +3,126 @@
 @model FlowerShop.Web.Pages.Account.ViewOrderDetailsModel
 @{
     var order = Model.Order;
-    var firstItem = order?.OrderItem?.FirstOrDefault();
+}
 
-    string BadgeClass(OrderStatus s)
-        => s == OrderStatus.Completed ? "badge badge--delivered" : "badge";
-}
-@if (TempData["SuccessMessage"] is string ok)
-{
-    <div class="alert success">@ok</div>
-}
-@if (TempData["ErrorMessage"] is string err)
-{
-    <div class="alert error">@err</div>
+@section Styles {
+    <link rel="stylesheet" href="/css/account-view-order-details.css" asp-append-version="true" />
 }
 
 @if (order is null)
 {
-    <div class="center" style="min-height:50vh;">Заказ не найден.</div>
+    <div class="container center">Заказ не найден.</div>
 }
 else
 {
     <div class="container">
-        <nav style="margin-bottom:8px;">
-            <a href="@(Url.Page("/Account/ViewOrders"))" class="container-header__nav-link">← Вернуться к заказам</a>
-        </nav>
+        <a href="/Account/Profile" class="back-link">
+            <span>←</span> Вернуться к профилю
+        </a>
 
-        <header class="content" style="padding-top:8px; padding-bottom:0;">
-            <h1 class="content__main" style="font-size:28px;">Детали заказа</h1>
-            <p class="content__description" style="margin-top:-6px;">
-                <span>Order ID: </span><strong>@order.Id.ToString()[..8]…</strong>
-            </p>
+        <header class="page-title-row">
+            <h1 class="page-title">Заказ #@order.Id.ToString()[^4..]</h1>
+            <div class="order-meta">
+                <span>Дата заказа: @order.PickupDate.ToString("dd.MM.yyyy")</span>
+                @switch (order.Status)
+                {
+                    case OrderStatus.New:
+                        <span class="status-text" style="background: #78df7f;">Новый</span>
+                        break;
+                    case OrderStatus.Pending:
+                        <span class="status-text" style="background: #f89e00;">Ожидает</span>
+                        break;
+                    case OrderStatus.InProgress:
+                        <span class="status-text" style="background: #00ade4;">В обработке</span>
+                        break;
+                    case OrderStatus.Completed:
+                        <span class="status-text" style="background: #00c857;">Выполнен</span>
+                        break;
+                    case OrderStatus.Cancelled:
+                        <span class="status-text" style="background: #eb0a0a;">Отменён</span>
+                        break;
+                    default:
+                        <span class="status-text">@order.Status</span>
+                        break;
+                }
+            </div>
         </header>
 
-        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
-            <div class="card-header" style="justify-content:space-between;">
-                <div style="font-weight:700;">Статус заказа</div>
-                <span class="@BadgeClass(order.Status)" data-status="@order.Status">@order.Status</span>
-            </div>
+        <div class="order-layout">
 
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:0;">
-                <div>
-                    <div class="label">Дата выполнения заказа</div>
-                    <div class="value">@order.PickupDate.ToString("dd.MM.yy HH:mm")</div>
-                </div>
-                <div>
-                    <div class="label">
-                        @if(order.Status == OrderStatus.Completed)
-                        {
-                            <div class="label">Дата выполнения</div>
-                            <div class="value">@order.PickupDate</div>
-                        }
-                </div>
-            </div>
-        </div>
+            <main>
+                <section class="card">
+                    <div class="card-header">Состав заказа</div>
 
-        @if (order.Status == OrderStatus.Pending || order.Status == OrderStatus.New)
-            {
-                <div style="margin-top:14px;">
-                    <form method="post">
-                        <button type="submit" asp-page-handler="CancelOrder" asp-route-id="@order.Id" class="btn btn--outline-pink">Отменить заказ</button>
-                    </form>
-                </div>
-            }
-            else if (order.Status == OrderStatus.Completed)
-            {
-                <p class="hint" style="margin-top:10px;">Заказ доставлен. Спасибо, что выбрали нас!</p>
-            }
-            else if (order.Status == OrderStatus.Cancelled)
-            {
-                <p class="hint" style="margin-top:10px; color:#b91c1c;">Заказ был отменён.</p>
-            }
-        </section>
-
-        <section style="margin-top:16px;">
-            <h2 class="profile-title" style="font-size:22px; text-align:left;">Детали букетов</h2>
-
-            @if (order.OrderItem is { Count: > 0 })
-            {
-                <div class="bouquet-container" style="padding-left:0; padding-right:0;">
-                    @foreach (var i in order.OrderItem)
+                    @if (order.OrderItem != null)
                     {
-                        <article class="bouquet-card">
-                            <img src="@(i.Bouquet?.ImagePath ?? "/img/placeholder-bouquet.png")"
-                                 alt="@(i.Bouquet?.Name ?? "Bouquet")" />
+                        <div class="order-items-container">
+                            @foreach (var item in order.OrderItem)
+                            {
+                                var lineTotal = item.Price * item.Quantity;
 
-                            <div class="bouquet-card__description">
-                                <h3 class="bouquet-card__title">@i.Bouquet?.Name</h3>
-                                @if (!string.IsNullOrWhiteSpace(i.Bouquet?.Description))
-                                {
-                                    <p class="bouquet-card__text">@i.Bouquet!.Description</p>
-                                }
-                                <div class="bouquet-card__price">
-                                    @i.Price.ToString("C") <span style="font-weight:600; color:#555;">× @i.Quantity</span>
-                                </div>
-                            </div>
-                        </article>
+                                <article class="item-block">
+                                    <img src="@(item.Bouquet?.ImagePath ?? "/img/placeholder.png")"
+                                         alt="@item.Bouquet?.Name"
+                                         class="item-block__image" />
+
+                                    <div class="item-block__info">
+                                        <div class="item-block__title">@item.Bouquet?.Name</div>
+                                        <div class="item-block__qty">Количество: @item.Quantity шт</div>
+                                        <div class="item-block__price">
+                                            @item.Price.ToString("C") × @item.Quantity = @lineTotal.ToString("C")
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        </div>
                     }
-                </div>
-            }
-            else
-            {
-                <div class="cart-empty">
-                    <img class="cart-empty__img" src="/img/placeholder-bouquet.png" alt="">
-                    <p class="cart-empty__text">Позиции заказа не найдены.</p>
-                </div>
-            }
-        </section>
+                </section>
+            </main>
+            <aside>
+                <section class="card">
+                    <div class="card-header">Информация о доставке</div>
 
-        <section class="profile-card" style="max-width:var(--container); margin:16px auto;">
-            <div class="card-header">
-                <div>Инфрмация о покупатели</div>
-            </div>
-
-            <div class="info-list">
-                <div class="row">
-                    <div class="label">Имя получателя</div>
-                    <div class="value">@(!string.IsNullOrWhiteSpace(Model.UserInfo?.Username) ? Model.UserInfo.Username : Model.UserInfo?.Login)</div>
-                </div>
-
-                <div class="row">
-                    <div class="label">Логин</div>
-                    <div class="value login">@Model.UserInfo?.Login</div>
-                </div>
-                @if (!string.IsNullOrWhiteSpace(Model.UserInfo?.Phone))
-                {
-                    <div class="row">
-                        <div class="label">Номер телефона</div>
-                        <div class="value login">@Model.UserInfo?.Phone</div>
-                    </div>
-                }
-                @if (!string.IsNullOrWhiteSpace(Model.UserInfo?.CodeOrder))
-                {
-                    <div class="row">
-                        <div class="label">Код</div>
-                        <div class="value login">@Model.UserInfo?.CodeOrder</div>
-                    </div>
-                }
-            </div>
-        </section>
-
-        <section class="profile-card order-summary-card" style="max-width:var(--container); margin:16px auto;">
-            <div class="card-header">
-                <div>Краткое описание заказа</div>
-            </div>
-
-            <div class="order-summary">
-                @foreach (var i in order.OrderItem)
-                {
-                    var lineTotal = i.Price * i.Quantity;
-                    <div class="order-summary__row">
-                        <div class="label">
-                            @i.Bouquet?.Name
-                            <span style="color:var(--muted); font-weight:600;"> × @i.Quantity</span>
-                            <div style="font-size:12px; color:var(--muted); margin-top:2px;">
-                                @i.Price.ToString("C") за шт.
-                            </div>
-                        </div>
-                        <div class="value" style="font-variant-numeric: tabular-nums;">
-                            @lineTotal.ToString("C")
+                    <div class="address-block">
+                        <div class="label">Адрес доставки</div>
+                        <div class="value-text">
+                            Москва, ул. Цветочная, д. 12, кв. 45
+                            <!--ДОБАВИТЬ РЕДАКТИРОВАНИЕ-->
                         </div>
                     </div>
-                }
 
-                <hr class="order-summary__divider" />
-
-                <div class="order-summary__row order-summary__row--total">
-                    <div class="label">Итого</div>
-                    <div class="value" style="color:var(--brand); font-weight:800; font-variant-numeric: tabular-nums;">
-                        @order.TotalAmount.ToString("C")
+                    <div class="address-block" style="margin-bottom:0;">
+                        <div class="label">Дата и время</div>
+                        <div class="value-text">
+                            @order.PickupDate.ToString("dd.MM.yyyy HH:mm")
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <!-- две широкие кнопки внизу -->
-        <div class="order-actions-bar" style="max-width:var(--container); margin:12px auto 0;">
-            <a class="btn btn--outline-pink btn-wide"
-               asp-page="/PageHeader/Contacts" asp-route-orderId="@order.Id">
-                Контакт поддержки
-            </a>
+                <section class="card">
+                    <div class="card-header">Итого</div>
+
+                    <div class="summary-line">
+                        <span>Товары (@order.OrderItem?.Count шт)</span>
+                        <span style="font-weight:600;">@order.TotalAmount.ToString("C")</span>
+                    </div>
+
+                    <div class="summary-line">
+                        <span>Доставка</span>
+                        <span class="text-free">Бесплатно</span>
+                    </div>
+
+                    <div class="total-line">
+                        <span class="total-label">Всего</span>
+                        <span class="total-value">@order.TotalAmount.ToString("C")</span>
+                    </div>
+                </section>
+
+                <a href="#" class="btn-support">
+                    <img src="~/img/chat-icno-about.svg" style="width:20px;filter: brightness(0) invert(1);"/>
+                    Связаться с поддержкой
+                </a>
+            </aside>
         </div>
     </div>
 }

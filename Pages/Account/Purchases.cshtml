@@ -8,6 +8,7 @@
 @section Styles{
     <link rel="stylesheet" href="~/css/purchases.css" asp-append-version="true"/>
 }
+
 <div class="container cart">
     <div class="container-title">
         <h1 class="cart__title">Корзина</h1>
@@ -23,9 +24,13 @@
 
         <div class="cart__grid grid">
             <section class="cart__list">
+                @{
+                    int i = 2;
+                }
                 @foreach (var item in Model.CartEntities)
                 {
-                    <article class="cart-item">
+                    var delay = (i * 0.2).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+                    <article class="cart-item" style="animation-delay: @(delay)s;">
                         <img src="@Url.Content(item.Bouquet.ImageUrl)" alt="@item.Bouquet.Name" class="cart-item__img" />
 
                         <div class="cart-item__info">
@@ -57,6 +62,7 @@
                             <button type="submit" asp-page-handler="RemoveFromCart" title="Удалить" class="remove__btn">×</button>
                         </form>
                     </article>
+                    i++;
                 }
             </section>
 
