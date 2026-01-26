@@ -47,14 +47,15 @@ namespace FlowerShop.Web.Pages.Account
             {
                 if (stock <= 0)
                 {
-                    TempData["ErrorMessage"] = "Нет на складе";
+                    ModelState.AddModelError(string.Empty, "Нет на складе");
                     return RedirectToPage();
                 }
 
                 if (totalInCart + 1 > stock)
                 {
-                    TempData["ErrorMessage"] = "На складе недостаточно данного букета";
-                    return RedirectToPage();
+                    ModelState.AddModelError(string.Empty, "На складе недостаточно данного букета");
+                    await OnGetAsync();
+                    return Page();
                 }
 
                 cartItem.Quantity += 1;

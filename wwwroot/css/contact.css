@@ -163,15 +163,15 @@
     flex-direction: column;
     gap: 25px;
     width: 100%;
-    max-width: 1170px; 
-    margin-left: auto; 
+    max-width: 1170px;
+    margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
     background: white;
     border-radius: 25px;
     box-shadow: 0 28px 60px rgba(15, 118, 110, 0.18);
     opacity: 0;
-    animation: fadeIn 1.5s ease forwards 0.5s;
+    animation: fadeIn 1.5s ease 0.5s forwards;
 }
 
 .feedback-container__img {

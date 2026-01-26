@@ -7,6 +7,7 @@
 }
 
 <div class="profile-page">
+    <div asp-validation-summary="ModelOnly" class="error"></div>
     <div class="main-title">
         <h1 class="profile-title">Мой профиль</h1>
         <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
@@ -132,10 +133,13 @@
                                 <img src="/img/eye-icon.png" class="revert-icon"/>
                                 Подробнее
                             </a>
-                            <a href="#" class="btn-order btn-repeat">
-                                <img src="/img/box-icon.png" alt="" />
-                                Повторить
-                            </a>
+                            <form method="post">
+                                <input type="hidden" name="orderId" value="@order.Id"/>
+                                <button asp-page-handler="RepeatOrder" class="btn-order btn-repeat">
+                                    <img src="/img/box-icon.png" alt="" />
+                                    Повторить
+                                </button>
+                            </form>
                             @if (order.CanReview)
                             {
                                 <a href="#" class="btn-order btn-review">

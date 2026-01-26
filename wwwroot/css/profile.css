@@ -21,9 +21,9 @@
     margin-bottom: 40px;
 }
 
-.cards{
+.cards {
     opacity: 0;
-    animation: fadeInLeft 1.5s ease forwards 0.5s;
+    animation: fadeInLeft 1.5s ease 0.5s forwards;
 }
 
 .profile-container {
@@ -230,7 +230,7 @@
     border-radius: 24px;
     box-shadow: 0 2px 30px #00000033;
     opacity: 0;
-    animation: fadeInRight 1s ease forwards 0.2;
+    animation: fadeInRight 1s ease 0.2s forwards;
 }
 
 .orders-header {

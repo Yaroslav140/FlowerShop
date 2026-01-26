@@ -31,7 +31,7 @@
     background: #00bc81;
     margin-bottom: 20px;
     opacity: 0;
-    animation: fadeInScale 0.5s ease-in-out forwards 0.3s;
+    animation: fadeInScale 0.5s ease-in-out 0.3s forwards;
 }
 
 .hero-badge img {
@@ -113,7 +113,7 @@ form {
     margin-top: 10px;
     transition: background-color 0.2s;
     opacity: 0;
-    animation: slideInUp 1s ease forwards 1s;
+    animation: slideInUp 1s ease 1s forwards;
 }
 
 .submit-btn:hover {
@@ -135,22 +135,6 @@ form {
 .signin a:hover {
     text-decoration: underline;
 }
-
-.alert.error {
-    color: #dc2626;
-    background-color: #fee2e2;
-    padding: 10px;
-    border-radius: 8px;
-    width: 100%;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 14px;
-}
-    .alert.error ul {
-        list-style-type: none;
-        padding-left: 0;
-        margin: 0;
-    }
 
 @keyframes fadeInScale {
     0% {

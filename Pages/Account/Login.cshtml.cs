@@ -42,9 +42,9 @@ namespace FlowerShop.Web.Pages.Account
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, string.IsNullOrWhiteSpace(user.Name) ? user.Login : user.Name),
-                new Claim(ClaimTypes.Email, user.Login)
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, string.IsNullOrWhiteSpace(user.Name) ? user.Login : user.Name),
+                new(ClaimTypes.Email, user.Login)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

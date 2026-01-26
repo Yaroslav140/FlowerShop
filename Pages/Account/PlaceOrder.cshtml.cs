@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Globalization;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace FlowerShop.Web.Pages.Account
 {
@@ -37,8 +35,12 @@ namespace FlowerShop.Web.Pages.Account
             var cart = await _context.Carts
                 .Include(c => c.Items)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
-            TotalAmount = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
 
+            if (cart is null)
+            {
+                return Unauthorized();
+            }
+            TotalAmount = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
             return Page();
         } 
 
@@ -63,12 +65,12 @@ namespace FlowerShop.Web.Pages.Account
 
             if (cart is null || cart.Items is null || cart.Items.Count == 0)
             {
-                TempData["ErrorMessage"] = "Корзина пуста.";
+                ModelState.AddModelError(string.Empty, "Корзина пуста.");
                 return Page();
             }
             if (user == null)
             {
-                TempData["ErrorMessage"] = "Пользователь не найден";
+                ModelState.AddModelError(string.Empty, "Пользователь не найден");
                 return Page();
             }
 
@@ -86,7 +88,7 @@ namespace FlowerShop.Web.Pages.Account
             var minDateTime = DateTime.Now.AddHours(2);
             if (DeliveryDate < minDateTime)
             {
-                TempData["ErrorMessage"] = $"Дата доставки не может быть раньше {minDateTime:dd.MM.yyyy HH:mm}";
+                ModelState.AddModelError(string.Empty, $"Дата доставки не может быть раньше {minDateTime:dd.MM.yyyy HH:mm}");
                 return Page();
             }
 
@@ -111,7 +113,7 @@ namespace FlowerShop.Web.Pages.Account
             var missing = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
             if (missing.Count > 0)
             {
-                TempData["ErrorMessage"] = "Некоторые букеты недоступны.";
+                ModelState.AddModelError(string.Empty, "Некоторые букеты недоступны.");
                 return Page();
             }
 
@@ -120,7 +122,7 @@ namespace FlowerShop.Web.Pages.Account
                 var b = bouquets.First(x => x.Id == grp.BouquetId);
                 if (b.Quantity < grp.RequiredQty)
                 {
-                    TempData["ErrorMessage"] = $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.";
+                    ModelState.AddModelError(string.Empty, $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.");
                     return Page();
                 }
             }

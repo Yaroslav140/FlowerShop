@@ -6,9 +6,10 @@
 }
 
 .container-title {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 40px;
     position: relative;
-    animation: fadeIn 1s ease;
 }
 
 .cart__title {
@@ -16,6 +17,7 @@
     font-weight: 800;
     margin: 0 0 10px 0;
     color: #111827;
+    animation: fadeIn 1s ease;
 }
 
 .cart__subtitle {
@@ -32,10 +34,8 @@
 }
 
 .cart__head {
-    position: absolute;
-    top: 4rem;
-    right: 5rem;
-    z-index: 10;
+    display: flex;
+    align-items: center;
     opacity: 0;
     animation: fadeInRight 1s ease forwards;
 }

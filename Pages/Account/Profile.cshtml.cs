@@ -68,12 +68,6 @@ namespace FlowerShop.Web.Pages.Account
                 )).ToListAsync();
 
             CountOrderCompleted = Orders.Count(c => c.Status == OrderStatus.Completed);
-
-            Feedbacks = new List<GetFeedbackDto>
-            {
-                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Все отлично!", 5, new()),
-                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Пример отзыва", 4, new())
-            };
         }
 
         public async Task OnGetAsync()
@@ -99,7 +93,7 @@ namespace FlowerShop.Web.Pages.Account
 
             EditInput = new UpdateProfileInputModel
             {
-                NewUsername = Username, 
+                NewUsername = Username,
                 NewLogin = Login
             };
 
@@ -177,6 +171,57 @@ namespace FlowerShop.Web.Pages.Account
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToPage("/Home");
+        }
+
+        public async Task<IActionResult> OnPostRepeatOrderAsync(Guid orderId)
+        {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+            var oldOrder = await _context.Orders
+                .Include(o => o.Items).ThenInclude(i => i.Bouquet)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (oldOrder == null)
+                return NotFound();
+
+            foreach (var item in oldOrder.Items)
+            {
+                if (item.Bouquet.Quantity < item.Quantity)
+                {
+                    ModelState.AddModelError(string.Empty, $"Недостаточно на складе для «{item.Bouquet.Name}». Осталось: {item.Bouquet.Quantity}, требуется: {item.Quantity}");
+
+                    await LoadUserDataAsync(userId);
+                    return Page();
+                }
+            }
+
+            var newOrder = new OrderEntity
+            {
+                Id = Guid.NewGuid(),
+                UserId = oldOrder.UserId,
+                PickupDate = DateTime.UtcNow.AddDays(1),
+                Status = OrderStatus.New,
+                TotalAmount = oldOrder.TotalAmount,
+                Items = []
+            };
+
+            foreach (var item in oldOrder.Items)
+            {
+                newOrder.Items.Add(new OrderItemEntity
+                {
+                    Id = Guid.NewGuid(),
+                    BouquetId = item.BouquetId,
+                    Quantity = item.Quantity,
+                    Price = item.Price
+                });
+                item.Bouquet.Quantity -= item.Quantity;
+            }
+
+            _context.Orders.Add(newOrder);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Account/Profile");
         }
     }
 

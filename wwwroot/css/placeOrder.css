@@ -108,7 +108,7 @@ form > *:nth-child(3) {
     justify-content: space-between;
     align-items: center;
     opacity: 0;
-    animation: fadeIn 1s ease forwards 1s;
+    animation: fadeIn 1s ease 1s forwards;
 }
 
 .summary-label {
@@ -134,7 +134,7 @@ form > *:nth-child(3) {
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0, 196, 140, 0.3);
     transition: transform 0.5s ease;
-    animation: fadeIn 1s ease forwards 1.3s;
+    animation: fadeIn 1s ease 1.3s forwards;
 }
 
 .btn--brand:hover {

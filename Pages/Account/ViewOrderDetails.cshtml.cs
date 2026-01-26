@@ -4,8 +4,6 @@ using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace FlowerShop.Web.Pages.Account
 {
@@ -17,7 +15,7 @@ namespace FlowerShop.Web.Pages.Account
         public Guid? Id { get; set; }
 
         public GetOrderDto? Order { get; private set; }
-        public GetUserDto UserInfo { get; private set; }
+        public GetUserDto UserInfo { get; private set; } = null!;
 
         public async Task<ActionResult> OnGetAsync()
         {
@@ -90,7 +88,5 @@ namespace FlowerShop.Web.Pages.Account
             TempData["SuccessMessage"] = "Заказ отменён. Товары вернулись на склад.";
             return RedirectToPage("/Account/ViewOrderDetails", new { id });
         }
-
-
     }
 }

@@ -10,17 +10,23 @@
 }
 
 <div class="container cart">
+    <div asp-validation-summary="ModelOnly" class="error"></div>
     <div class="container-title">
-        <h1 class="cart__title">Корзина</h1>
-        <p class="cart__subtitle">@Model.CartEntities?.Count позиций в вашей корзине</p>
+        <div class="info">
+            <h1 class="cart__title">Корзина</h1>
+            <p class="cart__subtitle">@Model.CartEntities?.Count позиций в вашей корзине</p>
+        </div>
+        @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
+        {
+            <div class="cart__head">
+                <form method="post" asp-page-handler="ClearCarts">
+                    <button class="btn btn--outline-pink cart__clear" type="submit">Очистить корзину</button>
+                </form>
+            </div>
+        }
     </div>
     @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
     {
-        <div class="cart__head">
-            <form method="post" asp-page-handler="ClearCarts">
-                <button class="btn btn--outline-pink cart__clear" type="submit">Очистить корзину</button>
-            </form>
-        </div>
 
         <div class="cart__grid grid">
             <section class="cart__list">
