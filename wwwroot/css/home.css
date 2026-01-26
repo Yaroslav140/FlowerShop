@@ -219,6 +219,7 @@
         transform: none;
         animation: none;
         opacity: 1; 
+        animation: slideInFromLeft 0.8s ease-in-out forwards;
     }
 
     .home-hero__title {
@@ -279,8 +280,9 @@
         width: 100%;
         justify-content: center;
         animation: none; 
-        opacity: 1;
+        opacity: 0;
         margin-top: 20px;
+        animation: slideInFromRight 0.8s ease-in-out forwards;
     }
 
     .home-hero__image img {
@@ -289,5 +291,6 @@
         object-fit: cover;
         animation: none; 
         box-shadow: none; 
+        animation: img 3s ease-in-out infinite 1s;
     }
 }

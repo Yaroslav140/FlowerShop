@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using FlowerShop.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,14 +15,14 @@ namespace FlowerShop.Web.Pages.Account
     {
         private readonly FlowerDbContext _context = context;
 
-        [BindProperty, Required(ErrorMessage = "Введите номер телефона"), Phone]
+        [BindProperty, Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР°"), Phone]
         public string Phone { get; set; } = string.Empty;
 
         [BindProperty, DataType(DataType.DateTime)]
         public DateTime DeliveryDate { get; set; } = DateTime.Now;
 
-        [BindProperty, Required(ErrorMessage = "Введите адрес доставки"),
-         StringLength(500, MinimumLength = 10, ErrorMessage = "Адрес должен содержать от 10 до 500 символов")]
+        [BindProperty, Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё"),
+         StringLength(500, MinimumLength = 10, ErrorMessage = "РђРґСЂРµСЃ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РѕС‚ 10 РґРѕ 500 СЃРёРјРІРѕР»РѕРІ")]
         public string DeliveryAddress { get; set; } = string.Empty;
 
         public decimal TotalAmount { get; set; } = 0;
@@ -63,12 +63,12 @@ namespace FlowerShop.Web.Pages.Account
 
             if (cart is null || cart.Items is null || cart.Items.Count == 0)
             {
-                TempData["ErrorMessage"] = "Корзина пуста.";
+                TempData["ErrorMessage"] = "РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р°.";
                 return Page();
             }
             if (user == null)
             {
-                TempData["ErrorMessage"] = "Пользователь не найден";
+                TempData["ErrorMessage"] = "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ";
                 return Page();
             }
 
@@ -86,7 +86,7 @@ namespace FlowerShop.Web.Pages.Account
             var minDateTime = DateTime.Now.AddHours(2);
             if (DeliveryDate < minDateTime)
             {
-                TempData["ErrorMessage"] = $"Дата доставки не может быть раньше {minDateTime:dd.MM.yyyy HH:mm}";
+                TempData["ErrorMessage"] = $"Р”Р°С‚Р° РґРѕСЃС‚Р°РІРєРё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°РЅСЊС€Рµ {minDateTime:dd.MM.yyyy HH:mm}";
                 return Page();
             }
 
@@ -111,7 +111,7 @@ namespace FlowerShop.Web.Pages.Account
             var missing = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
             if (missing.Count > 0)
             {
-                TempData["ErrorMessage"] = "Некоторые букеты недоступны.";
+                TempData["ErrorMessage"] = "РќРµРєРѕС‚РѕСЂС‹Рµ Р±СѓРєРµС‚С‹ РЅРµРґРѕСЃС‚СѓРїРЅС‹.";
                 return Page();
             }
 
@@ -120,7 +120,7 @@ namespace FlowerShop.Web.Pages.Account
                 var b = bouquets.First(x => x.Id == grp.BouquetId);
                 if (b.Quantity < grp.RequiredQty)
                 {
-                    TempData["ErrorMessage"] = $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.";
+                    TempData["ErrorMessage"] = $"РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РЅР° СЃРєР»Р°РґРµ: В«{b.Name}В». Р”РѕСЃС‚СѓРїРЅРѕ {b.Quantity}, С‚СЂРµР±СѓРµС‚СЃСЏ {grp.RequiredQty}.";
                     return Page();
                 }
             }
