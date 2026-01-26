@@ -1,1 +1,120 @@
 ﻿
+.order-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 40px 20px;
+}
+
+.order-card {
+    background: white;
+    padding: 50px 60px;
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 900px; 
+}
+
+.header-order {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.header-order h2 {
+    margin: 20px 0 10px;
+    font-size: 28px;
+}
+
+.header-order p {
+    color: #8898AA;
+    margin: 0;
+}
+
+.icon-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bk); 
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    box-shadow: 0 10px 20px rgba(0, 196, 140, 0.3);
+}
+
+.icon-header img {
+    width: 35px;
+    filter: brightness(0) invert(1); 
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #32325D;
+}
+
+.form-control {
+    background: #dddddd61;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    padding: 18px 25px;
+    font-size: 16px;
+    color: #525f7f;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: #fff;
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 4px rgba(0, 196, 140, 0.1);
+}
+
+.order-summary {
+    background: #F0FDF9;
+    padding: 20px 25px;
+    border-radius: 15px;
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-label {
+    color: #525f7f;
+    font-size: 16px;
+}
+
+.summary-total {
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--color-bk);
+}
+
+.btn--brand {
+    background: var(--color-bk);
+    color: white;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 196, 140, 0.3);
+    transition: transform 0.5s ease;
+}
+
+.btn--brand:hover {
+    transform: translateY(-2px);
+}

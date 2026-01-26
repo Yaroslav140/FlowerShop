@@ -25,6 +25,23 @@ namespace FlowerShop.Web.Pages.Account
          StringLength(500, MinimumLength = 10, ErrorMessage = "Адрес должен содержать от 10 до 500 символов")]
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        public decimal TotalAmount { get; set; } = 0;
+
+
+        public async Task<ActionResult> OnGetAsync()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdStr, out var userId))
+                return Unauthorized();
+
+            var cart = await _context.Carts
+                .Include(c => c.Items)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+            TotalAmount = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
+
+            return Page();
+        } 
+
         public async Task<ActionResult> OnPostSubmitOrderAsync()
         {
             if (!ModelState.IsValid)

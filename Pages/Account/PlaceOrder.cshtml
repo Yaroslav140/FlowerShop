@@ -1,16 +1,20 @@
 ﻿@page
 @model FlowerShop.Web.Pages.Account.PlaceOrderModel
 
-@section Styles{
-    <link rel="stylesheet" href="/css/placeOrder.css" asp-append-version="true"/>
+@section Styles {
+    <link rel="stylesheet" href="/css/placeOrder.css" asp-append-version="true" />
 }
+
 <div class="order-center">
     <div class="order-card">
-        <h2>Оформить заказ</h2>
-        @if (TempData["ErrorMessage"] is string err)
-        {
-            <div class="alert error">@err</div>
-        }
+        <div class="header-order">
+            <div class="icon-header">
+                <img src="~/img/fly.png" alt="Delivery Icon" />
+            </div>
+            <h2>Оформить заказ</h2>
+            <p>Заполните данные для доставки</p>
+        </div>
+
         <form method="post">
             <div class="form-group">
                 <label asp-for="Phone">Номер телефона</label>
@@ -26,12 +30,23 @@
 
             <div class="form-group">
                 <label asp-for="DeliveryDate">Дата и время доставки</label>
-                <input asp-for="DeliveryDate" type="datetime-local" class="form-control" asp-format="{0:yyyy-MM-ddTHH:mm}" step="60" />
-
+                <input asp-for="DeliveryDate" type="datetime-local" class="form-control"
+                       asp-format="{0:yyyy-MM-ddTHH:mm}" step="60" />
                 <span asp-validation-for="DeliveryDate" class="text-danger"></span>
             </div>
 
-            <button asp-page-handler="SubmitOrder" type="submit" class="btn btn--brand">Отправить</button>
+            <div class="order-summary">
+                <div class="summary-info">
+                    <strong>К оплате:</strong>
+                </div>
+                <div class="summary-total">
+                    <span>@Model.TotalAmount</span>руб.
+                </div>
+            </div>
+
+            <button asp-page-handler="SubmitOrder" type="submit" class="btn btn--brand">
+                Отправить заказ
+            </button>
         </form>
     </div>
 </div>

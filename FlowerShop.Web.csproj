@@ -4,24 +4,16 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>9469e0f5-d34c-44b5-bb76-0098152e8356</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\uploads\bouquets\2.png" />
-    <Content Remove="wwwroot\uploads\bouquets\3.png" />
-    <Content Remove="wwwroot\uploads\bouquets\4.png" />
-    <Content Remove="wwwroot\uploads\bouquets\5.png" />
-    <Content Remove="wwwroot\uploads\bouquets\6.png" />
-    <Content Remove="wwwroot\uploads\bouquets\7.png" />
-    <Content Remove="wwwroot\uploads\bouquets\8.png" />
-    <Content Remove="wwwroot\uploads\bouquets\9.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
 	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.9" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9" />
+	  <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
 	  <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
@@ -32,30 +24,30 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="wwwroot\uploads\bouquets\2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\6.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\7.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\8.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="wwwroot\uploads\bouquets\9.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Content Update="wwwroot\uploads\bouquets\2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\3.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\4.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\5.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\6.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\7.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\8.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\uploads\bouquets\9.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

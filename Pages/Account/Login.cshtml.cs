@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,10 @@ namespace FlowerShop.Web.Pages.Account
     public class LoginModel(FlowerDbContext context) : PageModel
     {
         private readonly FlowerDbContext _context = context;
-        [BindProperty, Display(Name = "Логин"), Required(ErrorMessage = "Введите логин")]
+        [BindProperty, Display(Name = "Р›РѕРіРёРЅ"), Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ")]
         public string Login { get; set; } = string.Empty;
 
-        [BindProperty, Display(Name = "Пароль"), Required(ErrorMessage = "Введите пароль"), DataType(DataType.Password)]
+        [BindProperty, Display(Name = "РџР°СЂРѕР»СЊ"), Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ"), DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
         public async Task<ActionResult> OnPostAsync(string? returnUrl = null, CancellationToken ct = default)
@@ -27,7 +27,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
-                ModelState.AddModelError(string.Empty, "Логин или пароль не введены");
+                ModelState.AddModelError(string.Empty, "Р›РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ РЅРµ РІРІРµРґРµРЅС‹");
                 return Page();
             }
 
@@ -36,7 +36,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (user is null || !BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash))
             {
-                ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
+                ModelState.AddModelError(string.Empty, "РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ");
                 return Page();
             }
 

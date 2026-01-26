@@ -1,12 +1,7 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShop\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershop\\pages\\account\\placeorder.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\placeorder.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -14,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -23,19 +18,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PlaceOrder.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\PlaceOrder.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Account\\PlaceOrder.cshtml",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShop\\Pages\\Account\\PlaceOrder.cshtml",
-              "RelativeToolTip": "Pages\\Account\\PlaceOrder.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-25T21:06:53.28Z",
-              "EditorCaption": ""
             }
           ]
         },

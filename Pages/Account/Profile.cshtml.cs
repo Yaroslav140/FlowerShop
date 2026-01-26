@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Authentication;
@@ -71,8 +71,8 @@ namespace FlowerShop.Web.Pages.Account
 
             Feedbacks = new List<GetFeedbackDto>
             {
-                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Все отлично!", 5, new()),
-                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Пример отзыва", 4, new())
+                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "Р’СЃРµ РѕС‚Р»РёС‡РЅРѕ!", 5, new()),
+                new(Guid.NewGuid(), Guid.Parse("d4f8c4ce-9498-4bf4-a0ed-3f03efc4ce6b"), DateTime.UtcNow, "РџСЂРёРјРµСЂ РѕС‚Р·С‹РІР°", 4, new())
             };
         }
 
@@ -182,12 +182,12 @@ namespace FlowerShop.Web.Pages.Account
 
     public class UpdateProfileInputModel
     {
-        [Required(ErrorMessage = "Имя обязательно")]
-        [Display(Name = "Имя пользователя")]
+        [Required(ErrorMessage = "РРјСЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ")]
+        [Display(Name = "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")]
         public string NewUsername { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Логин обязателен")]
-        [Display(Name = "Логин")]
+        [Required(ErrorMessage = "Р›РѕРіРёРЅ РѕР±СЏР·Р°С‚РµР»РµРЅ")]
+        [Display(Name = "Р›РѕРіРёРЅ")]
         public string NewLogin { get; set; } = string.Empty;
     }
 }

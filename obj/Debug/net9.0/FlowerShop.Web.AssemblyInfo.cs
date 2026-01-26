@@ -12,10 +12,11 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("9469e0f5-d34c-44b5-bb76-0098152e8356")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+57fd9763923764a32691474ba7f138c007488853")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1eea3ecf89bbbde26b29da09c10a2ed5effa5c71")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlowerShop.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

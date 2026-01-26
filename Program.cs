@@ -78,4 +78,20 @@ app.MapGet("/", context =>
     return Task.CompletedTask;
 });
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<FlowerDbContext>();
+
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ошибка при миграции базы данных.");
+    }
+}
+
 app.Run();

@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using FlowerShop.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,16 +12,16 @@ namespace FlowerShop.Web.Pages.Account
 {
     public class RegisterModel(FlowerDbContext context) : PageModel
     {
-        [BindProperty, Display(Name = "Имя пользователя"), Required(ErrorMessage = "Введите имя пользователя")]
+        [BindProperty, Display(Name = "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"), Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")]
         public string UserName { get; set; } = string.Empty;
 
-        [BindProperty, Display(Name = "Логин"), Required(ErrorMessage = "Введите корректный логин")]
+        [BindProperty, Display(Name = "Р›РѕРіРёРЅ"), Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ РєРѕСЂСЂРµРєС‚РЅС‹Р№ Р»РѕРіРёРЅ")]
         public string Login { get; set; } = string.Empty;
 
-        [BindProperty, Display(Name = "Пароль"), Required(ErrorMessage = "Поле с паролем не заполнено"), MinLength(6, ErrorMessage = "Пароль должен быть минимум 6 символов"), DataType(DataType.Password)]
+        [BindProperty, Display(Name = "РџР°СЂРѕР»СЊ"), Required(ErrorMessage = "РџРѕР»Рµ СЃ РїР°СЂРѕР»РµРј РЅРµ Р·Р°РїРѕР»РЅРµРЅРѕ"), MinLength(6, ErrorMessage = "РџР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РјРёРЅРёРјСѓРј 6 СЃРёРјРІРѕР»РѕРІ"), DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
-        [BindProperty, Display(Name = "Повторите пароль"), Required(ErrorMessage = "Поле с паролем не заполнено"), Compare("Password", ErrorMessage = "Пароли не совпадают"), DataType(DataType.Password)]
+        [BindProperty, Display(Name = "РџРѕРІС‚РѕСЂРёС‚Рµ РїР°СЂРѕР»СЊ"), Required(ErrorMessage = "РџРѕР»Рµ СЃ РїР°СЂРѕР»РµРј РЅРµ Р·Р°РїРѕР»РЅРµРЅРѕ"), Compare("Password", ErrorMessage = "РџР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚"), DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = string.Empty;
 
         private readonly FlowerDbContext _context = context;
@@ -38,7 +38,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (await _context.UserDomains.AnyAsync(u => u.Login == login, ct)) 
             {
-                ModelState.AddModelError(string.Empty, "Пользователь с таким логином уже существует");
+                ModelState.AddModelError(string.Empty, "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Р»РѕРіРёРЅРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
                 return Page();
             }
 
@@ -59,7 +59,7 @@ namespace FlowerShop.Web.Pages.Account
             }
             catch (DbUpdateException)
             {
-                ModelState.AddModelError(string.Empty, "Пользователь с таким логином уже существует");
+                ModelState.AddModelError(string.Empty, "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Р»РѕРіРёРЅРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
                 return Page();
             }
 
