@@ -1,5 +1,51 @@
 ﻿@page
 @model FlowerShop.Web.Pages.FeedbacksModel
-@section Styles{
-    <link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true"/>
+@section Styles {
+    <link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true" />
 }
+
+<div class="container-feedback">
+    <a href="/Home" class="back-link">
+        <span>←</span> Назад
+    </a>
+
+    <div class="header-feedback">
+        <img src="/img/star-icon-about.png" class="icon" alt="Star" />
+        <h1 class="title-feedback">Отзывы</h1>
+        <p class="desctription-feedback">Делитесь впечатлениями о наших букетах</p>
+    </div>
+
+    <div class="container-feedback__main">
+        <h1>Оставить отзыв</h1>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="error"></div>
+
+            <div class="form-group">
+                <label asp-for="Username">Ваше имя</label>
+                <input asp-for="Username" class="form-control" type="text" placeholder="Введите ваше имя" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedOrderId">Выберите заказ</label>
+                <select asp-for="SelectedOrderId" asp-items="Model.AvailableOrders" class="form-control">
+                    <option value="">Выберите заказ...</option>
+                </select>
+                <span asp-validation-for="SelectedOrderId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TextFeedback">Общий комментарий (опционально)</label>
+                <textarea asp-for="TextFeedback" class="form-control" rows="5" placeholder="Общее впечатление о заказе..."></textarea>
+                <span asp-validation-for="TextFeedback" class="text-danger"></span>
+                <p>Будет использован для товаров без индивидуального комментария</p>
+            </div>
+
+            <div class="form-group" style="margin-top: 30px;">
+                <button type="submit" class="btn btn-primary">
+                    Отправить отзыв
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using FlowerShop.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -47,13 +47,13 @@ namespace FlowerShop.Web.Pages.Account
             {
                 if (stock <= 0)
                 {
-                    ModelState.AddModelError(string.Empty, "Нет на складе");
+                    ModelState.AddModelError(string.Empty, "РќРµС‚ РЅР° СЃРєР»Р°РґРµ");
                     return RedirectToPage();
                 }
 
                 if (totalInCart + 1 > stock)
                 {
-                    ModelState.AddModelError(string.Empty, "На складе недостаточно данного букета");
+                    ModelState.AddModelError(string.Empty, "РќР° СЃРєР»Р°РґРµ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР°РЅРЅРѕРіРѕ Р±СѓРєРµС‚Р°");
                     await OnGetAsync();
                     return Page();
                 }

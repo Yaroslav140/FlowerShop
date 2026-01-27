@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace FlowerShop.Web.Pages.Account
         public async Task<ActionResult> OnGetAsync()
         {
             if (Id is null || Id == Guid.Empty)
-                return BadRequest("Не передан id заказа.");
+                return BadRequest("РќРµ РїРµСЂРµРґР°РЅ id Р·Р°РєР°Р·Р°.");
 
             Order = await _context.Orders
                 .AsNoTracking()
@@ -53,7 +53,7 @@ namespace FlowerShop.Web.Pages.Account
             var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
             UserInfo = await _context.UserDomains.Where(u => u.Id == userId).Select(u => new GetUserDto(u.Id, u.Name, u.Login, u.Phone, u.CodeOrder, new List<GetOrderDto>())).FirstOrDefaultAsync();
             if (Order is null)
-                return NotFound($"Заказ {Id} не найден.");
+                return NotFound($"Р—Р°РєР°Р· {Id} РЅРµ РЅР°Р№РґРµРЅ.");
 
             return Page();
         }
@@ -70,7 +70,7 @@ namespace FlowerShop.Web.Pages.Account
 
             if (order.Status is OrderStatus.Completed or OrderStatus.Cancelled)
             {
-                TempData["ErrorMessage"] = "Заказ нельзя отменить.";
+                TempData["ErrorMessage"] = "Р—Р°РєР°Р· РЅРµР»СЊР·СЏ РѕС‚РјРµРЅРёС‚СЊ.";
                 return RedirectToPage("/Account/ViewOrderDetails", new { id });
             }
 
@@ -85,7 +85,7 @@ namespace FlowerShop.Web.Pages.Account
             await _context.SaveChangesAsync();
             await tx.CommitAsync();
 
-            TempData["SuccessMessage"] = "Заказ отменён. Товары вернулись на склад.";
+            TempData["SuccessMessage"] = "Р—Р°РєР°Р· РѕС‚РјРµРЅС‘РЅ. РўРѕРІР°СЂС‹ РІРµСЂРЅСѓР»РёСЃСЊ РЅР° СЃРєР»Р°Рґ.";
             return RedirectToPage("/Account/ViewOrderDetails", new { id });
         }
     }
