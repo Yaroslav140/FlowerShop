@@ -483,3 +483,40 @@
         transform: translateX(0px);
     }
 }
+
+@media (max-width: 1020px){
+    .profile-page{
+        padding: 0px 20px;
+    }
+
+    .profile-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .order-header-row{
+        flex-direction: column;
+    }
+    .orders-header h2{
+        font-size: 20px;
+    }
+    .orders-badge{
+        font-size: 14px;
+    }
+    .order-number {
+        font-size: 18px;
+    }
+    .order-price {
+        align-items: flex-start;
+    }
+    .price-amount{
+        font-size: 20px;
+    }
+    .items-count{
+        font-size: 12px;
+    }
+    .btn-order{
+        font-size: 12px;
+    }
+}

@@ -178,3 +178,13 @@ form > *:nth-child(3) {
         transform: translateX(0px);
     }
 }
+
+@media (max-width: 465px) {
+    .order-card {
+        padding: 25px;
+    }
+
+    .summary-total {
+        font-size: 15px;
+    }
+}
