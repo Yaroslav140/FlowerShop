@@ -23,7 +23,7 @@ namespace FlowerShop.Web.Controllers
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImageUrl
+                    b.ImagePath
                     )).ToListAsync();
             return Ok(bouquets);
         }
@@ -42,7 +42,7 @@ namespace FlowerShop.Web.Controllers
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImageUrl
+                    b.ImagePath
                 ))
                 .ToListAsync();
 
@@ -62,7 +62,7 @@ namespace FlowerShop.Web.Controllers
                 Description = bouquet.DescriptionBouquet,
                 Price = bouquet.PriceBouquet,
                 Quantity = bouquet.Quantity,
-                ImageUrl = bouquet.ImageUrl
+                ImagePath = bouquet.ImagePath
             };
 
             _context.Bouquets.Add(entity);
@@ -82,20 +82,19 @@ namespace FlowerShop.Web.Controllers
             if (_context.Bouquets.Any(db => dtoNames.Contains(db.Name)))
                 return BadRequest("Некоторые имена уже существуют в базе.");
 
-            var lisEntity = new List<CreateBouquetDto>();
             var entities = bouquetDtos.Select(dto => new BouquetEntity
             {
                 Name = dto.NameBouquet,
                 Price = dto.PriceBouquet,
                 Description = dto.DescriptionBouquet,
                 Quantity = dto.Quantity,
-                ImageUrl = dto.ImageUrl
+                ImagePath = dto.ImagePath
                 
             }).ToList();
 
             _context.Bouquets.AddRange(entities);
             await _context.SaveChangesAsync();
-            return Ok(lisEntity);
+            return Ok(bouquetDtos);
         }
 
         [HttpPut("{id:guid}")]
@@ -108,7 +107,7 @@ namespace FlowerShop.Web.Controllers
             if (existingBouquet == null)
                 return BadRequest("Букет не найден.");
 
-            var oldImageUrl = existingBouquet.ImageUrl;
+            var oldImagePath = existingBouquet.ImagePath;
 
             _context.Entry(existingBouquet).CurrentValues.SetValues(dtoBouquet);
 

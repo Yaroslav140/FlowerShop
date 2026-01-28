@@ -45,7 +45,7 @@ namespace FlowerShop.Web.Pages.Account
                             oi.Bouquet.Description,
                             oi.Bouquet.Price,
                             oi.Bouquet.Quantity,
-                            oi.Bouquet.ImageUrl
+                            oi.Bouquet.ImagePath
                         )
                     )).ToList()
                 ))

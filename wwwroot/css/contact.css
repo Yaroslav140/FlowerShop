@@ -44,7 +44,6 @@
     display: flex;
     justify-content: center;
     gap: 50px;
-    flex-wrap: wrap;
     margin-bottom: 40px;
 }
 
@@ -125,6 +124,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     padding: 25px 20px;
     border-radius: 12px;
     background: #f0fdfa;
@@ -294,3 +294,31 @@
         transform: translateY(0px);
     }
 }
+
+@media (max-width: 770px){
+    .home-container{
+        padding: 80px 20px;
+    }
+    .profile-inner {
+        flex-direction: column;
+    }
+    .profile-card{
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 570px) {
+    .feedback-container{
+        gap: 15px;
+    }
+    .feedback-container__title {
+        font-size: 25px;
+    }
+    .feedback-container__description{
+        font-size: 18px;
+    }
+    .feedback-container__btn{
+        font-size: 16px;
+    }
+}
+

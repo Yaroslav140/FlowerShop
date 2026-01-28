@@ -48,7 +48,7 @@ namespace FlowerShop.Web.Controllers
                                 i.Bouquet.Description,
                                 i.Bouquet.Price,
                                 i.Bouquet.Quantity,
-                                i.Bouquet.ImageUrl))).ToList())).ToList())).ToListAsync();
+                                i.Bouquet.ImagePath))).ToList())).ToList())).ToListAsync();
             return Ok(users);
         }
 
@@ -87,7 +87,7 @@ namespace FlowerShop.Web.Controllers
                                 i.Bouquet.Description,
                                 i.Bouquet.Price,
                                 i.Bouquet.Quantity,
-                                i.Bouquet.ImageUrl
+                                i.Bouquet.ImagePath
                             )
                         )).ToList()
                     )).ToList()

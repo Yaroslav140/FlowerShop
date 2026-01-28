@@ -271,6 +271,52 @@
     ]
   },
   {
+    "ContainingType": "FlowerShop.Web.Controllers.SoftToysController",
+    "Method": "GetSoftToys",
+    "RelativePath": "api/SoftToys",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOGet.GetSoftToyDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.SoftToysController",
+    "Method": "DeleteSoftToys",
+    "RelativePath": "api/SoftToys/all",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.SoftToysController",
+    "Method": "CreateSoftToys",
+    "RelativePath": "api/SoftToys/many",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "softToys",
+        "Type": "System.Collections.Generic.List\u00601[[FlowerShop.Dto.DTOCreate.CreateSoftToyDto, FlowerShop.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FlowerShop.Web.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/Users",

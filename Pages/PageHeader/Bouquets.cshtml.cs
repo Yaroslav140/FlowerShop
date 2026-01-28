@@ -115,7 +115,7 @@ namespace FlowerShop.Web.Pages.PageHeader
                 .AsNoTracking()
                 .Where(c => c.Quantity > 0)
                 .Select(b => new GetBouquetDto(
-                    b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImageUrl)).ToListAsync();
+                    b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImagePath)).ToListAsync();
         }
     }
 }

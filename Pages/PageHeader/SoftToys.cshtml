@@ -13,10 +13,10 @@
         </div>
     </div>
     <div class="bouquet-container">
-        @if (Model.GetSoftToy?.Count > 0)
+        @if (Model.GetSoftToys?.Count > 0)
         {
             var culture = new System.Globalization.CultureInfo("ru-RU");
-            foreach (var (softToy, idx) in Model.GetSoftToy.Select((b, i) => (b, i)))
+            foreach (var (softToy, idx) in Model.GetSoftToys.Select((b, i) => (b, i)))
             {
                 <div class="bouquet-card bouquet-card__@idx">
                     <img src="@Url.Content(softToy.ImagePath)" alt="@softToy.Name" loading="lazy" />
@@ -43,8 +43,8 @@
                 <h1 class="empty-cart__title">Все игрушки в вашей корзине!</h1>
                 <p class="empty-cart__description">Все милые плюшевые друзья уже ждут вас в корзине!</p>
                 <div class="empty-cart__buttons">
-                    <a class="btn btn--primary" asp-page="/Cart">Перейти в корзину</a>
-                    <a class="btn btn--secondary" asp-page="/Toys">Смотреть букеты</a>
+                    <a class="btn btn--primary" asp-page="/Account/Purchases">Перейти в корзину</a>
+                    <a class="btn btn--secondary" asp-page="/PageHeader/Bouquets">Смотреть букеты</a>
                 </div>
             </div>
         }
