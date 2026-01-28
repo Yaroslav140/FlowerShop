@@ -16,20 +16,16 @@
 <body>
     <header class="container-header">
         <div class="container-header__wrapper">
-            <!-- Логотип -->
             <a class="container-header__text-logo" asp-page="/Home">Flower & Shop</a>
 
-            <!-- ХАК: Скрытый чекбокс -->
             <input type="checkbox" id="burger-toggle" class="burger-toggle-input">
 
-            <!-- Иконка бургера (три полоски) -->
             <label for="burger-toggle" class="burger-btn">
                 <span></span>
                 <span></span>
                 <span></span>
             </label>
 
-            <!-- Навигация -->
             <nav class="container-header__nav">
                 <ul>
                     <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>

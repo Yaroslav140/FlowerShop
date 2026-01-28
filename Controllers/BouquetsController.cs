@@ -95,9 +95,7 @@ namespace FlowerShop.Web.Controllers
 
             _context.Bouquets.AddRange(entities);
             await _context.SaveChangesAsync();
-
-            return Ok();
-
+            return Ok(lisEntity);
         }
 
         [HttpPut("{id:guid}")]
