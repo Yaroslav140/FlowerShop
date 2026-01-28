@@ -7,6 +7,7 @@ using FlowerShop.Dto.DTOUpdate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace FlowerShop.Web.Controllers
 {
@@ -37,7 +38,7 @@ namespace FlowerShop.Web.Controllers
                     o.CanReview,
                     o.Items.Select(i => new GetOrderItemDto(
                         i.Id,
-                        i.BouquetId,
+                        i.BouquetId!.Value,
                         i.Quantity,
                         i.Price,
                         new GetBouquetDto(
@@ -81,7 +82,7 @@ namespace FlowerShop.Web.Controllers
                 o.CanReview,
                 [.. o.Items.Select(i => new GetOrderItemDto(
                     i.Id,
-                    i.BouquetId,
+                    i.BouquetId!.Value,
                     i.Quantity,
                     i.Price,
                     new GetBouquetDto(
@@ -210,16 +211,16 @@ namespace FlowerShop.Web.Controllers
                     newOrder.CanReview,
                     [.. newOrder.Items.Select(oi => new GetOrderItemDto(
                     oi.Id,
-                    oi.BouquetId,
+                    oi.BouquetId!.Value,
                     oi.Quantity,
                     oi.Price,
                     new GetBouquetDto(
-                        bouquets[oi.BouquetId].Id,
-                        bouquets[oi.BouquetId].Name,
-                        bouquets[oi.BouquetId].Description,
-                        bouquets[oi.BouquetId].Price,
-                        bouquets[oi.BouquetId].Quantity,
-                        bouquets[oi.BouquetId].ImagePath
+                        bouquets[oi.BouquetId!.Value].Id,
+                        bouquets[oi.BouquetId!.Value].Name,
+                        bouquets[oi.BouquetId!.Value].Description,
+                        bouquets[oi.BouquetId!.Value].Price,
+                        bouquets[oi.BouquetId!.Value].Quantity,
+                        bouquets[oi.BouquetId!.Value].ImagePath
                     )
                 ))]
                 );
@@ -271,7 +272,7 @@ namespace FlowerShop.Web.Controllers
                 .Where(b => bouquetIds.Contains(b.Id))
                 .ToDictionaryAsync(b => b.Id);
 
-            var missingIds = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
+            var missingIds = bouquetIds.Where(id => !bouquets.ContainsKey(id!.Value)).ToList();
             if (missingIds.Count > 0)
                 return BadRequest($"Некоторые букеты не найдены: {string.Join(", ", missingIds)}.");
 
@@ -282,7 +283,7 @@ namespace FlowerShop.Web.Controllers
 
             foreach (var (bouquetId, needQty) in requestedByBouquet)
             {
-                var b = bouquets[bouquetId];
+                var b = bouquets[bouquetId!.Value];
                 if (needQty <= 0)
                     return BadRequest($"Некорректное количество для букета {b.Name}.");
 
@@ -295,7 +296,7 @@ namespace FlowerShop.Web.Controllers
             {
                 foreach (var (bouquetId, needQty) in requestedByBouquet)
                 {
-                    bouquets[bouquetId].Quantity -= needQty;
+                    bouquets[bouquetId!.Value].Quantity -= needQty;
                 }
 
                 _context.Orders.AddRange(newOrders);
@@ -347,10 +348,10 @@ namespace FlowerShop.Web.Controllers
                 .GroupBy(i => i.BouquetId)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            var allBouquetIds = newNeedByBouquet.Keys
-                .Union(oldNeedByBouquet.Keys)
-                .Distinct()
-                .ToList();
+            var newKeys = newNeedByBouquet.Keys.Select(k => (Guid?)k); 
+            var oldKeys = oldNeedByBouquet.Keys.Select(k => (Guid?)k);
+
+            var allBouquetIds = newKeys.Union(oldKeys).Where(k => k.HasValue).Select(k => k.Value).ToList();
 
             var bouquets = await _context.Bouquets
                 .Where(b => allBouquetIds.Contains(b.Id))

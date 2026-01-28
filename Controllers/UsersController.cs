@@ -39,7 +39,7 @@ namespace FlowerShop.Web.Controllers
                         o.CanReview,
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
-                            i.BouquetId, 
+                            i.BouquetId!.Value, 
                             i.Quantity,
                             i.Price,
                             new GetBouquetDto(
@@ -78,7 +78,7 @@ namespace FlowerShop.Web.Controllers
                         o.CanReview,
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
-                            i.BouquetId,
+                            i.BouquetId!.Value,
                             i.Quantity,
                             i.Price,
                             new GetBouquetDto(

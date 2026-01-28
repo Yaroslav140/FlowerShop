@@ -41,7 +41,7 @@ namespace FlowerShop.Web.Controllers
             if(_context.SoftToys.Any(db => names.Contains(db.Name)))
                 return BadRequest("Некоторые имена уже существуют в базе.");
 
-            var entityes = softToys.Select(dto => new SoftToysEntity
+            var entityes = softToys.Select(dto => new SoftToyEntity
             {
                 Name = dto.Name,
                 Description = dto.Description,

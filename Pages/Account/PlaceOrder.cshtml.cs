@@ -100,8 +100,15 @@ namespace FlowerShop.Web.Pages.Account
                     RequiredQty = g.Sum(x => x.Quantity)
                 })
                 .ToList();
+            if (byBouquet.Any(x => x.BouquetId is null))
+            {
+                ModelState.AddModelError(string.Empty, "В корзине есть позиция без Id.");
+                return Page();
+            }
 
-            var bouquetIds = byBouquet.Select(x => x.BouquetId).ToHashSet();
+            var bouquetIds = byBouquet
+                .Select(x => x.BouquetId!.Value)
+                .ToHashSet();
 
             await using var tx = await _context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
 

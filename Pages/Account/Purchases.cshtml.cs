@@ -16,6 +16,7 @@ namespace FlowerShop.Web.Pages.Account
             CartEntities = await _context.CartItems
                 .AsNoTracking()
                 .Include(c => c.Bouquet)
+                .Include(c => c.SoftToy)
                 .ToListAsync();
         }
 

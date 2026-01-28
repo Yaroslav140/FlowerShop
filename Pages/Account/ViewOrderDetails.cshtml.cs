@@ -36,7 +36,7 @@ namespace FlowerShop.Web.Pages.Account
                     o.CanReview,
                     o.Items.Select(oi => new GetOrderItemDto(
                         oi.Id,
-                        oi.BouquetId,
+                        oi.BouquetId!.Value,
                         oi.Quantity,
                         oi.Price,
                         new GetBouquetDto(

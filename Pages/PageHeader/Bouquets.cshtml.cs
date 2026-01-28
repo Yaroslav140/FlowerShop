@@ -8,13 +8,12 @@ using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.PageHeader
 {
-    public class BouquetsModel : PageModel
+    public class BouquetsModel(FlowerDbContext context) : PageModel
     {
         public List<GetBouquetDto> GetBouquets { get; set; } = new();
         public bool IsQuntity = false;
 
-        private readonly FlowerDbContext _context;
-        public BouquetsModel(FlowerDbContext context) => _context = context;
+        private readonly FlowerDbContext _context = context;
 
         public async Task OnGetAsync() => await LoadBouquetsAsync();
 
@@ -115,7 +114,13 @@ namespace FlowerShop.Web.Pages.PageHeader
                 .AsNoTracking()
                 .Where(c => c.Quantity > 0)
                 .Select(b => new GetBouquetDto(
-                    b.Id, b.Name, b.Description, b.Price, b.Quantity, b.ImagePath)).ToListAsync();
+                    b.Id,
+                    b.Name, 
+                    b.Description,
+                    b.Price,
+                    b.Quantity,
+                    b.ImagePath))
+                .ToListAsync();
         }
     }
 }

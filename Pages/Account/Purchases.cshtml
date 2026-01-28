@@ -3,10 +3,11 @@
 @using System.Globalization
 @{
     var ru = new CultureInfo("ru-RU");
-    var subtotal = Model.CartEntities?.Sum(ci => ci.Bouquet.Price * ci.Quantity) ?? 0m;
+    // Тут все верно, считаем по снимку цены
+    var subtotal = Model.CartEntities?.Sum(ci => ci.PriceSnapshot * ci.Quantity) ?? 0m;
 }
-@section Styles{
-    <link rel="stylesheet" href="~/css/purchases.css" asp-append-version="true"/>
+@section Styles {
+    <link rel="stylesheet" href="~/css/purchases.css" asp-append-version="true" />
 }
 
 <div class="container cart">
@@ -36,14 +37,21 @@
                 @foreach (var item in Model.CartEntities)
                 {
                     var delay = (i * 0.2).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+
+                    var itemName = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Товар удален";
+
+                    var itemImage = item.Bouquet?.ImagePath ?? item.SoftToy?.ImagePath ?? "/img/no-photo.png";
+
+                    var currentPrice = item.PriceSnapshot;
+
                     <article class="cart-item" style="animation-delay: @(delay)s;">
-                        <img src="@Url.Content(item.Bouquet.ImagePath)" alt="@item.Bouquet.Name" class="cart-item__img" />
+                        <img src="@Url.Content(itemImage)" alt="@itemName" class="cart-item__img" />
 
                         <div class="container-form">
                             <div class="cart-item__info">
-                                <h2 class="cart-item__title">@item.Bouquet.Name</h2>
+                                <h2 class="cart-item__title">@itemName</h2>
                                 <div class="cart-item__price">
-                                    @item.Bouquet.Price.ToString("C", ru)
+                                    @currentPrice.ToString("C", ru)
                                 </div>
                                 <form method="post" class="cart-item__qty">
                                     @Html.AntiForgeryToken()
@@ -65,7 +73,7 @@
                             </div>
 
                             <div class="cart-item__total">
-                                @((item.Bouquet.Price * item.Quantity).ToString("C", ru))
+                                @((currentPrice * item.Quantity).ToString("C", ru))
                             </div>
 
                             <form method="post" class="cart-item__remove">

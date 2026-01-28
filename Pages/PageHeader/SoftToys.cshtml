@@ -27,9 +27,9 @@
                     </div>
 
                     <form method="post" asp-page-handler="AddToCart" class="bouquet-card__actions">
-                        <input type="hidden" name="bouquetId" value="@softToy.SoftToyId" />
+                        <input type="hidden" name="softToyId" value="@softToy.SoftToyId" />
                         <input type="hidden" name="qty" value="1" />
-                        <button class="btn" type="submit" aria-label="Добавить букет «@softToy.SoftToyId»">
+                        <button class="btn" type="submit">
                             В корзину
                         </button>
                     </form>
