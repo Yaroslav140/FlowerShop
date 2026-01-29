@@ -16,10 +16,13 @@ namespace FlowerShop.Web.Pages.Account
         private readonly FlowerDbContext _context = context;
 
         public bool IsEditing { get; set; } = false;
+        public bool IsCanReviews { get; set; } = false;
 
         [BindProperty]
         public UpdateProfileInputModel EditInput { get; set; } = new();
 
+        public float Rating { get; set; }
+        public string Comment { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Login { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
@@ -79,6 +82,16 @@ namespace FlowerShop.Web.Pages.Account
                             : null)).ToList())).ToListAsync();
 
             CountOrderCompleted = Orders.Count(c => c.Status == OrderStatus.Completed);
+            Feedbacks = await _context.Feedbacks
+                .Where(i => i.UserId == user.Id)
+                .Select(f => new GetFeedbackDto(
+                    f.Id,
+                    f.UserId,
+                    f.DateCreation,
+                    f.Description,
+                    f.StoreRating,
+                    new List<FeedbackItemEntity>()))
+                .ToListAsync();
         }
 
         public async Task OnGetAsync()
@@ -109,6 +122,12 @@ namespace FlowerShop.Web.Pages.Account
             };
 
             IsEditing = true;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostStartReviewsAsync()
+        {
+            IsCanReviews = true;
             return Page();
         }
 

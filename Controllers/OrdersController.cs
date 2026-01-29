@@ -42,23 +42,22 @@ namespace FlowerShop.Web.Controllers
                         i.SoftToyId!,
                         i.Quantity,
                         i.Price,
-                        new GetBouquetDto(
+                        i.Bouquet != null ? new GetBouquetDto(
                             i.Bouquet.Id,
                             i.Bouquet.Name,
                             i.Bouquet.Description,
                             i.Bouquet.Price,
                             i.Bouquet.Quantity,
                             i.Bouquet.ImagePath,
-                            i.Bouquet.Rating
-                        ),
-                        new GetSoftToyDto(
+                            i.Bouquet.Rating) : null,
+                        i.SoftToy != null ? new GetSoftToyDto(
                             i.SoftToy.Id,
                             i.SoftToy.Name,
                             i.SoftToy.Description,
                             i.SoftToy.Quantity,
                             i.SoftToy.Price,
                             i.SoftToy.ImagePath,
-                            i.SoftToy.Rating)
+                            i.SoftToy.Rating) : null
                     )).ToList()
                 ))
                 .ToListAsync();
@@ -438,24 +437,30 @@ namespace FlowerShop.Web.Controllers
                 .ThenInclude(i => i.Bouquet)
                 .FirstOrDefaultAsync(o => o.Id == dto.OrderId);
 
+
             if (order == null)
                 return NotFound("Заказ не найден.");
 
+
             if (order.Status is OrderStatus.Completed or OrderStatus.Cancelled)
                 return BadRequest($"Нельзя редактировать заказ в статусе {order.Status}.");
+            order.CanReview = dto.Status == OrderStatus.Completed;
+
+            if (dto.Items.Any(i => !i.BouquetId.HasValue))
+                return BadRequest("BouquetId обязателен для всех позиций.");
 
             var newNeedByBouquet = dto.Items
-                .GroupBy(i => i.BouquetId)
+                .GroupBy(i => i.BouquetId.Value)        
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
             var oldNeedByBouquet = order.Items
-                .GroupBy(i => i.BouquetId)
+                .GroupBy(i => i.BouquetId.Value)        // аналогично
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            var newKeys = newNeedByBouquet.Keys.Select(k => (Guid?)k); 
-            var oldKeys = oldNeedByBouquet.Keys.Select(k => (Guid?)k);
+            var allBouquetIds = newNeedByBouquet.Keys
+                .Union(oldNeedByBouquet.Keys)
+                .ToList();
 
-            var allBouquetIds = newKeys.Union(oldKeys).Where(k => k.HasValue).Select(k => k.Value).ToList();
 
             var bouquets = await _context.Bouquets
                 .Where(b => allBouquetIds.Contains(b.Id))

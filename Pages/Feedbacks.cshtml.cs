@@ -1,4 +1,4 @@
-using FlowerShop.Data;
+п»їusing FlowerShop.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,17 +12,17 @@ namespace FlowerShop.Web.Pages
         private readonly FlowerDbContext _context = context;
 
         [BindProperty]
-        [Display(Name = "Имя пользователя")]
-        [Required(ErrorMessage = "Введите имя пользователя")]
+        [Display(Name = "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")]
+        [Required(ErrorMessage = "Р’РІРµРґРёС‚Рµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")]
         public string Username { get; set; } = string.Empty;
 
         [BindProperty]
-        [Display(Name = "Общий комментарий (опционально)")]
+        [Display(Name = "РћР±С‰РёР№ РєРѕРјРјРµРЅС‚Р°СЂРёР№ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ)")]
         public string TextFeedback { get; set; } = string.Empty;
 
         [BindProperty]
-        [Display(Name = "Выберите заказ")]
-        [Required(ErrorMessage = "Необходимо выбрать заказ")]
+        [Display(Name = "Р’С‹Р±РµСЂРёС‚Рµ Р·Р°РєР°Р·")]
+        [Required(ErrorMessage = "РќРµРѕР±С…РѕРґРёРјРѕ РІС‹Р±СЂР°С‚СЊ Р·Р°РєР°Р·")]
         public Guid? SelectedOrderId { get; set; } 
         public Guid? UserId { get; set; }
 
@@ -67,7 +67,7 @@ namespace FlowerShop.Web.Pages
                 {
                     Value = o.Id.ToString(),
 
-                    Text = $"Заказ #{o.Id.ToString().PadLeft(4, '0')[^4..]} от {o.PickupDate:dd.MM.yy HH:mm} ({o.TotalQuantity} шт.)"
+                    Text = $"Р—Р°РєР°Р· #{o.Id.ToString().PadLeft(4, '0')[^4..]} РѕС‚ {o.PickupDate:dd.MM.yy HH:mm} ({o.TotalQuantity} С€С‚.)"
                 })];
             }
         }

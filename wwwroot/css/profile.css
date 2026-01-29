@@ -376,13 +376,14 @@
 }
 
 .btn-review {
-    background: #fffbeb;
+    background: #fdfffe;
     color: #d97706;
-    border: 1px solid #fef3c7;
+    border: 1px solid #d9770652;
 }
 
 .btn-review:hover {
     background: #fef3c7;
+    transform: scale(1.09);
 }
 
 .modal-overlay {
@@ -446,6 +447,88 @@
     background: white;
     color: black;
     border: #bbbbbb6b solid 2px;
+}
+/* --- Стили для звезд (Без JS) --- */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* Разворачиваем порядок для трюка с выделением */
+    justify-content: flex-end;   /* Прижимаем визуально влево */
+    gap: 5px;
+}
+
+/* Скрываем стандартные радио-кнопки */
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+/* Стиль самой звезды */
+.star-rating label {
+    font-size: 30px; /* Размер звезд */
+    color: #e4e5e9;  /* Цвет неактивной звезды (серый) */
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+/* При наведении на звезду, окрашиваем её и все звезды СПРАВА от неё (в DOM они ниже) */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107; /* Золотой цвет при наведении */
+}
+
+/* Если радио-кнопка выбрана, окрашиваем связанный label и все label после него */
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffc107; /* Золотой цвет выбранных звезд */
+}
+
+/* --- Остальные стили формы (как на картинке) --- */
+
+.form-field__textarea {
+    background-color: #f3f4f6; /* Светло-серый фон поля */
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    resize: none; /* Запрет изменения размера */
+    font-family: inherit;
+}
+
+/* Зеленая кнопка "Отправить" */
+.btn-green {
+    background-color: #00bfa5; /* Цвет как на картинке */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Сильное скругление */
+    padding: 10px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-green:hover {
+    opacity: 0.9;
+}
+
+/* Белая кнопка "Отмена" */
+.btn-outline-gray {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 24px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+}
+
+.btn-outline-gray:hover {
+    background-color: #f9f9f9;
+}
+
+/* Выравнивание кнопок */
+.modal-window__buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 @keyframes fadeInUp {

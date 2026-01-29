@@ -142,9 +142,11 @@
                             </form>
                             @if (order.CanReview)
                             {
-                                <a href="#" class="btn-order btn-review">
-                                    ⭐ Оставить отзыв
-                                </a>
+                                <form method="post" asp-page-handler="StartReviews" style="display:inline;">
+                                    <button type="submit" class="btn-order btn-review text-decoration-none p-0 border-0">
+                                        ⭐ Оставить отзыв
+                                    </button>
+                                </form>
                             }
                         </div>
                     </div>
@@ -154,6 +156,57 @@
         </div>
     </div>
 </div>
+
+@if (Model.IsCanReviews)
+{
+    <div class="modal-overlay">
+        <div class="modal-window review-modal">
+            <h3 class="modal-window__title">Оставить отзыв</h3>
+
+            <form method="post" asp-page-handler="SubmitReview">
+
+                <div class="form-field">
+                    <label class="form-field__label">Оценка</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star-5" name="ReviewInput.Rating" value="5" />
+                        <label for="star-5" title="5 звезд">&#9733;</label>
+
+                        <input type="radio" id="star-4" name="ReviewInput.Rating" value="4" />
+                        <label for="star-4" title="4 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-3" name="ReviewInput.Rating" value="3" />
+                        <label for="star-3" title="3 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-2" name="ReviewInput.Rating" value="2" />
+                        <label for="star-2" title="2 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-1" name="ReviewInput.Rating" value="1" />
+                        <label for="star-1" title="1 звезда">&#9733;</label>
+                    </div>
+                    <span asp-validation-for="@Model.Rating" class="form-field__error text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="@Model.Comment" class="form-field__label">Комментарий</label>
+                    <textarea asp-for="@Model.Comment"
+                              class="form-field__input form-field__textarea"
+                              placeholder="Поделитесь своими впечатлениями..."
+                              rows="4"></textarea>
+                    <span asp-validation-for="@Model.Comment" class="form-field__error text-danger"></span>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="modal-window__buttons">
+                    <button type="submit" class="btn btn-green">Отправить отзыв</button>
+                    <!-- Кнопка отмены, закрывающая модалку или ведущая назад -->
+                    <a href="/Orders" class="btn btn-outline-gray">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+}
+
 
 @if (Model.IsEditing)
 {

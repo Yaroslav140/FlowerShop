@@ -43,22 +43,22 @@ namespace FlowerShop.Web.Controllers
                             i.SoftToyId!.Value, 
                             i.Quantity,
                             i.Price,
-                            new GetBouquetDto(
+                            i.Bouquet != null ? new GetBouquetDto(
                                 i.Bouquet.Id,
                                 i.Bouquet.Name,
                                 i.Bouquet.Description,
                                 i.Bouquet.Price,
                                 i.Bouquet.Quantity,
                                 i.Bouquet.ImagePath,
-                                i.Bouquet.Rating),
-                            new GetSoftToyDto(
+                                i.Bouquet.Rating) : null,
+                            i.SoftToy != null ? new GetSoftToyDto(
                                 i.SoftToy.Id,
                                 i.SoftToy.Name,
                                 i.SoftToy.Description,
                                 i.SoftToy.Quantity,
                                 i.SoftToy.Price,
                                 i.SoftToy.ImagePath,
-                                i.SoftToy.Rating))).ToList())).ToList())).ToListAsync();
+                                i.SoftToy.Rating) : null)).ToList())).ToList())).ToListAsync();
             return Ok(users);
         }
 
