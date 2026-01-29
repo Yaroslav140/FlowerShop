@@ -3,7 +3,6 @@
 @section Styles{
     <link rel="stylesheet" href="/css/bouquet.css" asp-append-version="true"/>
 }
-
 <div class="bouquet-main-container">
     <div class="content">
         <span class="hero__badge">🌿 Мягкие друзья</span>
@@ -20,6 +19,10 @@
             {
                 <div class="bouquet-card bouquet-card__@idx">
                     <img src="@Url.Content(softToy.ImagePath)" alt="@softToy.Name" loading="lazy" />
+                    <div class="rating-container">
+                        <span>⭐</span>
+                        <p>@(softToy.Rating > 1 ? (softToy.Rating % 1 == 0 ? softToy.Rating.ToString("F0") : softToy.Rating.ToString("F1")) : "5")</p>
+                    </div>
                     <div class="bouquet-card__description">
                         <h2 class="bouquet-card__title">@softToy.Name</h2>
                         <p class="bouquet-card__text">@softToy.Description</p>

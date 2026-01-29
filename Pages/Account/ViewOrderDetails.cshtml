@@ -3,6 +3,7 @@
 @model FlowerShop.Web.Pages.Account.ViewOrderDetailsModel
 @{
     var order = Model.Order;
+    var culture = new System.Globalization.CultureInfo("ru-RU");
 }
 
 @section Styles {
@@ -73,7 +74,7 @@ else
                                         <div class="item-block__title">@name</div>
                                         <div class="item-block__qty">Количество: @item.Quantity шт</div>
                                         <div class="item-block__price">
-                                            @item.Price.ToString("C") × @item.Quantity = @lineTotal.ToString("C")
+                                            @item.Price.ToString("C", culture) × @item.Quantity = @lineTotal.ToString("C", culture);
                                         </div>
                                     </div>
                                 </article>
@@ -108,7 +109,7 @@ else
 
                     <div class="summary-line">
                         <span>Товары (@order.OrderItem?.Count шт)</span>
-                        <span style="font-weight:600;">@order.TotalAmount.ToString("C")</span>
+                        <span style="font-weight:600;">@order.TotalAmount.ToString("C", culture)</span>
                     </div>
 
                     <div class="summary-line">
