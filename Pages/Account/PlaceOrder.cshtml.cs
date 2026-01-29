@@ -16,11 +16,10 @@ namespace FlowerShop.Web.Pages.Account
         [BindProperty, Required(ErrorMessage = "Введите номер телефона"), Phone]
         public string Phone { get; set; } = string.Empty;
 
-        [BindProperty, DataType(DataType.DateTime)]
+        [BindProperty, DataType(DataType.DateTime), Required(ErrorMessage = "Время долно быть на 2 час больше")]
         public DateTime DeliveryDate { get; set; } = DateTime.Now;
 
-        [BindProperty, Required(ErrorMessage = "Введите адрес доставки"),
-         StringLength(500, MinimumLength = 10, ErrorMessage = "Адрес должен содержать от 10 до 500 символов")]
+        [BindProperty, Required(ErrorMessage = "Введите адрес доставки"), StringLength(500, MinimumLength = 10, ErrorMessage = "Адрес должен содержать от 10 до 500 символов")]
         public string DeliveryAddress { get; set; } = string.Empty;
 
         public decimal TotalAmount { get; set; } = 0;
@@ -42,15 +41,13 @@ namespace FlowerShop.Web.Pages.Account
             }
             TotalAmount = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
             return Page();
-        } 
+        }
 
         public async Task<ActionResult> OnPostSubmitOrderAsync()
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .FirstOrDefault()?.ErrorMessage;
+                ModelState.AddModelError(string.Empty, "Данные некорректы.");
                 return Page();
             }
 
@@ -61,6 +58,7 @@ namespace FlowerShop.Web.Pages.Account
             var cart = await _context.Carts
                 .Include(c => c.Items)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
+
             var user = await _context.UserDomains.FindAsync(userId);
 
             if (cart is null || cart.Items is null || cart.Items.Count == 0)
@@ -68,21 +66,23 @@ namespace FlowerShop.Web.Pages.Account
                 ModelState.AddModelError(string.Empty, "Корзина пуста.");
                 return Page();
             }
+
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Пользователь не найден");
+                ModelState.AddModelError(string.Empty, "Пользователь не найден.");
                 return Page();
             }
 
             if (string.IsNullOrWhiteSpace(user.CodeOrder))
             {
-                var code = GeneratedCode.Generated.GenerateRandomCode();
-                var exitsCode = await _context.UserDomains
-                    .Where(c => c.CodeOrder == code)
-                    .Select(i => i.CodeOrder)
-                    .FirstOrDefaultAsync();
-                if (exitsCode == null)
-                    user.CodeOrder = code;
+                string code;
+                do
+                {
+                    code = GeneratedCode.Generated.GenerateRandomCode();
+                } while (await _context.UserDomains
+                    .AnyAsync(u => u.CodeOrder == code));
+
+                user.CodeOrder = code;
             }
 
             var minDateTime = DateTime.Now.AddHours(2);
@@ -93,22 +93,33 @@ namespace FlowerShop.Web.Pages.Account
             }
 
             var byBouquet = cart.Items
-                .GroupBy(i => i.BouquetId)
+                .Where(i => i.BouquetId.HasValue)
+                .GroupBy(i => i.BouquetId!.Value)
                 .Select(g => new
                 {
-                    BouquetId = g.Key,
+                    Id = g.Key,
                     RequiredQty = g.Sum(x => x.Quantity)
                 })
                 .ToList();
-            if (byBouquet.Any(x => x.BouquetId is null))
+
+            var bySoftToy = cart.Items
+                .Where(i => i.SoftToyId.HasValue)
+                .GroupBy(i => i.SoftToyId!.Value)
+                .Select(g => new
+                {
+                    Id = g.Key,
+                    RequiredQty = g.Sum(x => x.Quantity)
+                })
+                .ToList();
+
+            if (byBouquet.Count == 0 && bySoftToy.Count == 0)
             {
-                ModelState.AddModelError(string.Empty, "В корзине есть позиция без Id.");
+                ModelState.AddModelError(string.Empty, "В корзине нет ни букетов, ни мягких игрушек.");
                 return Page();
             }
 
-            var bouquetIds = byBouquet
-                .Select(x => x.BouquetId!.Value)
-                .ToHashSet();
+            var bouquetIds = byBouquet.Select(x => x.Id).ToHashSet();
+            var softToyIds = bySoftToy.Select(x => x.Id).ToHashSet();
 
             await using var tx = await _context.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
 
@@ -117,16 +128,23 @@ namespace FlowerShop.Web.Pages.Account
                 .AsTracking()
                 .ToListAsync();
 
-            var missing = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
-            if (missing.Count > 0)
+            var softToys = await _context.SoftToys
+                .Where(s => softToyIds.Contains(s.Id))
+                .AsTracking()
+                .ToListAsync();
+
+            var missingBouquets = bouquetIds.Except(bouquets.Select(b => b.Id)).ToList();
+            var missingSoftToys = softToyIds.Except(softToys.Select(s => s.Id)).ToList();
+
+            if (missingBouquets.Count > 0 || missingSoftToys.Count > 0)
             {
-                ModelState.AddModelError(string.Empty, "Некоторые букеты недоступны.");
+                ModelState.AddModelError(string.Empty, "Некоторые позиции недоступны.");
                 return Page();
             }
 
             foreach (var grp in byBouquet)
             {
-                var b = bouquets.First(x => x.Id == grp.BouquetId);
+                var b = bouquets.First(x => x.Id == grp.Id);
                 if (b.Quantity < grp.RequiredQty)
                 {
                     ModelState.AddModelError(string.Empty, $"Недостаточно на складе: «{b.Name}». Доступно {b.Quantity}, требуется {grp.RequiredQty}.");
@@ -134,17 +152,34 @@ namespace FlowerShop.Web.Pages.Account
                 }
             }
 
+            foreach (var grp in bySoftToy)
+            {
+                var s = softToys.First(x => x.Id == grp.Id);
+                if (s.Quantity < grp.RequiredQty)
+                {
+                    ModelState.AddModelError(string.Empty, $"Недостаточно на складе: «{s.Name}». Доступно {s.Quantity}, требуется {grp.RequiredQty}.");
+                    return Page();
+                }
+            }
+
             foreach (var grp in byBouquet)
             {
-                var b = bouquets.First(x => x.Id == grp.BouquetId);
+                var b = bouquets.First(x => x.Id == grp.Id);
                 b.Quantity -= grp.RequiredQty;
                 if (b.Quantity < 0) b.Quantity = 0;
             }
 
+            foreach (var grp in bySoftToy)
+            {
+                var s = softToys.First(x => x.Id == grp.Id);
+                s.Quantity -= grp.RequiredQty;
+                if (s.Quantity < 0) s.Quantity = 0;
+            }
+
             var total = cart.Items.Sum(i => i.Quantity * i.PriceSnapshot);
 
-            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate, DateTimeKind.Utc);
             user.Phone = Phone;
+            var deliveryUtc = DateTime.SpecifyKind(DeliveryDate, DateTimeKind.Utc);
 
             var order = new OrderEntity
             {
@@ -157,6 +192,7 @@ namespace FlowerShop.Web.Pages.Account
                 {
                     Id = Guid.NewGuid(),
                     BouquetId = i.BouquetId,
+                    SoftToyId = i.SoftToyId,
                     Quantity = i.Quantity,
                     Price = i.PriceSnapshot
                 })]
@@ -171,5 +207,6 @@ namespace FlowerShop.Web.Pages.Account
 
             return RedirectToPage("/Home");
         }
+
     }
 }

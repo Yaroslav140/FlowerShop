@@ -38,7 +38,8 @@ namespace FlowerShop.Web.Controllers
                     o.CanReview,
                     o.Items.Select(i => new GetOrderItemDto(
                         i.Id,
-                        i.BouquetId!.Value,
+                        i.BouquetId!,
+                        i.SoftToyId!,
                         i.Quantity,
                         i.Price,
                         new GetBouquetDto(
@@ -47,8 +48,17 @@ namespace FlowerShop.Web.Controllers
                             i.Bouquet.Description,
                             i.Bouquet.Price,
                             i.Bouquet.Quantity,
-                            i.Bouquet.ImagePath
-                        )
+                            i.Bouquet.ImagePath,
+                            i.Bouquet.Rating
+                        ),
+                        new GetSoftToyDto(
+                            i.SoftToy.Id,
+                            i.SoftToy.Name,
+                            i.SoftToy.Description,
+                            i.SoftToy.Quantity,
+                            i.SoftToy.Price,
+                            i.SoftToy.ImagePath,
+                            i.SoftToy.Rating)
                     )).ToList()
                 ))
                 .ToListAsync();
@@ -82,7 +92,8 @@ namespace FlowerShop.Web.Controllers
                 o.CanReview,
                 [.. o.Items.Select(i => new GetOrderItemDto(
                     i.Id,
-                    i.BouquetId!.Value,
+                    i.BouquetId!,
+                    i.SoftToyId!,
                     i.Quantity,
                     i.Price,
                     new GetBouquetDto(
@@ -91,7 +102,17 @@ namespace FlowerShop.Web.Controllers
                         i.Bouquet.Description,
                         i.Bouquet.Price,
                         i.Bouquet.Quantity,
-                        i.Bouquet.ImagePath
+                        i.Bouquet.ImagePath,
+                        i.Bouquet.Rating
+                    ),
+                    new GetSoftToyDto(
+                        i.SoftToy.Id,
+                        i.SoftToy.Name,
+                        i.SoftToy.Description,
+                        i.SoftToy.Quantity,
+                        i.SoftToy.Price,
+                        i.SoftToy.ImagePath,
+                        i.SoftToy.Rating
                     )
                 ))]
             )).ToList();
@@ -112,19 +133,56 @@ namespace FlowerShop.Web.Controllers
             if (string.IsNullOrWhiteSpace(userName) && string.IsNullOrEmpty(login))
                 return BadRequest("Имя клиента или логин обязателен.");
 
-            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc ? dto.PickupDate : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
+            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc
+                ? dto.PickupDate
+                : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
 
-            var bouquetIds = dto.Items.Select(i => i.BouquetId).Distinct().ToList();
-            var bouquets = await _context.Bouquets
-                .Where(b => bouquetIds.Contains(b.Id))
-                .ToDictionaryAsync(b => b.Id);
+            var bouquetIds = dto.Items
+                .Where(i => i.BouquetId.HasValue)
+                .Select(i => i.BouquetId!.Value)
+                .Distinct()
+                .ToList();
 
-            var missing = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
-            if (missing.Count > 0)
-                return BadRequest($"Не найдены букеты: {string.Join(", ", missing)}.");
+            var softToyIds = dto.Items
+                .Where(i => i.SoftToyId.HasValue)
+                .Select(i => i.SoftToyId!.Value)
+                .Distinct()
+                .ToList();
+
+            var bouquets = bouquetIds.Count > 0
+                ? await _context.Bouquets
+                    .Where(b => bouquetIds.Contains(b.Id))
+                    .ToDictionaryAsync(b => b.Id)
+                : [];
+
+            var softToys = softToyIds.Count > 0
+                ? await _context.SoftToys
+                    .Where(s => softToyIds.Contains(s.Id))
+                    .ToDictionaryAsync(s => s.Id)
+                : [];
+
+            var missingBouquets = bouquetIds
+                .Where(id => !bouquets.ContainsKey(id))
+                .ToList();
+
+            var missingSoftToys = softToyIds
+                .Where(id => !softToys.ContainsKey(id))
+                .ToList();
+
+            if (missingBouquets.Count > 0 || missingSoftToys.Count > 0)
+            {
+                var msg = new List<string>();
+                if (missingBouquets.Count > 0)
+                    msg.Add($"букеты: {string.Join(", ", missingBouquets)}");
+                if (missingSoftToys.Count > 0)
+                    msg.Add($"мягкие игрушки: {string.Join(", ", missingSoftToys)}");
+
+                return BadRequest($"Не найдены позиции: {string.Join("; ", msg)}.");
+            }
 
             var needByBouquet = dto.Items
-                .GroupBy(i => i.BouquetId)
+                .Where(i => i.BouquetId.HasValue)
+                .GroupBy(i => i.BouquetId!.Value)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
             foreach (var (bouquetId, needQty) in needByBouquet)
@@ -132,6 +190,18 @@ namespace FlowerShop.Web.Controllers
                 var b = bouquets[bouquetId];
                 if (b.Quantity < needQty)
                     return BadRequest($"Недостаточно «{b.Name}»: нужно {needQty}, доступно {b.Quantity}.");
+            }
+
+            var needBySoftToy = dto.Items
+                .Where(i => i.SoftToyId.HasValue)
+                .GroupBy(i => i.SoftToyId!.Value)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+            foreach (var (softToyId, needQty) in needBySoftToy)
+            {
+                var s = softToys[softToyId];
+                if (s.Quantity < needQty)
+                    return BadRequest($"Недостаточно «{s.Name}»: нужно {needQty}, доступно {s.Quantity}.");
             }
 
             await using var tx = await _context.Database.BeginTransactionAsync();
@@ -161,7 +231,18 @@ namespace FlowerShop.Web.Controllers
                 }
 
                 foreach (var (bouquetId, needQty) in needByBouquet)
+                {
                     bouquets[bouquetId].Quantity -= needQty;
+                    if (bouquets[bouquetId].Quantity < 0)
+                        bouquets[bouquetId].Quantity = 0;
+                }
+
+                foreach (var (softToyId, needQty) in needBySoftToy)
+                {
+                    softToys[softToyId].Quantity -= needQty;
+                    if (softToys[softToyId].Quantity < 0)
+                        softToys[softToyId].Quantity = 0;
+                }
 
                 user.CodeOrder = GeneratedCode.Generated.GenerateRandomCode();
 
@@ -171,17 +252,23 @@ namespace FlowerShop.Web.Controllers
                     PickupDate = pickupUtc,
                     TotalAmount = dto.TotalAmount,
                     Status = dto.Status,
-                    Items = [.. dto.Items.Select(i => new OrderItemEntity
+                    Items = dto.Items.Select(i => new OrderItemEntity
                     {
                         BouquetId = i.BouquetId,
+                        SoftToyId = i.SoftToyId,
                         Quantity = i.Quantity,
                         Price = i.Price
-                    })],
+                    }).ToList(),
                     User = user
                 };
 
                 _context.Orders.Add(newOrder);
-                _context.Bouquets.UpdateRange(bouquets.Values);
+
+                if (bouquets.Count > 0)
+                    _context.Bouquets.UpdateRange(bouquets.Values);
+
+                if (softToys.Count > 0)
+                    _context.SoftToys.UpdateRange(softToys.Values);
 
                 try
                 {
@@ -200,6 +287,7 @@ namespace FlowerShop.Web.Controllers
 
                 await tx.CommitAsync();
 
+                // Формируем DTO для ответа
                 var result = new GetOrderDto(
                     newOrder.Id,
                     user.Name,
@@ -209,20 +297,35 @@ namespace FlowerShop.Web.Controllers
                     newOrder.TotalAmount,
                     newOrder.Status,
                     newOrder.CanReview,
-                    [.. newOrder.Items.Select(oi => new GetOrderItemDto(
-                    oi.Id,
-                    oi.BouquetId!.Value,
-                    oi.Quantity,
-                    oi.Price,
-                    new GetBouquetDto(
-                        bouquets[oi.BouquetId!.Value].Id,
-                        bouquets[oi.BouquetId!.Value].Name,
-                        bouquets[oi.BouquetId!.Value].Description,
-                        bouquets[oi.BouquetId!.Value].Price,
-                        bouquets[oi.BouquetId!.Value].Quantity,
-                        bouquets[oi.BouquetId!.Value].ImagePath
-                    )
-                ))]
+                    newOrder.Items.Select(oi => new GetOrderItemDto(
+                        oi.Id,
+                        oi.BouquetId,
+                        oi.SoftToyId,
+                        oi.Quantity,
+                        oi.Price,
+                        oi.BouquetId.HasValue
+                            ? new GetBouquetDto(
+                                bouquets[oi.BouquetId.Value].Id,
+                                bouquets[oi.BouquetId.Value].Name,
+                                bouquets[oi.BouquetId.Value].Description,
+                                bouquets[oi.BouquetId.Value].Price,
+                                bouquets[oi.BouquetId.Value].Quantity,
+                                bouquets[oi.BouquetId.Value].ImagePath,
+                                bouquets[oi.BouquetId.Value].Rating
+                            )
+                            : null,
+                        oi.SoftToyId.HasValue
+                            ? new GetSoftToyDto(
+                                softToys[oi.SoftToyId.Value].Id,
+                                softToys[oi.SoftToyId.Value].Name,
+                                softToys[oi.SoftToyId.Value].Description,
+                                softToys[oi.SoftToyId.Value].Quantity,
+                                softToys[oi.SoftToyId.Value].Price,
+                                softToys[oi.SoftToyId.Value].ImagePath,
+                                softToys[oi.SoftToyId.Value].Rating
+                            )
+                            : null
+                    )).ToList()
                 );
 
                 return Ok(result);
@@ -233,6 +336,7 @@ namespace FlowerShop.Web.Controllers
                 throw;
             }
         }
+
 
         [HttpPost("many")]
         public async Task<ActionResult> CreateOrdersMany([FromBody] List<CreateOrderDto> dtos)

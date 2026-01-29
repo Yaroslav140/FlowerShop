@@ -34,14 +34,15 @@ namespace FlowerShop.Web.Pages.Account
         {
             var cartItem = await _context.CartItems
                 .Include(ci => ci.Bouquet)
+                .Include(ci => ci.SoftToy)
                 .FirstOrDefaultAsync(ci => ci.Id == cartId);
 
             if (cartItem is null) return NotFound();
 
-            var stock = cartItem.Bouquet.Quantity;
+            var stock = cartItem.Bouquet != null ? cartItem.Bouquet.Quantity : cartItem.SoftToy.Quantity ;
 
             var totalInCart = await _context.CartItems
-                .Where(ci => ci.BouquetId == cartItem.BouquetId && ci.CartId == cartItem.CartId)
+                .Where(ci => (ci.BouquetId == cartItem.BouquetId || ci.SoftToyId == cartItem.SoftToyId) && ci.CartId == cartItem.CartId)
                 .SumAsync(ci => (int?)ci.Quantity) ?? 0;
 
             if (direction == "increase")

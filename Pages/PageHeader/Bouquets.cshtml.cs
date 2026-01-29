@@ -119,7 +119,8 @@ namespace FlowerShop.Web.Pages.PageHeader
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImagePath))
+                    b.ImagePath,
+                    b.Rating))
                 .ToListAsync();
         }
     }

@@ -51,21 +51,32 @@ namespace FlowerShop.Web.Pages.Account
                     o.TotalAmount,
                     o.Status,
                     o.CanReview,
-                    o.Items.Select(oi => new GetOrderItemDto(
-                        oi.Id,
-                        oi.BouquetId!.Value,
-                        oi.Quantity,
-                        oi.Price,
-                        new GetBouquetDto(
-                            oi.Bouquet.Id,
-                            oi.Bouquet.Name,
-                            oi.Bouquet.Description,
-                            oi.Bouquet.Price,
-                            oi.Bouquet.Quantity,
-                            oi.Bouquet.ImagePath
-                        )
-                    )).ToList()
-                )).ToListAsync();
+                    o.Items.Select(i => new GetOrderItemDto(
+                        i.Id,
+                        i.BouquetId,
+                        i.SoftToyId,
+                        i.Quantity,
+                        i.Price,
+                        i.Bouquet != null
+                            ? new GetBouquetDto(
+                                i.Bouquet.Id,
+                                i.Bouquet.Name,
+                                i.Bouquet.Description,
+                                i.Bouquet.Price,
+                                i.Bouquet.Quantity,
+                                i.Bouquet.ImagePath,
+                                i.Bouquet.Rating)
+                            : null,
+                        i.SoftToy != null
+                            ? new GetSoftToyDto(
+                                i.SoftToy.Id,
+                                i.SoftToy.Name,
+                                i.SoftToy.Description,
+                                i.SoftToy.Quantity,
+                                i.SoftToy.Price,
+                                i.SoftToy.ImagePath,
+                                i.SoftToy.Rating)
+                            : null)).ToList())).ToListAsync();
 
             CountOrderCompleted = Orders.Count(c => c.Status == OrderStatus.Completed);
         }

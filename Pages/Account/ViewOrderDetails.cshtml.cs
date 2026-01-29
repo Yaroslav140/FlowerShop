@@ -37,16 +37,27 @@ namespace FlowerShop.Web.Pages.Account
                     o.Items.Select(oi => new GetOrderItemDto(
                         oi.Id,
                         oi.BouquetId!.Value,
+                        oi.SoftToyId!.Value,
                         oi.Quantity,
                         oi.Price,
-                        new GetBouquetDto(
+                        oi.Bouquet != null ? new GetBouquetDto(
                             oi.Bouquet.Id,
                             oi.Bouquet.Name,
                             oi.Bouquet.Description,
                             oi.Bouquet.Price,
                             oi.Bouquet.Quantity,
-                            oi.Bouquet.ImagePath
-                        )
+                            oi.Bouquet.ImagePath,
+                            oi.Bouquet.Rating
+                        ) : null,
+                        oi.SoftToy != null ? new GetSoftToyDto(
+                            oi.SoftToy.Id,
+                            oi.SoftToy.Name,
+                            oi.SoftToy.Description,
+                            oi.SoftToy.Quantity,
+                            oi.SoftToy.Price,
+                            oi.SoftToy.ImagePath,
+                            oi.SoftToy.Rating
+                        ) : null
                     )).ToList()
                 ))
                 .SingleOrDefaultAsync();

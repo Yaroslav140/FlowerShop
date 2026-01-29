@@ -40,6 +40,7 @@ namespace FlowerShop.Web.Controllers
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
                             i.BouquetId!.Value, 
+                            i.SoftToyId!.Value, 
                             i.Quantity,
                             i.Price,
                             new GetBouquetDto(
@@ -48,7 +49,16 @@ namespace FlowerShop.Web.Controllers
                                 i.Bouquet.Description,
                                 i.Bouquet.Price,
                                 i.Bouquet.Quantity,
-                                i.Bouquet.ImagePath))).ToList())).ToList())).ToListAsync();
+                                i.Bouquet.ImagePath,
+                                i.Bouquet.Rating),
+                            new GetSoftToyDto(
+                                i.SoftToy.Id,
+                                i.SoftToy.Name,
+                                i.SoftToy.Description,
+                                i.SoftToy.Quantity,
+                                i.SoftToy.Price,
+                                i.SoftToy.ImagePath,
+                                i.SoftToy.Rating))).ToList())).ToList())).ToListAsync();
             return Ok(users);
         }
 
@@ -79,6 +89,7 @@ namespace FlowerShop.Web.Controllers
                         o.Items.Select(i => new GetOrderItemDto(
                             i.Id,
                             i.BouquetId!.Value,
+                            i.SoftToyId!.Value,
                             i.Quantity,
                             i.Price,
                             new GetBouquetDto(
@@ -87,12 +98,16 @@ namespace FlowerShop.Web.Controllers
                                 i.Bouquet.Description,
                                 i.Bouquet.Price,
                                 i.Bouquet.Quantity,
-                                i.Bouquet.ImagePath
-                            )
-                        )).ToList()
-                    )).ToList()
-                ))
-                .ToListAsync();
+                                i.Bouquet.ImagePath,
+                                i.Bouquet.Rating),
+                            new GetSoftToyDto(
+                                i.SoftToy.Id,
+                                i.SoftToy.Name,
+                                i.SoftToy.Description,
+                                i.SoftToy.Quantity,
+                                i.SoftToy.Price,
+                                i.SoftToy.ImagePath,
+                                i.SoftToy.Rating))).ToList())).ToList())).ToListAsync();
 
             return Ok(users);
         }

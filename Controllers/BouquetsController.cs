@@ -23,7 +23,8 @@ namespace FlowerShop.Web.Controllers
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImagePath
+                    b.ImagePath,
+                    b.Rating
                     )).ToListAsync();
             return Ok(bouquets);
         }
@@ -42,7 +43,8 @@ namespace FlowerShop.Web.Controllers
                     b.Description,
                     b.Price,
                     b.Quantity,
-                    b.ImagePath
+                    b.ImagePath,
+                    b.Rating
                 ))
                 .ToListAsync();
 

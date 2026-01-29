@@ -61,13 +61,16 @@ else
                             {
                                 var lineTotal = item.Price * item.Quantity;
 
+                                var name = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Неизвестный товар";
+                                var imagePath = item.Bouquet?.ImagePath ?? item.SoftToy?.ImagePath ?? "/img/placeholder.png";
+
                                 <article class="item-block">
-                                    <img src="@(item.Bouquet?.ImagePath ?? "/img/placeholder.png")"
-                                         alt="@item.Bouquet?.Name"
+                                    <img src="@imagePath"
+                                         alt="@name"
                                          class="item-block__image" />
 
                                     <div class="item-block__info">
-                                        <div class="item-block__title">@item.Bouquet?.Name</div>
+                                        <div class="item-block__title">@name</div>
                                         <div class="item-block__qty">Количество: @item.Quantity шт</div>
                                         <div class="item-block__price">
                                             @item.Price.ToString("C") × @item.Quantity = @lineTotal.ToString("C")
@@ -75,6 +78,7 @@ else
                                     </div>
                                 </article>
                             }
+
                         </div>
                     }
                 </section>
