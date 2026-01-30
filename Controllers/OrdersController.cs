@@ -1,13 +1,10 @@
 ﻿using FlowerShop.Data;
-using FlowerShop.Data;
 using FlowerShop.Data.Models;
 using FlowerShop.Dto.DTOCreate;
 using FlowerShop.Dto.DTOGet;
 using FlowerShop.Dto.DTOUpdate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace FlowerShop.Web.Controllers
 {
@@ -24,6 +21,8 @@ namespace FlowerShop.Web.Controllers
                 .AsNoTracking()
                 .Include(o => o.Items)
                     .ThenInclude(i => i.Bouquet)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.SoftToy)
                 .Where(o => userId != null
                     ? o.UserId == userId
                     : o.Status != OrderStatus.Cancelled && o.Status != OrderStatus.Completed)
@@ -286,7 +285,6 @@ namespace FlowerShop.Web.Controllers
 
                 await tx.CommitAsync();
 
-                // Формируем DTO для ответа
                 var result = new GetOrderDto(
                     newOrder.Id,
                     user.Name,
@@ -429,96 +427,136 @@ namespace FlowerShop.Web.Controllers
             if (string.IsNullOrWhiteSpace(userName))
                 return BadRequest("Имя клиента обязательно.");
 
-            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc ? dto.PickupDate : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
+            var pickupUtc = dto.PickupDate.Kind == DateTimeKind.Utc
+                ? dto.PickupDate
+                : DateTime.SpecifyKind(dto.PickupDate, DateTimeKind.Utc);
 
             var order = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Bouquet)
+                    .ThenInclude(i => i.Bouquet)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.SoftToy)
                 .FirstOrDefaultAsync(o => o.Id == dto.OrderId);
 
-
-            if (order == null)
-                return NotFound("Заказ не найден.");
-
+            if (order == null) return NotFound("Заказ не найден.");
 
             if (order.Status is OrderStatus.Completed or OrderStatus.Cancelled)
                 return BadRequest($"Нельзя редактировать заказ в статусе {order.Status}.");
-            order.CanReview = dto.Status == OrderStatus.Completed;
 
-            if (dto.Items.Any(i => !i.BouquetId.HasValue))
-                return BadRequest("BouquetId обязателен для всех позиций.");
+            if (dto.Items.Any(i => !i.BouquetId.HasValue && !i.SoftToyId.HasValue))
+                return BadRequest("Позиция должна содержать букет или мягкую игрушку.");
 
-            var newNeedByBouquet = dto.Items
-                .GroupBy(i => i.BouquetId.Value)        
+            var newBouquets = dto.Items
+                .Where(i => i.BouquetId.HasValue)
+                .GroupBy(i => i.BouquetId!.Value)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            var oldNeedByBouquet = order.Items
-                .GroupBy(i => i.BouquetId.Value)        // аналогично
+            var newToys = dto.Items
+                .Where(i => i.SoftToyId.HasValue)
+                .GroupBy(i => i.SoftToyId!.Value)
                 .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-            var allBouquetIds = newNeedByBouquet.Keys
-                .Union(oldNeedByBouquet.Keys)
-                .ToList();
+            var oldBouquets = order.Items
+                .Where(i => i.BouquetId.HasValue)
+                .GroupBy(i => i.BouquetId!.Value)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
+            var oldToys = order.Items
+                .Where(i => i.SoftToyId.HasValue)
+                .GroupBy(i => i.SoftToyId!.Value)
+                .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+            var bouquetIds = newBouquets.Keys.Union(oldBouquets.Keys).ToList();
+            var toyIds = newToys.Keys.Union(oldToys.Keys).ToList();
 
             var bouquets = await _context.Bouquets
-                .Where(b => allBouquetIds.Contains(b.Id))
+                .Where(b => bouquetIds.Contains(b.Id))
                 .ToDictionaryAsync(b => b.Id);
 
-            var missing = allBouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
-            if (missing.Count > 0)
-                return BadRequest($"Не найдены букеты: {string.Join(", ", missing)}.");
+            var toys = await _context.SoftToys
+                .Where(t => toyIds.Contains(t.Id))
+                .ToDictionaryAsync(t => t.Id);
 
-            foreach (var bouquetId in allBouquetIds)
+            var missingBouquets = bouquetIds.Where(id => !bouquets.ContainsKey(id)).ToList();
+            var missingToys = toyIds.Where(id => !toys.ContainsKey(id)).ToList();
+
+            if (missingBouquets.Any())
+                return BadRequest($"Не найдены букеты: {string.Join(", ", missingBouquets)}.");
+            if (missingToys.Any())
+                return BadRequest($"Не найдены игрушки: {string.Join(", ", missingToys)}.");
+
+            foreach (var bouquetId in bouquetIds)
             {
-                oldNeedByBouquet.TryGetValue(bouquetId, out var oldQty);
-                newNeedByBouquet.TryGetValue(bouquetId, out var newQty);
+                oldBouquets.TryGetValue(bouquetId, out var oldQty);
+                newBouquets.TryGetValue(bouquetId, out var newQty);
 
                 var delta = newQty - oldQty;
                 if (delta > 0 && bouquets[bouquetId].Quantity < delta)
                     return BadRequest($"Недостаточно «{bouquets[bouquetId].Name}»: нужно добавить {delta}, доступно {bouquets[bouquetId].Quantity}.");
             }
 
+            foreach (var toyId in toyIds)
+            {
+                oldToys.TryGetValue(toyId, out var oldQty);
+                newToys.TryGetValue(toyId, out var newQty);
+
+                var delta = newQty - oldQty;
+                if (delta > 0 && toys[toyId].Quantity < delta)
+                    return BadRequest($"Недостаточно «{toys[toyId].Name}»: нужно добавить {delta}, доступно {toys[toyId].Quantity}.");
+            }
+
             await using var tx = await _context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var bouquetId in allBouquetIds)
+                foreach (var bouquetId in bouquetIds)
                 {
-                    oldNeedByBouquet.TryGetValue(bouquetId, out var oldQty);
-                    newNeedByBouquet.TryGetValue(bouquetId, out var newQty);
-
+                    oldBouquets.TryGetValue(bouquetId, out var oldQty);
+                    newBouquets.TryGetValue(bouquetId, out var newQty);
                     var delta = newQty - oldQty;
+
                     if (delta != 0)
                         bouquets[bouquetId].Quantity -= delta;
                 }
+
+                foreach (var toyId in toyIds)
+                {
+                    oldToys.TryGetValue(toyId, out var oldQty);
+                    newToys.TryGetValue(toyId, out var newQty);
+                    var delta = newQty - oldQty;
+
+                    if (delta != 0)
+                        toys[toyId].Quantity -= delta;
+                }
+
                 order.User.Name = userName;
 
-                var byId = order.Items.ToDictionary(i => i.Id);
-
-                var incomingExistingIds = dto.Items
+                var existingItemsById = order.Items.ToDictionary(i => i.Id);
+                var incomingIds = dto.Items
                     .Where(i => i.OrderItemId.HasValue)
                     .Select(i => i.OrderItemId!.Value)
                     .ToHashSet();
 
-                var toRemove = order.Items.Where(i => !incomingExistingIds.Contains(i.Id)).ToList();
+                var toRemove = order.Items.Where(i => !incomingIds.Contains(i.Id)).ToList();
                 _context.OrderItems.RemoveRange(toRemove);
 
-                foreach (var it in dto.Items)
+                foreach (var item in dto.Items)
                 {
-                    if (it.OrderItemId.HasValue && byId.TryGetValue(it.OrderItemId.Value, out var existingItem))
+                    if (item.OrderItemId.HasValue && existingItemsById.TryGetValue(item.OrderItemId.Value, out var existing))
                     {
-                        existingItem.BouquetId = it.BouquetId;
-                        existingItem.Quantity = it.Quantity;
-                        existingItem.Price = it.Price;
+                        existing.BouquetId = item.BouquetId;
+                        existing.SoftToyId = item.SoftToyId;
+                        existing.Quantity = item.Quantity;
+                        existing.Price = item.Price;
                     }
                     else
                     {
                         order.Items.Add(new OrderItemEntity
                         {
-                            BouquetId = it.BouquetId,
-                            Quantity = it.Quantity,
-                            Price = it.Price
+                            BouquetId = item.BouquetId,
+                            SoftToyId = item.SoftToyId,
+                            Quantity = item.Quantity,
+                            Price = item.Price
                         });
                     }
                 }
@@ -526,8 +564,10 @@ namespace FlowerShop.Web.Controllers
                 order.PickupDate = pickupUtc;
                 order.Status = dto.Status;
                 order.TotalAmount = dto.TotalAmount;
+                order.CanReview = dto.Status == OrderStatus.Completed;
 
                 _context.Bouquets.UpdateRange(bouquets.Values);
+                _context.SoftToys.UpdateRange(toys.Values);
 
                 await _context.SaveChangesAsync();
                 await tx.CommitAsync();
@@ -540,6 +580,7 @@ namespace FlowerShop.Web.Controllers
                 throw;
             }
         }
+
 
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteOrder(Guid id)

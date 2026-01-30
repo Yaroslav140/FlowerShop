@@ -1,15 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershopapp\\flowershop\\pages\\account\\profile.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\profile.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7F024275-F57C-4E5C-A238-2B1B06066D81}|..\\FlowerShop.Data\\FlowerShop.Data.csproj|c:\\users\\param\\source\\repos\\flowershopapp\\flowershop.data\\models\\feedbackitementity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -17,21 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FeedbackItemEntity.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop.Data\\Models\\FeedbackItemEntity.cs",
-              "RelativeDocumentMoniker": "..\\FlowerShop.Data\\Models\\FeedbackItemEntity.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop.Data\\Models\\FeedbackItemEntity.cs",
-              "RelativeToolTip": "..\\FlowerShop.Data\\Models\\FeedbackItemEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T04:34:17.307Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
@@ -39,19 +18,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Profile.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\Profile.cshtml.cs",
-              "RelativeDocumentMoniker": "Pages\\Account\\Profile.cshtml.cs",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\Profile.cshtml.cs",
-              "RelativeToolTip": "Pages\\Account\\Profile.cshtml.cs",
-              "ViewState": "AgIAADYBAAAAAAAAAAAwwC4BAABbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T04:32:01.953Z",
-              "EditorCaption": ""
             }
           ]
         },
