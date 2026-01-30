@@ -448,56 +448,48 @@
     color: black;
     border: #bbbbbb6b solid 2px;
 }
-/* --- Стили для звезд (Без JS) --- */
 .star-rating {
     display: flex;
-    flex-direction: row-reverse; /* Разворачиваем порядок для трюка с выделением */
-    justify-content: flex-end;   /* Прижимаем визуально влево */
+    flex-direction: row-reverse; 
+    justify-content: flex-end;   
     gap: 5px;
 }
 
-/* Скрываем стандартные радио-кнопки */
 .star-rating input[type="radio"] {
     display: none;
 }
 
-/* Стиль самой звезды */
 .star-rating label {
-    font-size: 30px; /* Размер звезд */
-    color: #e4e5e9;  /* Цвет неактивной звезды (серый) */
+    font-size: 30px; 
+    color: #e4e5e9;  
     cursor: pointer;
     transition: color 0.2s;
     line-height: 1;
 }
 
-/* При наведении на звезду, окрашиваем её и все звезды СПРАВА от неё (в DOM они ниже) */
 .star-rating label:hover,
 .star-rating label:hover ~ label {
-    color: #ffc107; /* Золотой цвет при наведении */
+    color: #ffc107; 
 }
 
-/* Если радио-кнопка выбрана, окрашиваем связанный label и все label после него */
 .star-rating input[type="radio"]:checked ~ label {
-    color: #ffc107; /* Золотой цвет выбранных звезд */
+    color: #ffc107;
 }
-
-/* --- Остальные стили формы (как на картинке) --- */
 
 .form-field__textarea {
-    background-color: #f3f4f6; /* Светло-серый фон поля */
+    background-color: #f3f4f6;
     border: none;
     border-radius: 8px;
     padding: 12px;
-    resize: none; /* Запрет изменения размера */
+    resize: none;
     font-family: inherit;
 }
 
-/* Зеленая кнопка "Отправить" */
 .btn-green {
-    background-color: #00bfa5; /* Цвет как на картинке */
+    background-color: #00bfa5; 
     color: white;
     border: none;
-    border-radius: 20px; /* Сильное скругление */
+    border-radius: 20px; 
     padding: 10px 24px;
     font-weight: 600;
     cursor: pointer;
@@ -508,7 +500,6 @@
     opacity: 0.9;
 }
 
-/* Белая кнопка "Отмена" */
 .btn-outline-gray {
     background-color: transparent;
     color: #333;
@@ -524,11 +515,19 @@
     background-color: #f9f9f9;
 }
 
-/* Выравнивание кнопок */
 .modal-window__buttons {
     display: flex;
     gap: 15px;
     margin-top: 20px;
+}
+.review-text {
+    /* Твои старые стили */
+    font-size: 14px;
+    color: #4b5563;
+    margin: 8px 0;
+    line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: break-word; /* Современный аналог, лучше добавить оба */
 }
 
 @keyframes fadeInUp {
@@ -601,5 +600,8 @@
     }
     .btn-order{
         font-size: 12px;
+    }
+    .profile-reviews{
+        width: 100%;
     }
 }
