@@ -49,6 +49,7 @@ wwwroot\uploads\bouquets\6.png
 wwwroot\uploads\bouquets\7.png
 wwwroot\uploads\bouquets\8.png
 wwwroot\uploads\bouquets\9.png
+wwwroot\uploads\bouquets\Empty.png
 wwwroot\uploads\softToys\1.png
 wwwroot\uploads\softToys\10.png
 wwwroot\uploads\softToys\11.png
@@ -69,3 +70,4 @@ wwwroot\uploads\softToys\6.png
 wwwroot\uploads\softToys\7.png
 wwwroot\uploads\softToys\8.png
 wwwroot\uploads\softToys\9.png
+wwwroot\uploads\softToys\Empty.png

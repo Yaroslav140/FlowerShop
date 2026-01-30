@@ -82,6 +82,7 @@
 }
 
 .bouquet-card > img {
+    background-color: #8080807a;
     width: 100%;
     aspect-ratio: 3 / 3;
     object-fit: cover;

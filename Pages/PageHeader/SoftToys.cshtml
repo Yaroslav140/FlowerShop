@@ -18,7 +18,7 @@
             foreach (var (softToy, idx) in Model.GetSoftToys.Select((b, i) => (b, i)))
             {
                 <div class="bouquet-card bouquet-card__@idx">
-                    <img src="@Url.Content(softToy.ImagePath)" alt="@softToy.Name" loading="lazy" />
+                    <img src="@Url.Content(string.IsNullOrEmpty(softToy.ImagePath) ? "/uploads/softToys/Empty.png" : softToy.ImagePath)" alt="@softToy.Name" loading="lazy" />
                     <div class="rating-container">
                         <span>⭐</span>
                         <p>@(softToy.Rating > 1 ? (softToy.Rating % 1 == 0 ? softToy.Rating.ToString("F0") : softToy.Rating.ToString("F1")) : "5")</p>
