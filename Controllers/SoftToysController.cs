@@ -56,6 +56,40 @@ namespace FlowerShop.Web.Controllers
             return Ok(softToys);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateSoftToys([FromBody]CreateSoftToyDto softToy)
+        {
+            if (softToy == null)
+                return BadRequest("Нет данных.");
+
+            if (string.IsNullOrWhiteSpace(softToy.Name))
+                return BadRequest("Имя мягкой игрушки пустое.");
+
+            var exitsSoftToy = await _context.SoftToys
+                .Where(n => n.Name == softToy.Name)
+                .FirstOrDefaultAsync();
+
+            if (exitsSoftToy != null)
+                return BadRequest("Такая мягкая игрушка есть.");
+
+            if (softToy.Quantity < 0)
+                return BadRequest("Такое колличество не может быть на складе.");
+
+            var entitySoftToy = new SoftToyEntity
+            {
+                Name = softToy.Name,
+                Description = softToy.Description,
+                Quantity = softToy.Quantity,
+                Price = softToy.Price,
+                ImagePath = softToy.ImagePath,
+                Rating = 0
+            };
+
+            _context.SoftToys.Add(entitySoftToy);
+            await _context.SaveChangesAsync();
+            return Ok(softToy);
+
+        }
 
         [HttpDelete("all")]
         public async Task<ActionResult> DeleteSoftToys()

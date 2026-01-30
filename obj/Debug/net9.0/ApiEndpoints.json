@@ -292,6 +292,22 @@
   },
   {
     "ContainingType": "FlowerShop.Web.Controllers.SoftToysController",
+    "Method": "CreateSoftToys",
+    "RelativePath": "api/SoftToys",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "softToy",
+        "Type": "FlowerShop.Dto.DTOCreate.CreateSoftToyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FlowerShop.Web.Controllers.SoftToysController",
     "Method": "DeleteSoftToys",
     "RelativePath": "api/SoftToys/all",
     "HttpMethod": "DELETE",
