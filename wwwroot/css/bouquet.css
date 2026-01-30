@@ -313,8 +313,45 @@
         font-size: 18px;
     }
 }
-
 @media (max-width: 600px) {
+    .bouquet-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px; 
+    }
+    .bouquet-card__title {
+        font-size: 14px; 
+        -webkit-line-clamp: 2;
+        margin-bottom: 4px;
+    }
+
+    .bouquet-card__text {
+        font-size: 12px; 
+        margin-bottom: 8px;
+        min-height: auto; 
+        -webkit-line-clamp: 1;
+    }
+
+    .bouquet-card__price {
+        font-size: 16px;
+    }
+
+    .rating-container {
+        top: auto;
+        bottom: 55%; 
+        left: 8px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .rating-container span {
+        font-size: 12px;
+    }
+
+    .bouquet-card__actions .btn {
+        font-size: 12px;
+        height: 32px; 
+    }
+
     .empty-cart__buttons {
         flex-direction: column;
     }
