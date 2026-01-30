@@ -3,7 +3,6 @@
 @using System.Globalization
 @{
     var ru = new CultureInfo("ru-RU");
-    // Тут все верно, считаем по снимку цены
     var subtotal = Model.CartEntities?.Sum(ci => ci.PriceSnapshot * ci.Quantity) ?? 0m;
 }
 @section Styles {

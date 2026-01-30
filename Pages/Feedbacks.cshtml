@@ -45,4 +45,55 @@
             </div>
         </form>
     </div>
+    <div class="all-feedback">
+        @if(Model.Feedbacks.Count > 0)
+        {
+            <h1>Все отзывы (@Model.Feedbacks.Count)</h1>
+            @foreach (var feedback in Model.Feedbacks)
+            {
+                <article class="feedback">
+                    <header class="feedback__header">
+                        <img src="~/img/user.png" class="feedback__avatar" alt="Аватар пользователя">
+
+                        <div class="feedback__meta">
+                            <h3 class="feedback__author">@feedback.UserName</h3>
+
+                            <time class="feedback__date" datetime="@feedback.DateCreation.ToString("yyyy-MM-dd")">
+                                @feedback.DateCreation.ToString("dd.MM.yyyy")
+                            </time>
+                        </div>
+
+                        <div class="feedback__rating" aria-label="Оценка: @feedback.StoreRating из 5" role="img">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                var isFilled = i <= Math.Round(feedback.StoreRating);
+
+                                <svg width="20" height="20" viewBox="0 0 24 24" class="star @(isFilled ? "filled" : "")">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                            }
+                        </div>
+                    </header>
+
+                    <div class="feedback__purchase">
+                        Купил:
+                        <span class="product-name">
+                            @if (feedback.FeedbackItems != null && feedback.FeedbackItems.Any())
+                            {
+                                @string.Join(", ", feedback.FeedbackItems.Select(item => item.ProductName))
+                            }
+                            else
+                            {
+                                @:Не указано
+                            }
+                        </span>
+                    </div>
+
+                    <div class="feedback__content">
+                        <p>@feedback.Description</p>
+                    </div>
+                </article>
+            }
+        }
+    </div>
 </div>

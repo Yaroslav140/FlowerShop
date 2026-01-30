@@ -20,6 +20,10 @@
             {
                 <div class="bouquet-card bouquet-card__@idx">
                     <img src="@Url.Content(bouquet.ImagePath)" alt="@bouquet.Name" loading="lazy" />
+                    <div class="rating-container">
+                        <span>⭐</span>
+                        <p>@(bouquet.Rating > 1 ? (bouquet.Rating % 1 == 0 ? bouquet.Rating.ToString("F0") : bouquet.Rating.ToString("F1")) : "5")</p>
+                    </div>
                     <div class="bouquet-card__description">
                         <h2 class="bouquet-card__title">@bouquet.Name</h2>
                         <p class="bouquet-card__text">@bouquet.Description</p>

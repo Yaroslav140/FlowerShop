@@ -20,9 +20,9 @@ namespace FlowerShop.Web.Pages.Account
 
         [BindProperty]
         public UpdateProfileInputModel EditInput { get; set; } = new();
+        [BindProperty]
+        public ReviewInputModel ReviewInput { get; set; } = new();
 
-        public float Rating { get; set; }
-        public string Comment { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Login { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
@@ -87,11 +87,15 @@ namespace FlowerShop.Web.Pages.Account
                 .Select(f => new GetFeedbackDto(
                     f.Id,
                     f.UserId,
+                    f.User.Name,
                     f.DateCreation,
                     f.Description,
                     f.StoreRating,
-                    new List<FeedbackItemEntity>()))
-                .ToListAsync();
+                    f.FeedbackItems.Select(i => new GetFeedbackItemDto(
+                        i.Id,
+                        i.ProductRating,
+                        i.Bouquet.Name ?? i.SoftToy.Name,
+                        i.Bouquet.ImagePath ?? i.SoftToy.ImagePath)).ToList())).ToListAsync();
         }
 
         public async Task OnGetAsync()
@@ -125,8 +129,23 @@ namespace FlowerShop.Web.Pages.Account
             return Page();
         }
 
-        public async Task<IActionResult> OnPostStartReviewsAsync()
+        public async Task<IActionResult> OnPostStartReviewsAsync(Guid orderId)
         {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+            await LoadUserDataAsync(userId);
+
+            var order = Orders.FirstOrDefault(o => o.Id == orderId);
+            if (order == null) return NotFound();
+
+            if (!order.CanReview)
+            {
+                ModelState.AddModelError(string.Empty, "Для этого заказа нельзя оставить отзыв");
+                return Page();
+            }
+
+            ReviewInput = new ReviewInputModel { OrderId = orderId };
             IsCanReviews = true;
             return Page();
         }
@@ -253,6 +272,65 @@ namespace FlowerShop.Web.Pages.Account
 
             return RedirectToPage("/Account/Profile");
         }
+
+
+        public async Task<IActionResult> OnPostSubmitReviewAsync()
+        {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
+
+            ModelState.Remove("EditInput.NewLogin");
+            ModelState.Remove("EditInput.NewUsername");
+
+            ModelState.Remove("NewLogin");
+            ModelState.Remove("NewUsername");
+
+            if (!ModelState.IsValid)
+            {
+                await LoadUserDataAsync(userId);
+                IsCanReviews = true;
+                return Page();
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.Id == ReviewInput.OrderId && o.UserId == userId);
+
+            if (order == null) return NotFound();
+
+            if (!order.CanReview)
+            {
+                ModelState.AddModelError(string.Empty, "Для этого заказа уже оставлен отзыв");
+                await LoadUserDataAsync(userId);
+                IsCanReviews = true;
+                return Page();
+            }
+
+            var feedback = new FeedbackEntity
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                DateCreation = DateTime.UtcNow,
+                Description = ReviewInput.Comment,
+                StoreRating = ReviewInput.Rating,
+                FeedbackItems = [.. order.Items.Select(orderItem => new FeedbackItemEntity
+                {
+                    Id = Guid.NewGuid(), 
+                    ProductRating = ReviewInput.Rating, 
+                    BouquetId = orderItem.BouquetId,
+                    SoftToyId = orderItem.SoftToyId,
+
+                })]
+            };
+
+            _context.Feedbacks.Add(feedback);
+
+            order.CanReview = false;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Account/Profile");
+        }
     }
 
     public class UpdateProfileInputModel
@@ -264,5 +342,18 @@ namespace FlowerShop.Web.Pages.Account
         [Required(ErrorMessage = "Логин обязателен")]
         [Display(Name = "Логин")]
         public string NewLogin { get; set; } = string.Empty;
+    }
+
+    public class ReviewInputModel
+    {
+        public Guid OrderId { get; set; }
+
+        [Required(ErrorMessage = "Пожалуйста, укажите оценку")]
+        [Range(1, 5, ErrorMessage = "Оценка должна быть от 1 до 5")]
+        public int Rating { get; set; }
+
+        [Required(ErrorMessage = "Пожалуйста, напишите комментарий")]
+        [StringLength(500, ErrorMessage = "Комментарий не может превышать 500 символов")]
+        public string Comment { get; set; }
     }
 }

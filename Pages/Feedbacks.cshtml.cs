@@ -1,4 +1,5 @@
 ﻿using FlowerShop.Data;
+using FlowerShop.Dto.DTOGet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,6 +29,8 @@ namespace FlowerShop.Web.Pages
 
         public List<SelectListItem> AvailableOrders { get; set; } = [];
 
+        public List<GetFeedbackDto> Feedbacks { get; set; } = [];
+
         public async Task OnGetAsync()
         {
             await LoadOrdersAsync();
@@ -47,6 +50,22 @@ namespace FlowerShop.Web.Pages
         private async Task LoadOrdersAsync()
         {
             var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            Feedbacks = await _context.Feedbacks
+                .Select(f => new GetFeedbackDto(
+                    f.Id,
+                    f.UserId,
+                    f.User.Name,
+                    f.DateCreation,
+                    f.Description,
+                    f.StoreRating,
+                    f.FeedbackItems.Select(fi => new GetFeedbackItemDto(
+                        fi.Id,
+                        fi.ProductRating,
+                        fi.Bouquet != null ? fi.Bouquet.Name : (fi.SoftToy != null ? fi.SoftToy.Name : "Неизвестный товар"),
+                        fi.Bouquet != null ? fi.Bouquet.ImagePath : (fi.SoftToy != null ? fi.SoftToy.ImagePath : null)
+                    )).ToList()
+                ))
+                .ToListAsync();
 
             if (Guid.TryParse(userIdString, out Guid parsedId))
             {
