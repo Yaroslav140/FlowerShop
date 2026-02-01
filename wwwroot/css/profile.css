@@ -160,6 +160,12 @@
     border: 1px solid #f95d5d;
 }
 
+.btn-exit {
+    background-color: white;
+    color: #00bc81;
+    border: #00bc81 solid 1px;
+}
+
 .btn-danger:hover {
     background: #fef2f2;
 }

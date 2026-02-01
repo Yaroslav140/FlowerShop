@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
 
 namespace FlowerShop.Web.Pages.Account
@@ -155,6 +156,12 @@ namespace FlowerShop.Web.Pages.Account
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(userIdStr, out var userId)) return Unauthorized();
 
+            ModelState.Remove("ReviewInput.Rating");
+            ModelState.Remove("ReviewInput.Comment");
+
+            ModelState.Remove("Rating");
+            ModelState.Remove("Comment");
+
             if (!ModelState.IsValid)
             {
                 await LoadUserDataAsync(userId);
@@ -164,6 +171,16 @@ namespace FlowerShop.Web.Pages.Account
 
             var user = await _context.UserDomains.FindAsync(userId);
             if (user == null) return NotFound();
+
+            var loginExits = await _context.UserDomains
+                .Where(l => l.Login == EditInput.NewLogin)
+                .FirstOrDefaultAsync();
+
+            if (loginExits != null)
+            {
+                ModelState.AddModelError(string.Empty, "Такой логин уже есть.");
+                return RedirectToPage("/Account/Profile");
+            }
 
             user.Name = EditInput.NewUsername;
             user.Login = EditInput.NewLogin;

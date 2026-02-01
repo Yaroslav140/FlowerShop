@@ -37,12 +37,17 @@
 
                 <div class="profile-actions">
                     <form method="post" asp-page-handler="StartEdit" style="display:inline;">
-                        <button type="submit" class="btn btn-link text-decoration-none p-0 border-0">
+                        <button type="submit" class="btn btn-link">
                             <img src="/img/edit-icon.png" alt="" class="btn-icon revert-icon" />
                             <span>Редактировать профиль</span>
                         </button>
                     </form>
-
+                    <form method="post" asp-page-handler="Exit" style="display:inline;">
+                        <button type="submit" class="btn btn-exit">
+                            <img src="/img/edit-icon.png" alt="" class="btn-icon" />
+                            <span>Выйти из аккаунта</span>
+                        </button>
+                    </form>
                     <form method="post" asp-page-handler="Delete">
                         <button type="submit" class="btn btn-danger">
                             <img src="/img/delete-icon.png" alt="" class="btn-icon" />
