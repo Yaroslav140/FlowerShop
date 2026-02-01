@@ -64,12 +64,34 @@ else
                                 var lineTotal = item.Price * item.Quantity;
 
                                 var name = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Неизвестный товар";
-                                var imagePath = item.Bouquet?.ImagePath ?? item.SoftToy?.ImagePath ?? "/img/placeholder.png";
+                                string itemImage = "";
+
+                                if (item.Bouquet != null)
+                                {
+                                    if (!string.IsNullOrEmpty(item.Bouquet.ImagePath))
+                                    {
+                                        itemImage = item.Bouquet.ImagePath;
+                                    }
+                                    else
+                                    {
+                                        itemImage = "/uploads/bouquets/Empty.png";
+                                    }
+                                }
+                                else if (item.SoftToy != null)
+                                {
+                                    if (!string.IsNullOrEmpty(item.SoftToy.ImagePath))
+                                    {
+                                        itemImage = item.SoftToy.ImagePath;
+                                    }
+                                    else
+                                    {
+                                        itemImage = "/uploads/softToys/Empty.png";
+                                    }
+                                }
+
 
                                 <article class="item-block">
-                                    <img src="@imagePath"
-                                         alt="@name"
-                                         class="item-block__image" />
+                                    <img src="@itemImage" alt="@name" class="item-block__image" />
 
                                     <div class="item-block__info">
                                         <div class="item-block__title">@name</div>

@@ -39,7 +39,30 @@
 
                     var itemName = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Товар удален";
 
-                    var itemImage = item.Bouquet?.ImagePath ?? item.SoftToy?.ImagePath ?? "/img/no-photo.png";
+                    string itemImage = "";
+
+                    if (item.Bouquet != null)
+                    {
+                        if (!string.IsNullOrEmpty(item.Bouquet.ImagePath))
+                        {
+                            itemImage = item.Bouquet.ImagePath;
+                        }
+                        else
+                        {
+                            itemImage = "/uploads/bouquets/Empty.png";
+                        }
+                    }
+                    else if (item.SoftToy != null)
+                    {
+                        if (!string.IsNullOrEmpty(item.SoftToy.ImagePath))
+                        {
+                            itemImage = item.SoftToy.ImagePath;
+                        }
+                        else
+                        {
+                            itemImage = "/uploads/softToys/Empty.png";
+                        }
+                    }
 
                     var currentPrice = item.PriceSnapshot;
 
