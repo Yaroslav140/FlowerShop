@@ -74,21 +74,32 @@ namespace FlowerShop.Web.Pages.Account
             await using var tx = await _context.Database.BeginTransactionAsync();
 
             var order = await _context.Orders
-                .Include(o => o.Items).ThenInclude(i => i.Bouquet)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Bouquet)
+                .Include(o => o.Items)
+                    .ThenInclude(s => s.SoftToy)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null) return NotFound();
 
             if (order.Status is OrderStatus.Completed or OrderStatus.Cancelled)
             {
-                TempData["ErrorMessage"] = "Заказ нельзя отменить.";
+                ModelState.AddModelError(string.Empty, "Заказ нельзя отменить.");
                 return RedirectToPage("/Account/ViewOrderDetails", new { id });
             }
 
             foreach (var item in order.Items)
             {
-                item.Bouquet.Quantity += item.Quantity;
-                _context.Bouquets.Update(item.Bouquet);
+                if(item.Bouquet != null)
+                {
+                    item.Bouquet.Quantity += item.Quantity;
+                    _context.Bouquets.Update(item.Bouquet);
+                }
+                else
+                {
+                    item.SoftToy.Quantity += item.Quantity;
+                    _context.SoftToys.Update(item.SoftToy);
+                }
             }
 
             order.Status = OrderStatus.Cancelled;
@@ -96,7 +107,6 @@ namespace FlowerShop.Web.Pages.Account
             await _context.SaveChangesAsync();
             await tx.CommitAsync();
 
-            TempData["SuccessMessage"] = "Заказ отменён. Товары вернулись на склад.";
             return RedirectToPage("/Account/ViewOrderDetails", new { id });
         }
     }
