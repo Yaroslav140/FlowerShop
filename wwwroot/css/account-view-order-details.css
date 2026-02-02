@@ -120,6 +120,8 @@
 }
 
 .value-text {
+    display: flex;
+    gap: 20px;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.5;
@@ -209,6 +211,22 @@
 
 .btn--outline-pink:active{
     transform: scale(0.98);
+}
+
+.form-control {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: #e3e3e3;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus{
+    background: #e3e3e3;
+    border-color: var(--color-brand);
+    box-shadow: 0 0 4px 4px #f3f2f2;
 }
 
 @media (max-width: 992px) {

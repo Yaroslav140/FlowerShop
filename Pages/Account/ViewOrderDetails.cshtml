@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:guid}"
 @using FlowerShop.Data.Models
 @model FlowerShop.Web.Pages.Account.ViewOrderDetailsModel
 @{
@@ -18,12 +18,13 @@ else
 {
     <div class="container">
         <div asp-validation-summary="ModelOnly" class="error"></div>
+
         <a href="/Account/Profile" class="back-link">
             <span>←</span> Вернуться к профилю
         </a>
 
         <header class="page-title-row">
-            <h1 class="page-title">Заказ #@order.Id.ToString()[^4..]</h1>
+            <h1 class="page-title">Заказ #@order.Id.ToString().Substring(order.Id.ToString().Length - 4)</h1>
             <div class="order-meta">
                 <span>Дата заказа: @order.PickupDate.ToString("dd.MM.yyyy")</span>
                 @switch (order.Status)
@@ -61,60 +62,78 @@ else
                             @foreach (var item in order.OrderItem)
                             {
                                 var lineTotal = item.Price * item.Quantity;
-
                                 var name = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Неизвестный товар";
                                 string itemImage = "";
 
                                 if (item.Bouquet != null)
                                 {
-                                    if (!string.IsNullOrEmpty(item.Bouquet.ImagePath))
-                                    {
-                                        itemImage = item.Bouquet.ImagePath;
-                                    }
-                                    else
-                                    {
-                                        itemImage = "/uploads/bouquets/Empty.png";
-                                    }
+                                    itemImage = !string.IsNullOrEmpty(item.Bouquet.ImagePath)
+                                    ? item.Bouquet.ImagePath
+                                    : "/uploads/bouquets/Empty.png";
                                 }
                                 else if (item.SoftToy != null)
                                 {
-                                    if (!string.IsNullOrEmpty(item.SoftToy.ImagePath))
-                                    {
-                                        itemImage = item.SoftToy.ImagePath;
-                                    }
-                                    else
-                                    {
-                                        itemImage = "/uploads/softToys/Empty.png";
-                                    }
+                                    itemImage = !string.IsNullOrEmpty(item.SoftToy.ImagePath)
+                                    ? item.SoftToy.ImagePath
+                                    : "/uploads/softToys/Empty.png";
                                 }
-
 
                                 <article class="item-block">
                                     <img src="@itemImage" alt="@name" class="item-block__image" />
-
                                     <div class="item-block__info">
                                         <div class="item-block__title">@name</div>
                                         <div class="item-block__qty">Количество: @item.Quantity шт</div>
                                         <div class="item-block__price">
-                                            @item.Price.ToString("C", culture) × @item.Quantity = @lineTotal.ToString("C", culture);
+                                            @item.Price.ToString("C", culture) × @item.Quantity = @lineTotal.ToString("C", culture)
                                         </div>
                                     </div>
                                 </article>
                             }
-
                         </div>
                     }
                 </section>
             </main>
+
             <aside>
-                <section class="card">
+                <section class="card" id="deliveryInfo">
                     <div class="card-header">Информация о доставке</div>
 
                     <div class="address-block">
                         <div class="label">Адрес доставки</div>
-                        <div class="value-text">
-                            <p>@order.DeliveryAddress</p>
-                        </div>
+
+                        @if (Model.IsEditingAddress)
+                        {
+                            <form method="post" asp-page-handler="UpdateAddress" asp-route-id="@Model.Order.Id" class="mt-2">
+                                <div class="input-group">
+                                    <input type="text" asp-for="NewDeliveryAddress" class="form-control" />
+
+                                    <button type="submit" class="btn btn-success" title="Сохранить">✅</button>
+                                    <a class="btn btn-outline-secondary"
+                                       asp-page="./ViewOrderDetails"
+                                       asp-route-id="@Model.Order.Id"
+                                       asp-fragment="deliveryInfo" title="Отмена">❌</a>
+                                </div>
+                                <span asp-validation-for="NewDeliveryAddress" class="text-danger small"></span>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Левая часть: Текст -->
+                                <div class="value-text">
+                                    @Model.Order.DeliveryAddress <!-- Убрал лишний <p>, если он не нужен для стилей -->
+                                </div>
+                            
+                                <!-- Правая часть: Кнопка -->
+                                <a asp-page="./ViewOrderDetails" 
+                                   asp-route-id="@Model.Order.Id" 
+                                   asp-route-editAddress="true" 
+                                   asp-fragment="deliveryInfo"
+                                   class="ms-3 d-inline-block">
+                                    <img src="/img/edit-icon.png" style="width: 24px; height: 24px; display: block;" />
+                                </a>
+                            </div>
+                        }
                     </div>
 
                     <div class="address-block" style="margin-bottom:0;">
@@ -144,12 +163,23 @@ else
                     </div>
                 </section>
 
-                <form method="post">
-                    <button type="submit" asp-page-handler="CancelOrder" asp-route-id="@order.Id" class="btn--outline-pink">Отменить заказ</button>
-                </form>
+                @if (order.Status != OrderStatus.Completed && order.Status != OrderStatus.Cancelled)
+                {
+                    <form method="post" class="mt-3">
+                        <button type="submit" asp-page-handler="CancelOrder" asp-route-id="@order.Id"
+                                class="btn--outline-pink w-100"
+                                onclick="return confirm('Вы уверены, что хотите отменить заказ?');">
+                            Отменить заказ
+                        </button>
+                    </form>
+                }
+                else if (order.Status == OrderStatus.Cancelled)
+                {
+                    <div class="alert alert-danger mt-3 text-center">Заказ отменён</div>
+                }
 
-                <a href="/PageHeader/Contacts" class="btn-support">
-                    <img src="~/img/chat-icno-about.svg" style="width:20px;filter: brightness(0) invert(1);"/>
+                <a href="/PageHeader/Contacts" class="btn-support mt-3">
+                    <img src="~/img/chat-icno-about.svg" style="width:20px;filter: brightness(0) invert(1);" alt="" />
                     Связаться с поддержкой
                 </a>
             </aside>

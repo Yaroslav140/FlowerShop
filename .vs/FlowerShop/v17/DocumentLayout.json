@@ -5,14 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershopapp\\flowershop\\wwwroot\\css\\account-view-order-details.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:wwwroot\\css\\account-view-order-details.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershopapp\\flowershop\\pages\\account\\vieworderdetails.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\vieworderdetails.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|c:\\users\\param\\source\\repos\\flowershopapp\\flowershop\\pages\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{087EAA2E-2255-4665-92B0-72A1B47BDFB4}|FlowerShop.Web.csproj|solutionrelative:pages\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -36,35 +28,9 @@
               "RelativeDocumentMoniker": "wwwroot\\css\\account-view-order-details.css",
               "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\wwwroot\\css\\account-view-order-details.css",
               "RelativeToolTip": "wwwroot\\css\\account-view-order-details.css",
-              "ViewState": "AgIAAKIAAAAAAAAAAAAAALsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAALQAAAAAAAAAAAAAAOQAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-02-02T04:58:22.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ViewOrderDetails.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\ViewOrderDetails.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Account\\ViewOrderDetails.cshtml",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\ViewOrderDetails.cshtml",
-              "RelativeToolTip": "Pages\\Account\\ViewOrderDetails.cshtml",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAAAI8AAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T04:56:50.652Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Profile.cshtml",
-              "DocumentMoniker": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\Profile.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Account\\Profile.cshtml",
-              "ToolTip": "C:\\Users\\param\\source\\repos\\FlowerShopApp\\FlowerShop\\Pages\\Account\\Profile.cshtml",
-              "RelativeToolTip": "Pages\\Account\\Profile.cshtml",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T04:56:40.25Z",
+              "WhenOpened": "2026-02-02T05:36:35.021Z",
               "EditorCaption": ""
             }
           ]
