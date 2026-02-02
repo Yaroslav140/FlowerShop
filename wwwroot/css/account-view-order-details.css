@@ -176,7 +176,7 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 18px;
+    padding: 16px;
     background-color: #00bc81;
     color: #fff;
     font-weight: 700;
@@ -188,6 +188,26 @@
 }
 
 .btn-support:active {
+    transform: scale(0.98);
+}
+
+.btn--outline-pink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    color: red;
+    background-color: transparent;
+    margin-bottom: 20px;
+    border: #f19292 solid 1px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: 0.5s ease;
+}
+
+.btn--outline-pink:active{
     transform: scale(0.98);
 }
 
