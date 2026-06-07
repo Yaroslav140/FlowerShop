@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+@{
+    var currentPage = ViewContext.RouteData.Values["page"] as string;
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true"/>
+    <meta charset="utf-8" />
+    <title>Flower — минималистичный магазин</title>
+    <link rel="icon" href="~/img/icon.svg" type="image/x-icon" />
+    @await RenderSectionAsync("Styles", false)
+</head>
+
+<body>
+    <header class="container-header">
+        <div class="container-header__wrapper">
+            <a class="container-header__text-logo" asp-page="/Home">Flower & Shop</a>
+
+            <input type="checkbox" id="burger-toggle" class="burger-toggle-input">
+
+            <label for="burger-toggle" class="burger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <nav class="container-header__nav">
+                <ul>
+                    <li><a asp-page="/Home" class="@(currentPage == "/Home" ? "active" : "")">Главная</a></li>
+                    <li><a asp-page="/PageHeader/About" class="@(currentPage == "/PageHeader/About" ? "active" : "")">О Нас</a></li>
+                    <li><a asp-page="/PageHeader/Bouquets" class="@(currentPage == "/PageHeader/Bouquets" ? "active" : "")">Букеты</a></li>
+                    <li><a asp-page="/PageHeader/SoftToys" class="@(currentPage == "/PageHeader/SoftToys" ? "active" : "")">Мягкие игрушки</a></li>
+                    <li><a asp-page="/PageHeader/Contacts" class="@(currentPage == "/PageHeader/Contacts" ? "active" : "")">Контакты</a></li>
+
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <li><a asp-page="/Account/Profile" class="@(currentPage == "/Account/Profile" ? "active" : "")">Профиль</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-page="/Account/Register" class="@(currentPage == "/Account/Register" ? "active" : "")">Вход</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container-main">
+        @RenderBody()
+    </main>
+    <div class="cart-wrapper">
+        <a href="@Url.Content("/Account/Purchases")" class="cart-icon" aria-label="Корзина">
+            <img src="/img/cart-icon.png" alt="корзина"/>
+        </a>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

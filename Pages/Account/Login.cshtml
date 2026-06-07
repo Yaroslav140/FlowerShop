@@ -1,0 +1,38 @@
+@page
+@model FlowerShop.Web.Pages.Account.LoginModel
+
+@section Styles{
+    <link rel="stylesheet" href="/css/authorization.css" asp-append-version="true"/>
+}
+<div class="auth-center">
+    <div class="form-card">
+        <span class="hero-badge">
+            <img src="/img/star-icon-authorization.png" />
+        </span>
+        <h2>Вход в аккаунт</h2>
+        <p class="subtitle">Войдите, чтобы продолжить заказ</p>
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="error"></div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="example@mail.ru" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Введите пароль" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="submit-btn">Войти</button>
+        </form>
+
+        <div class="signin">
+            <a href="/Account/ForgotPassword">Забыли пароль?</a>
+        </div>
+        <div class="signin">
+            У вас нет учетной записи? <a href="/Account/Register">Регистрация</a>
+        </div>
+    </div>
+</div>

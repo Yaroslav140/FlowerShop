@@ -1,0 +1,436 @@
+.form-error-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff1f1;
+    border: 1.5px solid #f5b8b8;
+    border-radius: 12px;
+    color: #c0392b;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.container-feedback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 20px 40px 20px;
+    position: relative;
+}
+
+.back-link {
+    align-self: flex-start;
+    text-decoration: none;
+    color: #00bc81;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.3s, color 0.3s;
+}
+
+.back-link:hover {
+    opacity: 0.8;
+    color: #1abc9c;
+}
+
+.back-link span {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.header-feedback {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.icon {
+    width: 60px;
+    height: auto;
+}
+
+.title-feedback {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0;
+    color: #000;
+}
+
+.desctription-feedback {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.container-feedback__main {
+    background-color: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    box-sizing: border-box;
+}
+
+.container-feedback__main h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #000;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.form-group p {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 6px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #f4f5f7;
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s, background-color 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(140, 227, 208, 0.4);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px top 50%;
+    background-size: 12px auto;
+    cursor: pointer;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #00bc81;
+    color: #ffffff;
+    border: none;
+    padding: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: #72dcb9;
+}
+
+.btn-primary:active {
+    transform: scale(0.99);
+}
+
+/* ── Star rating input ── */
+.star-rating-input {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.star-btn {
+    fill: #e0e0e0;
+    transition: fill 0.15s;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.star-btn.star-active {
+    fill: #ffc107;
+}
+
+/* ── Order items section ── */
+#orderItemsSection {
+    margin-bottom: 20px;
+}
+
+.items-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.items-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+    margin: 0;
+}
+
+.items-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-select-all {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #00bc81;
+    background: transparent;
+    color: #00bc81;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-select-all:hover {
+    background: #00bc81;
+    color: #fff;
+}
+
+.btn-five-stars {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #ffc107;
+    background: transparent;
+    color: #b38a00;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-five-stars:hover {
+    background: #ffc107;
+    color: #fff;
+}
+
+.items-loading {
+    color: #888;
+    font-size: 0.95rem;
+    padding: 12px 0;
+}
+
+/* ── Order item card ── */
+.order-item-card {
+    border: 2px solid #e8e8e8;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fff;
+}
+
+.order-item-card.selected {
+    border-color: #00bc81;
+    background: #f0fdf9;
+}
+
+.item-card-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.item-checkbox-wrap {
+    flex-shrink: 0;
+}
+
+.item-checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.item-checkbox.unchecked {
+    background: #555;
+    border-color: #555;
+}
+
+.item-checkbox.checked {
+    background: #00bc81;
+    border-color: #00bc81;
+    position: relative;
+}
+
+.item-checkbox.checked::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 11px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.item-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: #f4f5f7;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.item-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-price {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.item-review-section {
+    border-top: 1px solid #e0f7ef;
+    padding: 14px 16px 16px 16px;
+    background: #f0fdf9;
+}
+
+.item-review-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* ── All reviews ── */
+.all-feedback {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+.all-feedback h1 {
+    margin: 20px 0 10px 0;
+}
+
+.feedback {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+}
+
+.feedback__header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.feedback__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.feedback__meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback__author {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.feedback__date {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.feedback__rating {
+    margin-left: auto;
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    fill: #e0e0e0;
+}
+
+.star.filled {
+    fill: #ffc107;
+}
+
+.feedback__purchase {
+    display: inline-block;
+    background-color: #f0fdf9;
+    color: #008f68;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.feedback__content p {
+    margin-left: 10px;
+    line-height: 1.5;
+    color: #444;
+}

@@ -1,0 +1,34 @@
+@page
+@model FlowerShop.Web.Pages.Account.EmailSentModel
+
+@section Styles {
+    <link rel="stylesheet" href="/css/authorization.css" asp-append-version="true" />
+}
+
+<div class="auth-center">
+    <div class="form-card">
+        <span class="hero-badge">
+            <img src="/img/star-icon-authorization.png" />
+        </span>
+        <h2>Проверьте почту</h2>
+        <p class="subtitle">
+            Мы отправили письмо с подтверждением на адрес<br />
+            <strong>@Model.Email</strong>
+        </p>
+        <p class="subtitle" style="margin-top:12px; font-size:0.9rem; color:#888;">
+            Перейдите по ссылке в письме, чтобы активировать аккаунт.<br />
+            Проверьте папку «Спам», если письмо не пришло.
+        </p>
+
+        <form method="post" asp-page-handler="Resend" style="margin-top:20px;">
+            <input type="hidden" name="email" value="@Model.Email" />
+            <button type="submit" class="submit-btn" style="background:#888;">
+                Отправить повторно
+            </button>
+        </form>
+
+        <div class="signin" style="margin-top:16px;">
+            <a href="/Account/Login">Уже подтвердили? Войти</a>
+        </div>
+    </div>
+</div>

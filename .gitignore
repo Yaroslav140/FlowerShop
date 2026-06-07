@@ -1,0 +1,28 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Чувствительные конфиги
+appsettings.json
+appsettings.*.json
+!appsettings.Development.json.example
+
+## Секреты
+*.env
+.env
+secrets.json
+**/secrets/**
+
+## Загрузки пользователей
+**/wwwroot/uploads/
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,31 @@
+@page
+@model FlowerShop.Web.Pages.Account.ConfirmEmailModel
+
+@section Styles {
+    <link rel="stylesheet" href="/css/authorization.css" asp-append-version="true" />
+}
+
+<div class="auth-center">
+    <div class="form-card">
+        <span class="hero-badge">
+            <img src="/img/star-icon-authorization.png" />
+        </span>
+
+        @if (Model.Success)
+        {
+            <h2>Почта подтверждена!</h2>
+            <p class="subtitle">Ваш аккаунт активирован. Можете войти в систему.</p>
+            <a href="/Account/Login" class="submit-btn" style="display:block; text-align:center; text-decoration:none; margin-top:16px;">
+                Войти
+            </a>
+        }
+        else
+        {
+            <h2>Ошибка подтверждения</h2>
+            <p class="subtitle">@Model.ErrorMessage</p>
+            <a href="/Account/Register" class="submit-btn" style="display:block; text-align:center; text-decoration:none; margin-top:16px;">
+                Зарегистрироваться снова
+            </a>
+        }
+    </div>
+</div>

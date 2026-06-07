@@ -1,0 +1,138 @@
+﻿@page
+@model FlowerShop.Web.Pages.Account.PurchasesModel
+@using System.Globalization
+@{
+    var ru = new CultureInfo("ru-RU");
+    var subtotal = Model.CartEntities?.Sum(ci => ci.PriceSnapshot * ci.Quantity) ?? 0m;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/purchases.css" asp-append-version="true" />
+}
+
+<div class="container cart">
+    <div asp-validation-summary="ModelOnly" class="error"></div>
+    <div class="container-title">
+        <div class="info">
+            <h1 class="cart__title">Корзина</h1>
+            <p class="cart__subtitle">@Model.CartEntities?.Count позиций в вашей корзине</p>
+        </div>
+        @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
+        {
+            <div class="cart__head">
+                <form method="post" asp-page-handler="ClearCarts">
+                    <button class="btn btn--outline-pink cart__clear" type="submit">Очистить корзину</button>
+                </form>
+            </div>
+        }
+    </div>
+    @if (Model.CartEntities != null && Model.CartEntities.Count > 0)
+    {
+
+        <div class="cart__grid grid">
+            <section class="cart__list">
+                @{
+                    int i = 2;
+                }
+                @foreach (var item in Model.CartEntities)
+                {
+                    var delay = (i * 0.2).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+
+                    var itemName = item.Bouquet?.Name ?? item.SoftToy?.Name ?? "Товар удален";
+
+                    string itemImage = "";
+
+                    if (item.Bouquet != null)
+                    {
+                        if (!string.IsNullOrEmpty(item.Bouquet.ImagePath))
+                        {
+                            itemImage = item.Bouquet.ImagePath;
+                        }
+                        else
+                        {
+                            itemImage = "/uploads/bouquets/Empty.png";
+                        }
+                    }
+                    else if (item.SoftToy != null)
+                    {
+                        if (!string.IsNullOrEmpty(item.SoftToy.ImagePath))
+                        {
+                            itemImage = item.SoftToy.ImagePath;
+                        }
+                        else
+                        {
+                            itemImage = "/uploads/softToys/Empty.png";
+                        }
+                    }
+
+                    var currentPrice = item.PriceSnapshot;
+
+                    <article class="cart-item" style="animation-delay: @(delay)s;">
+                        <img src="@Url.Content(itemImage)" alt="@itemName" class="cart-item__img" />
+
+                        <div class="container-form">
+                            <div class="cart-item__info">
+                                <h2 class="cart-item__title">@itemName</h2>
+                                <div class="cart-item__price">
+                                    @currentPrice.ToString("C", ru)
+                                </div>
+                                <form method="post" class="cart-item__qty">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="cartId" value="@item.Id" />
+
+                                    <button type="submit" asp-page-handler="UpdateQuantity"
+                                            name="direction" value="decrease" class="qty__btn">
+                                        −
+                                    </button>
+
+                                    <span class="qty__value">@item.Quantity</span>
+
+                                    <button type="submit" asp-page-handler="UpdateQuantity"
+                                            name="direction" value="increase" class="qty__btn">
+                                        +
+                                    </button>
+                                </form>
+
+                            </div>
+
+                            <div class="cart-item__total">
+                                @((currentPrice * item.Quantity).ToString("C", ru))
+                            </div>
+
+                            <form method="post" class="cart-item__remove">
+                                <input type="hidden" name="cartId" value="@item.Id" />
+                                <button type="submit" asp-page-handler="RemoveFromCart" title="Удалить" class="remove__btn">×</button>
+                            </form>
+                        </div>
+                    </article>
+                    i++;
+                }
+            </section>
+
+            <aside class="cart-summary">
+                <h3 class="cart-summary__title">Итоги заказа</h3>
+
+                <div class="cart-summary__row">
+                    <span>Итого (@Model.CartEntities.Count шт.)</span>
+                    <strong>@subtotal.ToString("C", ru)</strong>
+                </div>
+                <hr class="cart-summary__divider" />
+                <div class="cart-summary__row cart-summary__row--total">
+                    <span>Итого</span>
+                    <strong>@subtotal.ToString("C", ru)</strong>
+                </div>
+
+                <a asp-page="/Account/PlaceOrder" class="btn btn--brand cart-summary__checkout_purchases" type="submit">Перейти к оформлению</a>
+
+                <a class="cart-summary__link" asp-page="/PageHeader/Bouquets">Продолжить покупки</a>
+            </aside>
+        </div>
+    }
+    else
+    {
+        <div class="cart-empty center">
+            <img class="cart-empty__img" src="/img/shop-cart-icon.png" alt="Корзина пустая" />
+            <h2 class="cart-empty__title">Ваша корзина пуста</h2>
+            <a class="btn btn--brand btn--pill" asp-page="/PageHeader/Bouquets">Перейти к букетам</a>
+        </div>
+    }
+</div>

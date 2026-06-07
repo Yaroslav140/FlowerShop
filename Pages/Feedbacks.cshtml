@@ -1,0 +1,330 @@
+@page
+@model FlowerShop.Web.Pages.FeedbacksModel
+<link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true" />
+<div class="container-feedback">
+    <a href="/Home" class="back-link">
+        <span>←</span> Назад
+    </a>
+
+    <div class="header-feedback">
+        <img src="/img/star-icon-about.png" class="icon" alt="Star" />
+        <h1 class="title-feedback">Отзывы</h1>
+        <p class="desctription-feedback">Делитесь впечатлениями о наших букетах</p>
+    </div>
+
+    <div class="container-feedback__main">
+        <h1>Оставить отзыв</h1>
+        <form method="post" id="feedbackForm">
+            <div asp-validation-summary="ModelOnly" class="error"></div>
+            @if (!string.IsNullOrEmpty(Model.FormError))
+            {
+                <div class="form-error-banner">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    @Model.FormError
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Username">Ваше имя</label>
+                <input asp-for="Username" class="form-control" type="text" placeholder="Введите ваше имя" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="storeRatingSection">
+                <label>Оценка магазина</label>
+                <div class="star-rating-input" id="storeStarRating" data-value="5">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <svg class="star-btn @(i <= 5 ? "star-active" : "")" data-value="@i" width="34" height="34" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                    }
+                </div>
+                <input type="hidden" name="StoreRating" id="storeRatingValue" value="5" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedOrderId">Выберите заказ</label>
+                <select asp-for="SelectedOrderId" asp-items="Model.AvailableOrders" class="form-control" id="orderSelect">
+                    <option value="">Выберите заказ...</option>
+                </select>
+            </div>
+
+            <div id="orderItemsSection" style="display:none;">
+                <div class="items-header">
+                    <label class="items-title">Товары из заказа (выберите для отзыва)</label>
+                    <div class="items-actions">
+                        <button type="button" class="btn-select-all" id="selectAllBtn">Выбрать все</button>
+                        <button type="button" class="btn-five-stars" id="fiveStarsBtn">⭐ Всем 5 звезд</button>
+                    </div>
+                </div>
+                <div id="orderItemsList"></div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TextFeedback">Общий комментарий (опционально)</label>
+                <textarea asp-for="TextFeedback" class="form-control" rows="4" placeholder="Общее впечатление о заказе..."></textarea>
+                <p>Будет использован для товаров без индивидуального комментария</p>
+            </div>
+
+            <input type="hidden" name="ReviewItemsJson" id="reviewItemsJson" value="[]" />
+
+            <div class="form-group" style="margin-top: 30px;">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="margin-right:8px;vertical-align:middle;flex-shrink:0"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    Отправить отзывы (<span id="selectedCount">0</span>)
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="all-feedback">
+        @if (Model.Feedbacks.Count > 0)
+        {
+            <h1>Все отзывы (@Model.Feedbacks.Count)</h1>
+            @foreach (var feedback in Model.Feedbacks)
+            {
+                <article class="feedback">
+                    <header class="feedback__header">
+                        <img src="~/img/user.png" class="feedback__avatar" alt="Аватар пользователя">
+
+                        <div class="feedback__meta">
+                            <h3 class="feedback__author">@feedback.UserName</h3>
+                            <time class="feedback__date" datetime="@feedback.DateCreation.ToString("yyyy-MM-dd")">
+                                @feedback.DateCreation.ToString("dd.MM.yyyy")
+                            </time>
+                        </div>
+
+                        <div class="feedback__rating" aria-label="Оценка: @feedback.StoreRating из 5" role="img">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                var isFilled = i <= Math.Round(feedback.StoreRating);
+                                <svg width="20" height="20" viewBox="0 0 24 24" class="star @(isFilled ? "filled" : "")">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                            }
+                        </div>
+                    </header>
+
+                    @if (feedback.FeedbackItems != null && feedback.FeedbackItems.Any())
+                    {
+                        <div class="feedback__purchase">
+                            Купил:
+                            <span class="product-name">@string.Join(", ", feedback.FeedbackItems.Select(item => item.ProductName))</span>
+                        </div>
+                    }
+
+                    <div class="feedback__content">
+                        <p>@feedback.Description</p>
+                    </div>
+                </article>
+            }
+        }
+    </div>
+</div>
+
+<script>
+(function () {
+    const orderSelect = document.getElementById('orderSelect');
+    const storeRatingSection = document.getElementById('storeRatingSection');
+    const orderItemsSection = document.getElementById('orderItemsSection');
+    const orderItemsList = document.getElementById('orderItemsList');
+    const selectedCountEl = document.getElementById('selectedCount');
+    const reviewItemsJsonInput = document.getElementById('reviewItemsJson');
+    const storeRatingInput = document.getElementById('storeRatingValue');
+    const storeStarRating = document.getElementById('storeStarRating');
+
+    function updateStars(container) {
+        const value = parseInt(container.dataset.value);
+        container.querySelectorAll('.star-btn').forEach(s => {
+            s.classList.toggle('star-active', parseInt(s.dataset.value) <= value);
+        });
+    }
+
+    function initStarRating(container, hiddenInput) {
+        const stars = container.querySelectorAll('.star-btn');
+        stars.forEach(star => {
+            star.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = parseInt(star.dataset.value);
+                hiddenInput.value = value;
+                container.dataset.value = value;
+                updateStars(container);
+                collectReviewData();
+            });
+            star.addEventListener('mouseover', (e) => {
+                e.stopPropagation();
+                const value = parseInt(star.dataset.value);
+                stars.forEach(s => {
+                    s.classList.toggle('star-active', parseInt(s.dataset.value) <= value);
+                });
+            });
+        });
+        container.addEventListener('mouseleave', () => updateStars(container));
+    }
+
+    initStarRating(storeStarRating, storeRatingInput);
+
+    orderSelect.addEventListener('change', async () => {
+        const orderId = orderSelect.value;
+        if (!orderId) {
+            storeRatingSection.style.display = '';
+            orderItemsSection.style.display = 'none';
+            orderItemsList.innerHTML = '';
+            updateSelectedCount();
+            return;
+        }
+        storeRatingSection.style.display = 'none';
+        orderItemsSection.style.display = '';
+        orderItemsList.innerHTML = '<div class="items-loading">Загрузка товаров...</div>';
+
+        try {
+            const response = await fetch(`/Feedbacks?handler=OrderItems&orderId=${orderId}`);
+            const items = await response.json();
+            renderOrderItems(items);
+        } catch {
+            orderItemsList.innerHTML = '<div class="items-loading">Ошибка загрузки товаров</div>';
+        }
+        updateSelectedCount();
+    });
+
+    function renderOrderItems(items) {
+        orderItemsList.innerHTML = '';
+        if (!items || items.length === 0) {
+            orderItemsList.innerHTML = '<div class="items-loading">Товары не найдены</div>';
+            return;
+        }
+        items.forEach((item, index) => {
+            const card = createItemCard(item, index);
+            orderItemsList.appendChild(card);
+        });
+    }
+
+    function starsHtml(count) {
+        return [1, 2, 3, 4, 5].map(i =>
+            `<svg class="star-btn${i <= count ? ' star-active' : ''}" data-value="${i}" width="28" height="28" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`
+        ).join('');
+    }
+
+    function createItemCard(item, index) {
+        const div = document.createElement('div');
+        div.className = 'order-item-card';
+        div.dataset.index = index;
+        div.dataset.bouquetId = item.bouquetId || '';
+        div.dataset.softToyId = item.softToyId || '';
+
+        const imgSrc = item.image || '/img/no-image.png';
+        const price = Math.round(item.price);
+        const type = item.type || 'Товар';
+
+        div.innerHTML = `
+            <div class="item-card-main">
+                <div class="item-checkbox-wrap">
+                    <div class="item-checkbox unchecked"></div>
+                </div>
+                <img src="${imgSrc}" class="item-img" alt="${item.name}" onerror="this.src='/img/no-image.png'" />
+                <div class="item-info">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-price">${type} • ${price}₽</span>
+                </div>
+            </div>
+            <div class="item-review-section" style="display:none;">
+                <div class="item-review-inner">
+                    <label class="item-label">Оценка</label>
+                    <div class="star-rating-input item-star-rating" data-value="5">
+                        ${starsHtml(5)}
+                    </div>
+                    <input type="hidden" class="item-rating-value" value="5" />
+                    <label class="item-label">Комментарий (опционально)</label>
+                    <textarea class="form-control item-comment" rows="3" placeholder="Ваше мнение об этом товаре..."></textarea>
+                </div>
+            </div>
+        `;
+
+        div.querySelector('.item-card-main').addEventListener('click', () => toggleItem(div));
+
+        const starContainer = div.querySelector('.item-star-rating');
+        const ratingInput = div.querySelector('.item-rating-value');
+        initStarRating(starContainer, ratingInput);
+
+        div.querySelector('.item-comment').addEventListener('input', collectReviewData);
+
+        return div;
+    }
+
+    function toggleItem(card) {
+        const isSelected = card.classList.contains('selected');
+        const reviewSection = card.querySelector('.item-review-section');
+        const checkbox = card.querySelector('.item-checkbox');
+
+        if (isSelected) {
+            card.classList.remove('selected');
+            reviewSection.style.display = 'none';
+            checkbox.classList.remove('checked');
+            checkbox.classList.add('unchecked');
+        } else {
+            card.classList.add('selected');
+            reviewSection.style.display = '';
+            checkbox.classList.remove('unchecked');
+            checkbox.classList.add('checked');
+        }
+
+        updateSelectedCount();
+        collectReviewData();
+    }
+
+    function updateSelectedCount() {
+        const count = document.querySelectorAll('.order-item-card.selected').length;
+        selectedCountEl.textContent = count;
+    }
+
+    function collectReviewData() {
+        const selected = document.querySelectorAll('.order-item-card.selected');
+        const items = [];
+        selected.forEach(card => {
+            items.push({
+                bouquetId: card.dataset.bouquetId || null,
+                softToyId: card.dataset.softToyId || null,
+                rating: parseInt(card.querySelector('.item-rating-value').value),
+                comment: card.querySelector('.item-comment').value
+            });
+        });
+        reviewItemsJsonInput.value = JSON.stringify(items);
+    }
+
+    document.getElementById('selectAllBtn').addEventListener('click', () => {
+        document.querySelectorAll('.order-item-card:not(.selected)').forEach(card => {
+            card.classList.add('selected');
+            card.querySelector('.item-review-section').style.display = '';
+            const cb = card.querySelector('.item-checkbox');
+            cb.classList.remove('unchecked');
+            cb.classList.add('checked');
+        });
+        updateSelectedCount();
+        collectReviewData();
+    });
+
+    document.getElementById('fiveStarsBtn').addEventListener('click', () => {
+        document.querySelectorAll('.order-item-card:not(.selected)').forEach(card => {
+            card.classList.add('selected');
+            card.querySelector('.item-review-section').style.display = '';
+            const cb = card.querySelector('.item-checkbox');
+            cb.classList.remove('unchecked');
+            cb.classList.add('checked');
+        });
+        document.querySelectorAll('.order-item-card').forEach(card => {
+            const ratingInput = card.querySelector('.item-rating-value');
+            const starContainer = card.querySelector('.item-star-rating');
+            ratingInput.value = 5;
+            starContainer.dataset.value = 5;
+            updateStars(starContainer);
+        });
+        updateSelectedCount();
+        collectReviewData();
+    });
+
+    document.getElementById('feedbackForm').addEventListener('submit', () => {
+        collectReviewData();
+    });
+})();
+</script>

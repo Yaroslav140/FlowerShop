@@ -1,0 +1,94 @@
+﻿@page
+@model FlowerShop.Web.Pages.PageHeader.ContactsModel
+
+@section Styles {
+    <link rel="stylesheet" href="/css/contact.css" asp-append-version="true" />
+}
+
+<div class="home-container">
+    <div class="container">
+        <span class="hero__badge">🌿 Свяжитесь с нами</span>
+
+        <section class="content">
+            <h1 class="content__main">Контакты</h1>
+            <p class="content__description">
+                Свяжитесь с нами, чтобы оформить заказ или задать любые вопросы
+            </p>
+        </section>
+
+        <div class="profile-inner">
+            <section class="profile-card">
+                <div class="card-top">
+                    <div class="circle-icon">
+                        <img src="~/img/phone-icon.png" alt="" />
+                    </div>
+                    <h2 class="card-title">Наши данные</h2>
+                </div>
+
+                <div class="info-list">
+                    <div class="row">
+                        <div class="label">Телефон</div>
+                        <div class="value">8 (980) 318-71-08</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Адрес</div>
+                        <div class="value">
+                            Брянская область, поселок городского типа Клетня, улица Ленина, д. 95
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Почта</div>
+                        <div class="value">
+                            <a href="mailto:peskovas86@gmail.com">
+                                peskovas86@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="profile-card">
+                <div class="card-top">
+                    <div class="circle-icon">
+                        <img src="~/img/clock-icon.png" alt="" />
+                    </div>
+                    <h2 class="card-title">Время работы</h2>
+                </div>
+
+                <div class="info-list">
+                    <div class="row">
+                        <div class="label">Понедельник – Пятница</div>
+                        <div class="value value-green">
+                            9:00 – 19:00
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Суббота</div>
+                        <div class="value value-green">
+                            9:00 – 18:00
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Воскресенье</div>
+                        <div class="value value-green">
+                            10:00 – 20:00
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="feedback-container">
+            <img class="feedback-container__img" src="/img/star-icon-about.png" />
+            <h1 class="feedback-container__title">Мнение наших клиентов</h1>
+            <p class="feedback-container__description">Читайте отзывы покупателей и делитесь своими впечатлениями</p>
+            <a class="feedback-container__btn" asp-page="/Feedbacks">
+                <img src="/img/chat-icno-about.svg" alt="Чат" />
+                Читать отзывы
+            </a>
+        </div>
+    </div>
+</div>

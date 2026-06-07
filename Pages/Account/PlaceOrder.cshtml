@@ -1,0 +1,296 @@
+@page
+@model FlowerShop.Web.Pages.Account.PlaceOrderModel
+
+@section Styles {
+    <link rel="stylesheet" href="/css/placeOrder.css" asp-append-version="true" />
+    <style>
+        #map { width: 100%; height: 320px; border-radius: 8px; margin-top: 10px; border: 2px solid #e0e0e0; }
+        .map-hint          { font-size: 0.82rem; color: #888; margin-top: 6px; }
+        .map-hint.success  { color: #4a7c59; font-weight: 600; }
+        .map-hint.error    { color: #c0392b; font-weight: 500; }
+        .map-hint.loading  { color: #888; font-style: italic; }
+        #address-suggest.addr-ok    { border-color: #4a7c59 !important; }
+        #address-suggest.addr-error { border-color: #c0392b !important; }
+    </style>
+}
+
+<div class="order-center">
+    <div class="order-card">
+        <div class="header-order">
+            <div class="icon-header">
+                <img src="~/img/fly.png" alt="Delivery Icon" />
+            </div>
+            <h2>Оформить заказ</h2>
+            <p>Заполните данные для доставки</p>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="error"></div>
+
+        <form method="post" id="order-form">
+            <div class="form-group">
+                <div class="header-hint">
+                    <label asp-for="Phone">Номер телефона</label>
+                    <p class="hint"><span title="Номер связи с вами">?</span></p>
+                </div>
+                <input asp-for="Phone" class="form-control" placeholder="+7 (___) ___-__-__" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="header-hint">
+                    <label>Адрес доставки</label>
+                    <p class="hint"><span title="Кликните на карте или начните вводить адрес">?</span></p>
+                </div>
+
+                <input type="text" id="address-suggest" class="form-control"
+                       placeholder="Начните вводить адрес или кликните на карте..."
+                       value="@Model.DeliveryAddress"
+                       autocomplete="off" />
+
+                <input type="hidden" id="DeliveryAddress" name="DeliveryAddress" value="@Model.DeliveryAddress" />
+
+                <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                <p class="map-hint" id="map-hint">Выберите адрес внутри зелёной зоны — доставляем только по Клетне</p>
+                <div id="map"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="header-hint">
+                    <label asp-for="DeliveryDate">Дата и время доставки</label>
+                    <p class="hint">
+                        <span title="Только в рабочее время магазина">?</span>
+                    </p>
+                </div>
+                <input asp-for="DeliveryDate" type="datetime-local" id="DeliveryDate"
+                       class="form-control" asp-format="{0:yyyy-MM-ddTHH:mm}" step="60" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+                <p style="font-size:0.82rem; color:#888; margin-top:4px;">
+                    🕐 Пн–Пт: 9:00–19:00 &nbsp;|&nbsp; Сб: 9:00–18:00 &nbsp;|&nbsp; Вс: 10:00–20:00
+                </p>
+                <p id="time-error" style="color:#e74c3c; font-size:0.85rem; display:none;"></p>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-info"><strong>К оплате:</strong></div>
+                <div class="summary-total"><span>@Model.TotalAmount</span> руб.</div>
+            </div>
+
+            <button asp-page-handler="SubmitOrder" type="submit" id="submit-btn" class="btn btn--brand">
+                Отправить заказ
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var HOURS = {
+        1: { open: 9, close: 19 }, 
+        2: { open: 9, close: 19 }, 
+        3: { open: 9, close: 19 }, 
+        4: { open: 9, close: 19 }, 
+        5: { open: 9, close: 19 }, 
+        6: { open: 9, close: 18 }, 
+        0: { open: 10, close: 20 } 
+    };
+    var dtInput   = document.getElementById('DeliveryDate');
+    var timeError = document.getElementById('time-error');
+    var form      = document.getElementById('order-form');
+
+    function validate() {
+        if (!dtInput || !dtInput.value) return true;
+        var dt      = new Date(dtInput.value);
+        var day     = dt.getDay();
+        var total   = dt.getHours() * 60 + dt.getMinutes();
+        var h       = HOURS[day];
+        var minDt   = new Date(); minDt.setHours(minDt.getHours() + 2);
+
+        if (dt < minDt) {
+            show('⚠ Минимальное время доставки — через 2 часа от текущего момента.');
+            return false;
+        }
+        if (total < h.open * 60 || total >= h.close * 60) {
+            var days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+            show('⚠ В ' + days[day] + ' магазин работает с ' + h.open + ':00 до ' + h.close + ':00.');
+            return false;
+        }
+        hide(); return true;
+    }
+    function show(msg) { if (timeError) { timeError.textContent = msg; timeError.style.display = 'block'; } }
+    function hide()    { if (timeError) timeError.style.display = 'none'; }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (dtInput) dtInput.addEventListener('change', validate);
+        if (form)    form.addEventListener('submit', function (e) { if (!validate()) e.preventDefault(); });
+    });
+})();
+</script>
+<script>
+function initMap() {
+    var suggestInput = document.getElementById('address-suggest');
+    var hiddenInput  = document.getElementById('DeliveryAddress');
+    var mapHint      = document.getElementById('map-hint');
+    var submitBtn    = document.getElementById('submit-btn');
+    var placemark    = null;
+
+    var KLETNYA = [53.389912, 33.216825];
+    var DELIVERY_RADIUS_M = 12000;
+
+    var myMap = new ymaps.Map('map', {
+        center: KLETNYA,
+        zoom: 12,
+        controls: ['zoomControl', 'fullscreenControl']
+    });
+
+    var deliveryZone = new ymaps.Circle([KLETNYA, DELIVERY_RADIUS_M], {
+        balloonContent: 'Зона доставки — Клетня'
+    }, {
+        fillColor: '#4a7c5922',
+        strokeColor: '#4a7c59',
+        strokeWidth: 2,
+        strokeStyle: 'solid',
+        interactivityModel: 'default#silent'  // круг не перехватывает клики
+    });
+    myMap.geoObjects.add(deliveryZone);
+
+    var shopPin = new ymaps.Placemark(KLETNYA, {
+        balloonContent: '🌸 Flower & Shop — Клетня, ул. Ленина, 95'
+    }, {
+        preset: 'islands#greenDotIcon'
+    });
+    myMap.geoObjects.add(shopPin);
+
+    // ── Расстояние по формуле Хаверсина (метры) ────────────────────────
+    function distanceM(lat1, lon1, lat2, lon2) {
+        var R = 6371000;
+        var p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+        var dp = (lat2 - lat1) * Math.PI / 180;
+        var dl = (lon2 - lon1) * Math.PI / 180;
+        var a  = Math.sin(dp/2)*Math.sin(dp/2) +
+                 Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function coordsInZone(coords) {
+        return distanceM(coords[0], coords[1], KLETNYA[0], KLETNYA[1]) <= DELIVERY_RADIUS_M;
+    }
+
+    // ── Записать адрес в поле ───────────────────────────────────────────
+    function setAddress(address) {
+        suggestInput.value  = address;
+        hiddenInput.value   = address;
+        mapHint.textContent = '✓ ' + address;
+        mapHint.className   = 'map-hint success';
+    }
+
+    function showZoneError() {
+        mapHint.textContent = '⚠ Доставляем только внутри зелёного круга — выберите точку в Клетне.';
+        mapHint.className   = 'map-hint error';
+    }
+
+    // ── Геокодирование координат → текстовый адрес ──────────────────────
+    function geocodeCoords(coords) {
+        mapHint.textContent = '⌛ Определяем адрес...';
+        mapHint.className   = 'map-hint loading';
+
+        fetch('/Account/PlaceOrder?handler=Geocode&lat=' + coords[0] + '&lon=' + coords[1],
+              { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var addr = (data.address && data.address.trim().length > 3)
+                    ? data.address
+                    : 'Клетня (' + coords[0].toFixed(4) + ', ' + coords[1].toFixed(4) + ')';
+                setAddress(addr);
+                if (placemark) placemark.properties.set('balloonContent', addr);
+            })
+            .catch(function() {
+                setAddress('Клетня (' + coords[0].toFixed(4) + ', ' + coords[1].toFixed(4) + ')');
+            });
+    }
+
+    // ── Метка (красная, перетаскиваемая) ────────────────────────────────
+    var lastValidCoords = null;
+
+    function placePin(coords) {
+        lastValidCoords = coords;
+        if (!placemark) {
+            placemark = new ymaps.Placemark(coords, {}, {
+                preset: 'islands#redDotIcon',
+                draggable: true
+            });
+            myMap.geoObjects.add(placemark);
+
+            placemark.events.add('dragend', function() {
+                var c = placemark.geometry.getCoordinates();
+                if (!coordsInZone(c)) {
+                    // Вернуть метку на последнюю допустимую позицию
+                    placemark.geometry.setCoordinates(lastValidCoords);
+                    showZoneError();
+                } else {
+                    lastValidCoords = c;
+                    geocodeCoords(c);
+                }
+            });
+        } else {
+            placemark.geometry.setCoordinates(coords);
+        }
+        // не двигаем карту — метка точно на клике
+    }
+
+    // ── Клик по карте ────────────────────────────────────────────────────
+    myMap.events.add('click', function(e) {
+        var coords = e.get('coords');
+        if (!coordsInZone(coords)) {
+            showZoneError();
+            return; // просто игнорируем — существующая метка и адрес остаются
+        }
+        placePin(coords);
+        geocodeCoords(coords);
+    });
+
+    // ── Автодополнение при вводе ─────────────────────────────────────────
+    var suggestView = new ymaps.SuggestView('address-suggest');
+
+    suggestView.events.add('select', function(e) {
+        var address = e.get('item').value;
+        setAddress(address);
+        // Пытаемся поставить метку через геокодер
+        ymaps.geocode(address, { results: 1 }).then(function(res) {
+            var geo = res.geoObjects.get(0);
+            if (geo) {
+                var coords = geo.geometry.getCoordinates();
+                if (coordsInZone(coords)) {
+                    placePin(coords);
+                    placemark.properties.set('balloonContent', address);
+                } else {
+                    showZoneError();
+                    hiddenInput.value = '';
+                    suggestInput.value = '';
+                }
+            }
+        }, function() { /* геокодер недоступен — адрес принят как есть */ });
+    });
+
+    var existing = hiddenInput.value;
+    if (existing && existing.trim()) {
+        ymaps.geocode(existing, { results: 1 }).then(function(res) {
+            var geo = res.geoObjects.get(0);
+            if (geo) {
+                placePin(geo.geometry.getCoordinates());
+                setValidAddress(existing);
+            }
+        });
+    }
+
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+        var addr = hiddenInput.value.trim();
+        if (!addr) {
+            e.preventDefault();
+            clearAddress('Укажите адрес доставки: кликните на карте или введите в поле выше.');
+            document.getElementById('address-suggest').focus();
+        }
+    });
+}
+</script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=@Model.YandexApiKey&lang=ru_RU&onload=initMap" type="text/javascript"></script>
+}

@@ -1,0 +1,263 @@
+﻿@page
+@using FlowerShop.Data.Models
+@model FlowerShop.Web.Pages.Account.ProfileModel
+
+@section Styles {
+    <link rel="stylesheet" href="/css/profile.css" asp-append-version="true" />
+}
+
+<div class="profile-page">
+    <div asp-validation-summary="ModelOnly" class="error"></div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.EditSuccessMessage))
+    {
+        <div style="background:#e8f5e9;border-radius:8px;padding:12px 16px;color:#2e7d32;margin-bottom:16px;">
+            @Model.EditSuccessMessage
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.PendingEmail))
+    {
+        <div style="background:#fff8e1;border-radius:8px;padding:12px 16px;color:#f57f17;margin-bottom:16px;">
+            ⏳ Ожидает подтверждения смена email на <strong>@Model.PendingEmail</strong>.
+            Перейдите по ссылке в письме.
+        </div>
+    }
+    <div class="main-title">
+        <h1 class="profile-title">Мой профиль</h1>
+        <p class="profile-subtitle">Управляйте своим профилем и заказами</p>
+    </div>
+
+    <div class="profile-container">
+        <div class="cards">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <span class="profile-avatar">
+                        <img src="@Url.Content("~/img/user.png")" alt="Аватар пользователя" />
+                    </span>
+                    <h2 class="profile-name">@Model.Username</h2>
+                    <p class="profile-login">@("@")@Model.Login</p>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Дата регистрации</span>
+                        <span class="stat-value">@Model.DateRegister.ToString("dd.MM.yyyy")</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Заказов выполнено</span>
+                        <span class="stat-value">@Model.CountOrderCompleted</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                    {
+                        <div class="stat-item">
+                            <span class="stat-label">Телефон</span>
+                            <span class="stat-value">@Model.Phone</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="profile-actions">
+                    <form method="post" asp-page-handler="StartEdit" style="display:inline;">
+                        <button type="submit" class="btn btn-link">
+                            <img src="/img/edit-icon.png" alt="" class="btn-icon revert-icon" />
+                            <span>Редактировать профиль</span>
+                        </button>
+                    </form>
+                    <form method="post" asp-page-handler="Exit" style="display:inline;">
+                        <button type="submit" class="btn btn-exit">
+                            <img src="/img/edit-icon.png" alt="" class="btn-icon" />
+                            <span>Выйти из аккаунта</span>
+                        </button>
+                    </form>
+                    <form method="post" asp-page-handler="Delete">
+                        <button type="submit" class="btn btn-danger">
+                            <img src="/img/delete-icon.png" alt="" class="btn-icon" />
+                            Удалить профиль
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+            {
+                <div class="profile-reviews">
+                    <div class="reviews-header">
+                        <h3>Мои отзывы</h3>
+                        <a href="#" class="link-all">⭐ Все отзывы</a>
+                    </div>
+                    @foreach (var review in Model.Feedbacks)
+                    {
+                        <div class="review-item">
+                            <div class="review-stars">
+                                @for (int i = 0; i < review.StoreRating; i++)
+                                {
+                                    <span class="star">⭐</span>
+                                }
+                            </div>
+                            <p class="review-text">@review.Description</p>
+                            <span class="review-date">@review.DateCreation.ToString("dd.MM.yyyy")</span>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="orders-section">
+            <div class="orders-header">
+                <h2>Мои заказы</h2>
+                <span class="orders-badge">📦 @Model.Orders.Count заказов</span>
+            </div>
+
+            <div class="orders-list">
+                @{
+                    int u = 6;
+                }
+                @foreach (var order in Model.Orders)
+                {
+                    var delay = (u * 0.1).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+                    <div class="order-card" style="animation-delay: @(delay)s">
+                        <div class="order-header-row">
+                            <div class="order-info">
+                                <h3 class="order-number">Заказ #@order.Id.ToString()[^4..]</h3>
+                                <div class="order-status">
+                                    <div class="status-line">
+                                        <span class="status-dot status"></span>
+                                        @switch (order.Status)
+                                        {
+                                            case OrderStatus.New:
+                                                <span class="status-text" style="background: #78df7f;">Новый</span>
+                                                break;
+                                            case OrderStatus.Pending:
+                                                <span class="status-text" style="background: #f89e00;">Ожидает</span>
+                                                break;
+                                            case OrderStatus.InProgress:
+                                                <span class="status-text" style="background: #00ade4;">В обработке</span>
+                                                break;
+                                            case OrderStatus.Completed:
+                                                <span class="status-text" style="background: #00c857;">Выполнен</span>
+                                                break;
+                                            case OrderStatus.Cancelled:
+                                                <span class="status-text" style="background: #eb0a0a;">Отменён</span>
+                                                break;
+                                            default:
+                                                <span class="status-text">@order.Status</span>
+                                                break;
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order-price">
+                                <span class="price-amount">@order.TotalAmount.ToString("0.00") руб.</span>
+                                <span class="items-count">@order.OrderItem.Count позиций</span>
+                            </div>
+                        </div>
+
+                        <p class="order-date">Дата заказа: @order.PickupDate.ToString("dd.MM.yyyy")</p>
+
+                        <div class="order-actions">
+                            <a asp-page="/Account/ViewOrderDetails" class="btn-order btn-details" asp-route-id="@order.Id">
+                                <img src="/img/eye-icon.png" class="revert-icon"/>
+                                Подробнее
+                            </a>
+                            <form method="post">
+                                <input type="hidden" name="orderId" value="@order.Id"/>
+                                <button asp-page-handler="RepeatOrder" class="btn-order btn-repeat">
+                                    <img src="/img/box-icon.png" alt="" />
+                                    Повторить
+                                </button>
+                            </form>
+                            @if (order.CanReview)
+                            {
+                                <form method="post" asp-page-handler="StartReviews" asp-route-orderId="@order.Id" style="display:inline;">
+                                    <button type="submit" class="btn-order btn-review text-decoration-none p-0 border-0">
+                                        ⭐ Оставить отзыв
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                    u++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.IsCanReviews)
+{
+    <div class="modal-overlay">
+        <div class="modal-window review-modal">
+            <h3 class="modal-window__title">Оставить отзыв</h3>
+
+            <form method="post" asp-page-handler="SubmitReview">
+                <input type="hidden" asp-for="ReviewInput.OrderId" />
+                <div class="form-field">
+                    <label class="form-field__label">Оценка</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star-5" name="ReviewInput.Rating" value="5" />
+                        <label for="star-5" title="5 звезд">&#9733;</label>
+
+                        <input type="radio" id="star-4" name="ReviewInput.Rating" value="4" />
+                        <label for="star-4" title="4 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-3" name="ReviewInput.Rating" value="3" />
+                        <label for="star-3" title="3 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-2" name="ReviewInput.Rating" value="2" />
+                        <label for="star-2" title="2 звезды">&#9733;</label>
+
+                        <input type="radio" id="star-1" name="ReviewInput.Rating" value="1" />
+                        <label for="star-1" title="1 звезда">&#9733;</label>
+                    </div>
+                    <span asp-validation-for="ReviewInput.Rating" class="form-field__error text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="ReviewInput.Comment" class="form-field__label">Комментарий</label>
+                    <textarea asp-for="ReviewInput.Comment" class="form-field__input form-field__textarea" spellcheck="true" lang="ru"></textarea>
+                </div>
+
+                <div class="modal-window__buttons">
+                    <button type="submit" class="btn btn-green">Отправить отзыв</button>
+                    <a href="/Account/Profile" class="btn btn-outline-gray">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+@if (Model.IsEditing)
+{
+    <div class="modal-overlay">
+        <div class="modal-window review-modal">
+            <h3 class="modal-window__title">Редактирование профиля</h3>
+
+            <form method="post" asp-page-handler="UpdateProfile">
+                <div class="form-field">
+                    <label asp-for="EditInput.NewUsername" class="form-field__label">Имя</label>
+                    <input asp-for="EditInput.NewUsername" class="form-field__input" />
+                    <span asp-validation-for="EditInput.NewUsername" class="form-field__error text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="EditInput.NewLogin" class="form-field__label">Email</label>
+                    <input asp-for="EditInput.NewLogin" class="form-field__input" type="email" />
+                    <span asp-validation-for="EditInput.NewLogin" class="form-field__error text-danger"></span>
+                </div>
+
+                <div class="form-field">
+                    <label asp-for="EditInput.NewPhone" class="form-field__label">Номер телефона</label>
+                    <input asp-for="EditInput.NewPhone" class="form-field__input" placeholder="+7 (___) ___-__-__" />
+                    <span asp-validation-for="EditInput.NewPhone" class="form-field__error text-danger"></span>
+                </div>
+
+                <div class="modal-window__buttons">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="/Account/Profile" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}

@@ -1,0 +1,55 @@
+﻿@page
+@model FlowerShop.Web.Pages.PageHeader.SoftToysModel
+@section Styles{
+    <link rel="stylesheet" href="/css/bouquet.css" asp-append-version="true"/>
+}
+<div class="bouquet-main-container">
+    <div class="content">
+        <span class="hero__badge">🌿 Мягкие друзья</span>
+        <div class="content-fade">
+            <p class="content__main">Мягкие игрушки</p>
+            <p class="content__description">Милые плюшевые друзья, которые подарят тепло и уют</p>
+        </div>
+    </div>
+    <div class="bouquet-container">
+        @if (Model.GetSoftToys?.Count > 0)
+        {
+            var culture = new System.Globalization.CultureInfo("ru-RU");
+            foreach (var (softToy, idx) in Model.GetSoftToys.Select((b, i) => (b, i)))
+            {
+                <div class="bouquet-card bouquet-card__@idx">
+                    <img src="@Url.Content(string.IsNullOrEmpty(softToy.ImagePath) ? "/uploads/softToys/Empty.png" : softToy.ImagePath)" alt="@softToy.Name" loading="lazy" />
+                    <div class="rating-container">
+                        <span>⭐</span>
+                        <p>@(softToy.Rating > 1 ? (softToy.Rating % 1 == 0 ? softToy.Rating.ToString("F0") : softToy.Rating.ToString("F1")) : "5")</p>
+                    </div>
+                    <div class="bouquet-card__description">
+                        <h2 class="bouquet-card__title">@softToy.Name</h2>
+                        <p class="bouquet-card__text">@softToy.Description</p>
+                        <p class="bouquet-card__price">@softToy.Price.ToString("C", culture)</p>
+                    </div>
+
+                    <form method="post" asp-page-handler="AddToCart" class="bouquet-card__actions">
+                        <input type="hidden" name="softToyId" value="@softToy.SoftToyId" />
+                        <input type="hidden" name="qty" value="1" />
+                        <button class="btn" type="submit">
+                            В корзину
+                        </button>
+                    </form>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-cart">
+                <img class="empty-cart__image" src="/img/cart-icon.png" alt="Все букеты в корзине" />
+                <h1 class="empty-cart__title">Все игрушки в вашей корзине!</h1>
+                <p class="empty-cart__description">Все милые плюшевые друзья уже ждут вас в корзине!</p>
+                <div class="empty-cart__buttons">
+                    <a class="btn btn--primary" asp-page="/Account/Purchases">Перейти в корзину</a>
+                    <a class="btn btn--secondary" asp-page="/PageHeader/Bouquets">Смотреть букеты</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
